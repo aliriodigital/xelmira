@@ -1,0 +1,2 @@
+1. Creates partials in feature folder > views
+2. Move express-session and connect-flash settings to root/app.

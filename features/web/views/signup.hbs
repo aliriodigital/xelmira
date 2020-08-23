@@ -1,0 +1,45 @@
+
+<div class="container d-flex align-self-center py-5 justify-content-center">
+    <div class="card form-signup">
+        <div class="card-header">
+            <h4>Sign Up</h4>
+            <p class="card-header-parr">Fill in the form to create an account</p>
+        </div>
+        <div class="card-body">
+            <form action="/signup" method="POST">
+                <div class="form-group row">
+                    <label class="control-label col-md-3" for="name">Username:</label>
+                    <div class="col-md-9">
+                        <input type="text" id="username" name="username" class="form-control" required>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="control-label col-md-3" for="email">Email:</label>
+                    <div class="col-md-9">
+                        <input type="email" id="email" name="email" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="control-label col-md-3" for="password">Password:</label>
+                    <div class="col-md-9">
+                        <input type="password" id="password" name="password" class="form-control" required>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="control-label col-md-3" for="confirm-password">Confirm Password:</label>
+                    <div class="col-md-9">
+                        <input type="password" id="confirm-password" name="confirm-password" class="form-control"
+                            required>
+                    </div>
+                </div>
+                <div>
+                    <div class="d-flex flex-row-reverse form-actions">
+                        <div>
+                            <button type="submit" class="btn btn-primary">Register</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

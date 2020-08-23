@@ -1,0 +1,69 @@
+/* HOME PAGE */
+body,
+html {
+  height: 100%;
+  margin: 0;
+  padding-top: 27px;
+}
+
+.btn-ol-white {
+  border: 1px solid white;
+  border-radius: 4px;
+  color: white;
+}
+
+.btn-ol-white:hover {
+  color: #c7defc;
+  text-decoration: none;
+}
+
+.body-gray {
+  background-color: rgb(246, 246, 246);
+  background-repeat: no-repeat;
+}
+
+.bg {
+  /* The image used */
+  background-image: url("/web/images/school.png");
+
+  /* Full height */
+  height: 100%;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.lead {
+  font-size: 25px;
+}
+
+.form-signup {
+  width: 450px;
+}
+.form-group {
+  margin-top: 20px;
+}
+
+.form-actions {
+  margin-top: -12px;
+}
+
+@media (max-width: 575.98px) {
+  .form-group {
+    margin-top: -5px;
+  }
+
+  .form-group label {
+    margin-bottom: 0;
+  }
+
+  .form-actions {
+    margin-top: 0px;
+  }
+}
+
+.card-header-parr {
+  margin-bottom: 0;
+}
