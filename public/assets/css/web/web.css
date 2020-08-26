@@ -1,0 +1,44 @@
+/* HOME PAGE */
+body,
+html {
+  height: 100%;
+  margin: 0;
+  padding-top: 27px;
+}
+
+.btn-ol-white {
+  border: 1px solid white;
+  border-radius: 4px;
+  color: white;
+}
+
+.btn-ol-white:hover {
+  color: #c7defc;
+  text-decoration: none;
+}
+
+.body-bg-light {
+  background-color: #f6f6f6;
+  background-repeat: no-repeat;
+}
+
+.bg {
+  /* The image used */
+  background-image: url("/assets/images/web/school.png");
+
+  /* Full height */
+  height: 100%;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.lead {
+  font-size: 25px;
+}
+
+.alert p {
+  margin-bottom: 0;
+}
