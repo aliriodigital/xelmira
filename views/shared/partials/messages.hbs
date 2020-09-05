@@ -7,11 +7,26 @@
 </div>
 {{/if}}
 
-{{#each errors}}
+{{#if errorMsg }}
 <div class="alert alert-danger alert-dismissible fade show" role="alert">
-    <p class="text-center">{{text}}</p>
+    <div class="container text-center">
+        <span>{{errorMsg}}</span>
+    </div>
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
-{{/each}}
+{{/if}}
+
+{{#if multiErrorMsg}}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <div class="container text-center">
+        {{#each multiErrorMsg}}
+        <span>{{text}}</span>
+        {{/each}}
+    </div>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{{/if}}

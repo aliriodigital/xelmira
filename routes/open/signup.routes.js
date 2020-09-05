@@ -1,14 +1,13 @@
 const express = require("express");
 const router = express.Router();
+const passport = require("passport");
 
 const {
   signupForm,
   signup,
-  signinForm
-} = require("../../controllers/web/authen.controllers");
+} = require("../../controllers/open/signup.controllers");
 
 router.get("/signup", signupForm);
 router.post("/signup", signup);
-router.get("/signin", signinForm);
 
 module.exports = router;

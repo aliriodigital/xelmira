@@ -1,9 +1,7 @@
 const controllers = {};
 
 controllers.home = (req, res) => {
-  res.render("pages/web/home", {
-    layout: "web"
-  });
+  res.render("open/index", {});
 };
 
 module.exports = controllers;

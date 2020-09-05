@@ -1,8 +1,9 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const bcrypt = require("bcryptjs");
 const userSchema = new Schema(
   {
-    username: {
+    name: {
       type: String,
       require: true,
     },
@@ -20,6 +21,13 @@ const userSchema = new Schema(
   { timestamps: true }
 );
 
-const userModel = mongoose.model('xelmira', userSchema);
-module.exports = userModel;
+userSchema.methods.encryptPassword = async (password) => {
+  const salt = await bcrypt.genSalt(10);
+  return await bcrypt.hash(password, salt);
+};
 
+userSchema.methods.isValidPassword = async function (password) {
+  return await bcrypt.compare(password, this.password);
+}
+
+module.exports = mongoose.model("user", userSchema);
