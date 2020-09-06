@@ -42,3 +42,7 @@ html {
 .alert p {
   margin-bottom: 0;
 }
+
+.bg-dark {
+  background-image: linear-gradient(to right, #034c93, /* red, */ #209de5) !important;
+}

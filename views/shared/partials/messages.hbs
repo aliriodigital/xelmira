@@ -1,16 +1,18 @@
-{{#if successMsg }}
+{{#if success }}
 <div class="alert alert-primary alert-dismissible fade show" role="alert">
-    <p class="text-center">{{successMsg}}</p>
+    <p class="text-center">{{success}}</p>
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
 {{/if}}
 
-{{#if errorMsg }}
+
+
+{{#if error }}
 <div class="alert alert-danger alert-dismissible fade show" role="alert">
     <div class="container text-center">
-        <span>{{errorMsg}}</span>
+        <span>{{error}}</span>
     </div>
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>

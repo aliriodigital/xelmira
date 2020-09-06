@@ -1,5 +1,5 @@
 const User = require("../../models/User");
-// const passport = require("passport");
+const passport = require("passport");
 const controllers = {};
 
 controllers.signupForm = (req, res) => {
@@ -23,7 +23,7 @@ controllers.signup = async (req, res) => {
   }
   if (errorMsg.length > 0) {
     res.render("open/signupForm", {
-      errorMsg: errorMsg,
+      error: errorMsg,
       name: name,
       email: email,
       password: password,
@@ -33,7 +33,7 @@ controllers.signup = async (req, res) => {
     const user = new User(req.body);
     user.password = await user.encryptPassword(password);
     await user.save();
-    req.flash("successMsg", "Congrats! Your registration was done.");
+    req.flash("success", "Congrats! Your registration was done.");
     res.redirect("/signin");
   }
 };

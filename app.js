@@ -1,9 +1,9 @@
 const express = require("express");
 const path = require("path");
 const expressHandlebars = require("express-handlebars");
-const passport = require("passport");
 const session = require("express-session");
 const flash = require("connect-flash");
+const passport = require("passport");
 
 /* INITIALIZATIONS */
 const app = express();
@@ -29,14 +29,17 @@ app.use(
     resave: true,
   })
 );
-app.use(flash());
-app.use((req, res, next) => {
-  res.locals.successMsg = req.flash("successMsg");
-  res.locals.errorMsg = req.flash("errorMsg");
-  next();
-});
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash());
+
+/* GLOBAL VARIABLES */
+app.use((req, res, next) => {
+  res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error");
+  res.locals.user = req.user || null;
+  next();
+});
 
 /* ROUTES */
 app.use("/", require("./routes/open/signup.routes"));

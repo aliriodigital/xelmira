@@ -28,10 +28,10 @@
                         <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/web/services">Services</a>
+                        <a class="nav-link" href="/services">Services</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/web/us">Us</a>
+                        <a class="nav-link" href="/us">Us</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
@@ -48,7 +48,13 @@
                         <a class="nav-link" href="/web/contact">Contact</a>
                     </li>
                 </ul>
-
+                {{#if user}}
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">Logout</a>
+                    </li>
+                </ul>
+                {{else}}
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
                         <a class="nav-link" href="/signup">Register</a>
@@ -57,6 +63,7 @@
                         <a class="nav-link" href="/signin">Log In</a>
                     </li>
                 </ul>
+                {{/if}}
             </div>
         </div>
     </nav>
