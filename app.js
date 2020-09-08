@@ -15,6 +15,7 @@ const hbs = expressHandlebars.create({
   extname: "hbs",
   layoutsDir: path.join(__dirname, "./views/shared/layouts"),
   partialsDir: path.join(__dirname, "./views/shared/partials"),
+  defaultLayout: "admin",
 });
 app.engine("hbs", hbs.engine);
 app.set("view engine", "hbs");
@@ -42,8 +43,9 @@ app.use((req, res, next) => {
 });
 
 /* ROUTES */
-app.use("/", require("./routes/open/signup.routes"));
-app.use("/", require("./routes/open/signin.routes"));
-app.use("/", require("./routes/open/others.routes"));
+app.use("/", require("./routes/front/signup.routes"));
+app.use("/", require("./routes/front/signin.routes"));
+app.use("/", require("./routes/front/others.routes"));
+app.use("/", require("./routes/programmes/courses.routes"));
 
 module.exports = app;

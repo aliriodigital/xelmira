@@ -5,7 +5,7 @@ const passport = require("passport");
 const {
   signupForm,
   signup,
-} = require("../../controllers/open/signup.controllers");
+} = require("../../controllers/front/signup.controllers");
 
 router.get("/signup", signupForm);
 router.post("/signup", signup);

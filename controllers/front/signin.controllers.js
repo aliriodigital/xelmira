@@ -4,14 +4,16 @@ const passport = require("passport");
 const controllers = {};
 
 controllers.signinForm = (req, res) => {
-  res.render("open/signinForm", {
+  res.render("front/signinForm", {
+    layout: "front",
+    pageTitle: "Login",
     bodyBg: true,
   });
 };
 
 controllers.signin = passport.authenticate("local", {
   failureRedirect: "/signin",
-  successRedirect: "/",
+  successRedirect: "/courses",
   failureFlash: true,
 });
 

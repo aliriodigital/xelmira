@@ -5,7 +5,7 @@ const {
   signinForm,
   signin,
   logout,
-} = require("../../controllers/open/signin.controllers");
+} = require("../../controllers/front/signin.controllers");
 
 router.get("/signin", signinForm);
 

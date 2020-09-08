@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const { home, services } = require("../../controllers/open/others.controllers");
+const { home, services } = require("../../controllers/front/others.controllers");
 const { isAuthenticated } = require("../../helpers/auth");
 
 router.get("/", home);

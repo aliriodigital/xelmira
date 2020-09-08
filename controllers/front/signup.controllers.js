@@ -3,7 +3,9 @@ const passport = require("passport");
 const controllers = {};
 
 controllers.signupForm = (req, res) => {
-  res.render("open/signupForm", {
+  res.render("front/signupForm", {
+    layout: "front",
+    pageTitle: "Signup",
     bodyBg: true,
   });
 };
@@ -22,7 +24,7 @@ controllers.signup = async (req, res) => {
     errorMsg = "Password must be longer than 4 characters";
   }
   if (errorMsg.length > 0) {
-    res.render("open/signupForm", {
+    res.render("front/signupForm", {
       error: errorMsg,
       name: name,
       email: email,

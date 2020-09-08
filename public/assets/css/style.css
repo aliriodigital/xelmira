@@ -113,16 +113,18 @@ html body.navbar-sticky .app-content .content-wrapper {
 }
 
 /* ALERTS */
-.alert-flash {
+.alert {
   margin: -7px 0 17px 0;
   padding: 8px 15px;
+  border-radius: 0;
 }
-.alert-flash button.close {
-  margin-top: -4px;  
+.alert button.close {
+  margin-top: -4px; 
+  margin-right: 6px; 
 }
 
 @media (max-width: 575.98px) {
-  .alert-flash {
-    margin: -18px 0 17px 0;
+  .alert {
+    margin: -10px 0 25px 0;
   }
 }

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html class="loading" lang="en-US" data-textdirection="ltr">
+
+{{> admin/header }}
+
+<body class="vertical-layout vertical-menu-modern 2-columns menu-expanded pace-done footer-static navbar-sticky" data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
+    
+    {{> admin/top-navbar }}
+    {{> admin/left-navbar }}
+
+    <div class="app-content content">
+        <div class="content-overlay"></div>
+        <div class="header-navbar-shadow"></div>
+        <div class="content-wrapper">
+            <div class="content-header row">
+            </div>
+            <div class="content-body">
+                
+                {{> messages }}
+
+                {{{ body }}}
+
+            </div>
+        </div>
+    </div>
+
+    {{> admin/footer }}
+
+</body>
+</html>
