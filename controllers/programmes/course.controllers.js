@@ -12,6 +12,7 @@ controllers.read = async (req, res) => {
 
 controllers.createForm = (req, res) => {
   res.render("programmes/course-new", {
+    pageTitle: "Create course",
     featureTitle: "Create Course",
   });
 };
@@ -28,6 +29,7 @@ controllers.editForm = async (req, res) => {
   const { id } = req.params;
   const course = await Course.findById(id).lean();
   res.render("programmes/course-edit", {
+    pageTitle: "Edit course",
     featureTitle: "Edit Course",
     course: course,
   });
@@ -48,6 +50,7 @@ controllers.remove = async (req, res) => {
     const { id } = req.params;
     const course = await Course.findById({ _id: id});
     await course.remove();
+    req.flash("success", "Course removed successfully");
     res.redirect("/courses");
 }
 
