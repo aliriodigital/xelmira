@@ -19,10 +19,18 @@ controllers.createForm = (req, res) => {
 
 controllers.create = async (req, res) => {
   const { name, description } = req.body;
-  const course = new Course(req.body);
-  await course.save();
-  req.flash("success", "Course created successfully");
-  res.redirect("/courses");
+  const nbspName = name.replace(/\s/g, "");
+  if (nbspName.length < 1) {
+    errorMsg = "Please enter a name and try again";
+    res.render("programmes/course-new", {
+      error: errorMsg,
+    });
+  } else {
+    const course = new Course(req.body);
+    await course.save();
+    req.flash("success", "Course created successfully");
+    res.redirect("/courses");
+  }
 };
 
 controllers.editForm = async (req, res) => {
@@ -38,20 +46,27 @@ controllers.editForm = async (req, res) => {
 controllers.edit = async (req, res) => {
   const { id } = req.params;
   const { name, description } = req.body;
-  let course = await Course.findById({ _id: id });
-  course.name = name;
-  course.description = description;
-  await course.save();
-  req.flash("success", "Course updated successfully");
-  res.redirect("/courses");
+  let course = await Course.findById(id).lean();
+  let nbspName = name.replace(/\s/g, "");
+
+  if (nbspName.length < 1) {
+    req.flash("error", `${course.name} was not changed because field was blank`);
+    res.redirect("/courses");
+  } else {
+    course.name = name;
+    course.description = description;
+    await course.save();
+    req.flash("success", "Course updated successfully");
+    res.redirect("/courses");
+  }
 };
 
 controllers.remove = async (req, res) => {
-    const { id } = req.params;
-    const course = await Course.findById({ _id: id});
-    await course.remove();
-    req.flash("success", "Course removed successfully");
-    res.redirect("/courses");
-}
+  const { id } = req.params;
+  const course = await Course.findById({ _id: id });
+  await course.remove();
+  req.flash("success", "Course removed successfully");
+  res.redirect("/courses");
+};
 
 module.exports = controllers;
