@@ -33,7 +33,7 @@ WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BET
 
 /* BRAND LOGO, TEXT AND LEFT MENU TOGGLE */
 .brand-logo {
-  background: url("../../assets/images/icons/left-menu-logo.svg") no-repeat !important;
+  background: url("../../assets/images/icons/icon.svg") no-repeat !important;
   margin-top: -10px;
   height: 50px !important;
   width: auto;

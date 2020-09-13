@@ -5,8 +5,8 @@
 
     <div>
         <h4>
-            <a class="btn btn-primary" style="margin-top: -9px;" href="/course/new/form"
-                id="new-crud-btn">New Course</a>
+            <a class="btn btn-primary" style="margin-top: -9px;" href="/course/new/form" id="new-crud-btn">New
+                Course</a>
         </h4>
     </div>
 </div>
@@ -29,7 +29,7 @@
                                     </thead>
                                     <tbody>
                                         {{#each course}}
-                                        <tr>
+                                        <tr data-crud="{{json this}}">
                                             <td>{{name}}</td>
                                             <td>{{description}}</td>
                                             <td>
@@ -40,9 +40,9 @@
                                                         Select
                                                     </button>
                                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                        <a class="btn-edit dropdown-item" href="/course/edit/form/{{_id}}">Edit</a>
-                                                        <a class="btn-delete dropdown-item"
-                                                            href="/course/delete/{{_id}}">Delete</a>
+                                                        <a class="btn-edit dropdown-item"
+                                                            href="/course/edit/form/{{_id}}">Edit</a>
+                                                        <a class="btn-delete dropdown-item" href="#">Delete</a>
                                                     </div>
                                                 </div>
                                             </td>
@@ -60,3 +60,48 @@
 </div>
 
 
+{{!-- DELETE CONFIRMATION MODAL --}}
+<div class=" modal fade text-left" id="modal-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel1">Modal Title</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-3">
+                <p>Are you sure you want to permanently delete
+                    <b class="crud-name"></b>?</p>
+                <p>You can not undo this later.</p>
+                <br>
+                <div class="d-flex flex-row-reverse">
+                    <div>
+                        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+                        <a id="confirm-btn-delete" class="btn btn-primary" href="#">Delete</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    // DELETE CONFIRMATION MODAL
+    (function (window, $) {
+        "use strict";
+        $(".btn-delete").click(function () {
+            var $btn = $(this);
+            var $tr = $btn.closest("tr");
+            var $itm = $tr.data("crud");
+            var $modalDelete = $("#modal-delete");
+            $modalDelete.modal("show");
+            $(".crud-name", $modalDelete).html($itm.name);
+            var $upUrl = "/course/delete/" + $itm._id;
+            $("#confirm-btn-delete", $modalDelete).attr("href", $upUrl);
+        });
+    })(window, jQuery);
+</script>

@@ -16,6 +16,11 @@ const hbs = expressHandlebars.create({
   layoutsDir: path.join(__dirname, "./views/shared/layouts"),
   partialsDir: path.join(__dirname, "./views/shared/partials"),
   defaultLayout: "admin",
+  helpers: {
+    json: (context) => {
+      return JSON.stringify(context);
+    },
+  },
 });
 app.engine("hbs", hbs.engine);
 app.set("view engine", "hbs");

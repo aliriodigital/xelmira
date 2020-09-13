@@ -1,4 +1,5 @@
 const Course = require("../../models/Course");
+const spaces = require("../../utils/formatString");
 const controllers = {};
 
 controllers.read = async (req, res) => {
@@ -19,14 +20,18 @@ controllers.createForm = (req, res) => {
 
 controllers.create = async (req, res) => {
   const { name, description } = req.body;
-  const nbspName = name.replace(/\s/g, "");
-  if (nbspName.length < 1) {
+  const trimmedName = spaces.trim(name);
+  const trimmedDescription = spaces.trim(description);
+
+  if (trimmedName.length < 1) {
     errorMsg = "Please enter a name and try again";
     res.render("programmes/course-new", {
       error: errorMsg,
     });
   } else {
     const course = new Course(req.body);
+    course.name = trimmedName;
+    course.description = trimmedDescription;
     await course.save();
     req.flash("success", "Course created successfully");
     res.redirect("/courses");
@@ -46,15 +51,19 @@ controllers.editForm = async (req, res) => {
 controllers.edit = async (req, res) => {
   const { id } = req.params;
   const { name, description } = req.body;
-  let course = await Course.findById(id).lean();
-  let nbspName = name.replace(/\s/g, "");
+  const course = await Course.findById(id);
+  const trimmedName = spaces.trim(name);
+  const trimmedDescription = spaces.trim(description);
 
-  if (nbspName.length < 1) {
-    req.flash("error", `${course.name} was not changed because field was blank`);
+  if (trimmedName.length < 1) {
+    req.flash(
+      "error",
+      `${course.name} was not changed because field was blank`
+    );
     res.redirect("/courses");
   } else {
-    course.name = name;
-    course.description = description;
+    course.name = trimmedName;
+    course.description = trimmedDescription;
     await course.save();
     req.flash("success", "Course updated successfully");
     res.redirect("/courses");

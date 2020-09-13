@@ -22,8 +22,8 @@ a {
 }
 
 .alert-primary {
-  color: white !important;
-  background-color: #53aef8 !important;
+  color: #53aef8 !important;
+  background-color: #d0e7fa !important;
 }
 
 .border-primary {

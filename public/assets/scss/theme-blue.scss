@@ -12,7 +12,7 @@ WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BET
 
 $blue: #53aef8;
 $blue-light: rgba(36, 134, 214, 0.548);
-$blue-ultralight: #e2f0fc;
+$blue-ultralight: #d0e7fa;
 $blue-gradient: rgba(43, 139, 228, 0.781);
 $white: white;
 
@@ -29,8 +29,8 @@ a {
 }
 
 .alert-primary {
-  color: $white !important;
-  background-color: $blue !important;
+  color: $blue !important;
+  background-color: $blue-ultralight !important;
 }
 
 
