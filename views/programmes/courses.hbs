@@ -89,7 +89,8 @@
 </div>
 
 
-<script>
+{{#contentFor "pageScripts"}}
+ <script>
     // DELETE CONFIRMATION MODAL
     (function (window, $) {
         "use strict";
@@ -105,3 +106,5 @@
         });
     })(window, jQuery);
 </script>
+{{/contentFor}}
+
