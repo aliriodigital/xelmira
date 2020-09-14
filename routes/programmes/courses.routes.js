@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const { isAuthenticated } = require("../../helpers/auth");
 
 const {
   read,
@@ -10,14 +11,14 @@ const {
   remove,
 } = require("../../controllers/programmes/course.controllers");
 
-router.get("/courses", read);
+router.get("/courses", isAuthenticated, read);
 
-router.get("/course/new/form", createForm);
+router.get("/course/new/form", isAuthenticated, createForm);
 router.post("/course/new", create);
 
-router.get("/course/edit/form/:id", editForm);
+router.get("/course/edit/form/:id", isAuthenticated, editForm);
 router.post("/course/edit/:id", edit);
 
-router.get("/course/delete/:id", remove);
+router.get("/course/delete/:id", isAuthenticated, remove);
 
 module.exports = router;
