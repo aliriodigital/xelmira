@@ -128,3 +128,17 @@ html body.navbar-sticky .app-content .content-wrapper {
     margin: -10px 0 25px 0;
   }
 }
+
+/* JQUERY CONFIRM */
+.jconfirm-closeIcon {
+  margin-top: 5px;
+}
+
+.jconfirm-icon-c {
+  margin-top: -12px;
+  color: #EA5455;
+}
+
+.jconfirm .jconfirm-box {
+  padding: 25px 25px 15px 25px !important;
+}
