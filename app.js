@@ -21,16 +21,15 @@ const hbs = expressHandlebars.create({
       return JSON.stringify(context);
     },
     block: function (name) {
-        var blocks  = this._blocks,
-            content = blocks && blocks[name];
-
-        return content ? content.join('\n') : null;
+      let blocks = this._blocks;
+      let content = blocks && blocks[name];
+      return content ? content.join("\n") : null;
     },
     contentFor: function (name, options) {
-        var blocks = this._blocks || (this._blocks = {}),
-            block  = blocks[name] || (blocks[name] = []);
-        block.push(options.fn(this));
-    }
+      let blocks = this._blocks || (this._blocks = {});
+      let block = blocks[name] || (blocks[name] = []);
+      block.push(options.fn(this));
+    },
   },
 });
 app.engine("hbs", hbs.engine);
