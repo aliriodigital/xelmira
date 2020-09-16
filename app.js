@@ -1,7 +1,8 @@
 const express = require("express");
 const path = require("path");
-const expressHandlebars = require("express-handlebars");
+const mongoose = require("mongoose");
 const session = require("express-session");
+const MongoStore = require("connect-mongo")(session);
 const flash = require("connect-flash");
 const passport = require("passport");
 
@@ -11,27 +12,7 @@ require("./config/database.js");
 require("./config/passport-local");
 
 /* SETTINGS */
-const hbs = expressHandlebars.create({
-  extname: "hbs",
-  layoutsDir: path.join(__dirname, "./views/shared/layouts"),
-  partialsDir: path.join(__dirname, "./views/shared/partials"),
-  defaultLayout: "admin",
-  helpers: {
-    json: (context) => {
-      return JSON.stringify(context);
-    },
-    block: function (name) {
-      let blocks = this._blocks;
-      let content = blocks && blocks[name];
-      return content ? content.join("\n") : null;
-    },
-    contentFor: function (name, options) {
-      let blocks = this._blocks || (this._blocks = {});
-      let block = blocks[name] || (blocks[name] = []);
-      block.push(options.fn(this));
-    },
-  },
-});
+const { hbs } = require("./config/handlebars");
 app.engine("hbs", hbs.engine);
 app.set("view engine", "hbs");
 
@@ -41,8 +22,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use(
   session({
     secret: "alemSecretKey",
-    saveUninitialized: true,
     resave: true,
+    saveUninitialized: true,
+    store: new MongoStore({
+      mongooseConnection: mongoose.connection,
+      collection: "sessions",
+    }),
+    cookie: { maxAge: 1000 * 60 * 60 * 24 }, // One day
   })
 );
 app.use(passport.initialize());

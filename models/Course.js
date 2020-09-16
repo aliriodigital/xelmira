@@ -10,6 +10,10 @@ const courseSchema = new Schema(
     description: {
       type: String,
     },
+    user: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );
