@@ -11,6 +11,9 @@ const hbs = expressHandlebars.create({
     json: (context) => {
       return JSON.stringify(context);
     },
+    field: (obj, fieldname) => {
+      return obj[fieldname];
+    },
     block: function (name) {
       let blocks = this._blocks;
       let content = blocks && blocks[name];
