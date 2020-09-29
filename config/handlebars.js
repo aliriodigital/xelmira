@@ -11,7 +11,7 @@ const hbs = expressHandlebars.create({
     json: (context) => {
       return JSON.stringify(context);
     },
-    block: function (name) {
+    block: function (name) {//Makes jquery library to load before content
       let blocks = this._blocks;
       let content = blocks && blocks[name];
       return content ? content.join("\n") : null;

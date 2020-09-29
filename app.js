@@ -19,6 +19,7 @@ app.set("view engine", "hbs");
 /* MIDDLEWARES */
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(
   session({
     secret: "alemSecretKey",

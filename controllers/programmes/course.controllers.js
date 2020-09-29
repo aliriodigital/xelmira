@@ -3,11 +3,12 @@ const spaces = require("../../utils/formatString");
 const controllers = {};
 
 controllers.read = async (req, res) => {
-  const course = await Course.find({user: req.user.id}).lean();
+  const course = await Course.find({ user: req.user.id }).lean();
   res.render("programmes/courses", {
     pageTitle: "Courses",
     featureTitle: "Manage Courses",
     course: course,
+    userName: req.user.name,
   });
 };
 
