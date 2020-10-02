@@ -11,12 +11,15 @@ const hbs = expressHandlebars.create({
     json: (context) => {
       return JSON.stringify(context);
     },
-    block: function (name) {//Makes jquery library to load before content
+    field: (obj, fieldname) => {
+      return obj[fieldname]; //Serves properties of global objects
+    },
+    block: function (name) { //Run grabbed code. See contentFor helper.
       let blocks = this._blocks;
       let content = blocks && blocks[name];
       return content ? content.join("\n") : null;
     },
-    contentFor: function (name, options) {
+    contentFor: function (name, options) { //Grab below code on hbs page
       let blocks = this._blocks || (this._blocks = {});
       let block = blocks[name] || (blocks[name] = []);
       block.push(options.fn(this));
