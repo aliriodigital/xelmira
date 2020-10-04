@@ -1,3 +1,5 @@
+
+
 <div class="container mb-5 pb-5">
     <div class="row">
         <div class="col-sm-4 mx-auto mt-5">
@@ -7,7 +9,7 @@
                     <span>Access your account</span>
                 </div>
                 <div class="card-body">
-                    <form action="/signin" method="POST">
+                    <form id="signinform" action="/signin" method="POST">
                         <div class="form-group">
                             <div class="">
                                 <input type="email" id="email" name="email" class="form-control"
@@ -21,7 +23,9 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary btn-block my-3">Sign Up</button>
+                            <button type="submit" class="btn btn-primary btn-block my-3 g-recaptcha"  
+        data-sitekey="{{gSiteKey}}" data-callback='onSubmit' 
+        data-action='submit' >Sign In</button>
                         </div>
                         <div class="d-flex justify-content-end">
                             <a href="/password-recovery">Forgot Username / Password?</a>
@@ -36,3 +40,9 @@
         </div>
     </div>
 </div>
+
+ <script>
+   function onSubmit(token) {
+     document.getElementById("signinform").submit();
+   }
+ </script>
