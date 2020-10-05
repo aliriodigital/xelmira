@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const passport = require("passport");
+const { verifyRecaptcha } = require("../../helpers/auth");
 
 const {
   signupForm,
@@ -8,6 +9,6 @@ const {
 } = require("../../controllers/front/signup.controllers");
 
 router.get("/signup", signupForm);
-router.post("/signup", signup);
+router.post("/signup", verifyRecaptcha, signup);
 
 module.exports = router;

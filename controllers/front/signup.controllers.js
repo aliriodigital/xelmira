@@ -1,11 +1,13 @@
 const User = require("../../models/User");
 const controllers = {};
+const { gSiteKey, gSecretKey } = process.env;
 
 controllers.signupForm = (req, res) => {
   res.render("front/signupForm", {
     layout: "front",
     pageTitle: "Signup",
     bodyBg: true,
+    gSiteKey: gSiteKey,
   });
 };
 
