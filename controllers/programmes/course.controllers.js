@@ -8,7 +8,7 @@ controllers.read = async (req, res) => {
     pageTitle: "Courses",
     featureTitle: "Manage Courses",
     course: course,
-    userName: req.user.name,
+    //userName: req.user.name,
   });
 };
 
