@@ -1,7 +1,7 @@
 const User = require("../../models/User");
 const passport = require("passport");
-require("dotenv").config();
-const { gSiteKey, gSecretKey } = process.env;
+// require("dotenv").config();
+// const { gSiteKey, gSecretKey } = process.env;
 const controllers = {};
 
 controllers.signinForm = (req, res) => {
@@ -9,14 +9,14 @@ controllers.signinForm = (req, res) => {
     layout: "front",
     pageTitle: "Login",
     bodyBg: true,
-    gSiteKey: gSiteKey,
+    // gSiteKey: gSiteKey,
   });
 };
 
 controllers.signin = passport.authenticate("local", {
   failureRedirect: "/signin",
   successRedirect: "/courses",
-  gSiteKey: gSiteKey,
+  // gSiteKey: gSiteKey,
   failureFlash: true,
   
 });
