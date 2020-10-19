@@ -7,8 +7,8 @@ controllers.read = async (req, res) => {
   res.render("programmes/courses", {
     pageTitle: "Courses",
     featureTitle: "Manage Courses",
+    courseLink: true,
     course: course,
-    //userName: req.user.name,
   });
 };
 

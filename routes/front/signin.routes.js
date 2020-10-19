@@ -8,10 +8,6 @@ const {
   logout,
 } = require("../../controllers/front/signin.controllers");
 
-
-
-
-
 router.get("/signin", signinForm);
 
 router.post("/signin", /* verifyRecaptcha, */ signin);

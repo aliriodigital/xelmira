@@ -1,0 +1,66 @@
+<div class="d-flex justify-content-between feature-header">
+    <div>
+        <h3 class="content-head">Edit User</h3>
+    </div>
+</div>
+
+<div class="content-body">
+    <section id="basic-horizontal-layouts">
+        <div class="row match-height">
+            <div class="col-md-5 col-12 mx-auto">
+                <div class="card py-2">
+                    <div class="card-content">
+                        <div class="card-body">
+                            <form action="/user/edit/{{user._id}}" method="POST" class="form form-horizontal">
+                                <div class="form-body">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-group row">
+                                                <div class="col-md-4">
+                                                    <span>Name</span>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <input type="text" id="name" class="form-control" name="name"
+                                                        value="{{user.name}}" autofocus>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group row">
+                                                <div class="col-md-4">
+                                                    <span>Email</span>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <input type="email" id="email" class="form-control" name="email"
+                                                        value="{{user.email}}">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <div class="form-group row">
+                                                <div class="col-md-4">
+                                                    <span>Password1</span>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <input type="password" id="password" class="form-control"
+                                                        name="password" value="{{user.password}}">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-8 offset-md-4">
+                                            <button type="submit" class="btn btn-primary mr-1 mb-1"
+                                                href="#">Update</button>
+                                            <a class="btn btn-secondary mr-1 mb-1" href="/courses">Cancel</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

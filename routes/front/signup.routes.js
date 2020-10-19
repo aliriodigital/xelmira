@@ -9,6 +9,10 @@ const {
 } = require("../../controllers/front/signup.controllers");
 
 router.get("/signup", signupForm);
+<<<<<<< HEAD
 // router.post("/signup", verifyRecaptcha, signup);
+=======
+router.post("/signup", /* verifyRecaptcha, */ signup);
+>>>>>>> tmp
 
 module.exports = router;
