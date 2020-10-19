@@ -44,7 +44,7 @@ app.use((req, res, next) => {
   next();
 });
 
-/* New Comment */
+
 /* ROUTES */
 app.use("/", require("./routes/front/signup.routes"));
 app.use("/", require("./routes/front/signin.routes"));
