@@ -1,12 +1,12 @@
 <div class="d-flex justify-content-between feature-header">
     <div>
-        <h3 class="content-head">Manage Courses</h3>
+        <h3 class="content-head">Manage Users</h3>
     </div>
 
     <div>
         <h4>
             <a class="btn btn-primary" style="margin-top: -9px;" href="/user/new" id="new-crud-btn">New
-                Course</a>
+                User</a>
         </h4>
     </div>
 </div>
@@ -67,7 +67,7 @@
             let $btn = $(this);
             let $tr = $btn.closest("tr");
             let $itm = $tr.data("crud");
-            let $upUrl = "/course/delete/" + $itm._id;
+            let $upUrl = "/user/remove/" + $itm._id;
             let crudName = $itm.name;
 
             $.confirm({

@@ -5,6 +5,7 @@ controllers.read = async (req, res) => {
   const users = await User.find().lean();
   res.render("users/users", {
     pageTitle: "Manage Users",
+    userLink: true,
     users: users,
   });
 };
@@ -43,6 +44,11 @@ controllers.update = async(req, res) => {
   res.redirect("/users");
 };
 
-controllers.remove = (req, res) => {};
+controllers.remove = async(req, res) => {
+  const { id } = req.params;
+  const user = await User.findById({_id: id});
+  user.remove();
+  res.redirect("/users");
+};
 
 module.exports = controllers;

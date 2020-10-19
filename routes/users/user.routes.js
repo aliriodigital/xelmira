@@ -14,6 +14,6 @@ router.get("/user/new", createForm);
 router.post("/user/new", create);
 router.get("/user/edit/:id", updateForm);
 router.post("/user/edit/:id", update);
-router.get("/users/remove/:id", remove);
+router.get("/user/remove/:id", remove);
 
 module.exports = router;
