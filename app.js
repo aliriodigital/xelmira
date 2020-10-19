@@ -48,7 +48,7 @@ app.use((req, res, next) => {
 app.use("/", require("./routes/front/signup.routes"));
 app.use("/", require("./routes/front/signin.routes"));
 app.use("/", require("./routes/front/others.routes"));
-app.usr("/", require("./routes/users/user.routes"));
+app.use("/", require("./routes/users/user.routes"));
 app.use("/", require("./routes/programmes/courses.routes"));
 
 module.exports = app;
