@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-// const { verifyRecaptcha } = require("../../helpers/auth");
+const { verifyRecaptcha } = require("../../helpers/auth");
 
 const {
   signinForm,
@@ -10,7 +10,7 @@ const {
 
 router.get("/signin", signinForm);
 
-router.post("/signin", /* verifyRecaptcha, */ signin);
+router.post("/signin", verifyRecaptcha, signin);
 
 router.get("/logout", logout);
 
