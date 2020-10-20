@@ -1,5 +1,6 @@
 const helpers = {};
 const axios = require("axios");
+require("dotenv").config();
 const { gSiteKey, gSecretKey } = process.env;
 
 helpers.isAuthenticated = (req, res, next) => {
@@ -9,6 +10,7 @@ helpers.isAuthenticated = (req, res, next) => {
   req.flash("error", "Sorry! You are not authorized. You need to signup!");
   res.redirect("/signin");
 };
+
 
 helpers.verifyRecaptcha = async (req, res, next) => {
   const verificationURL =
