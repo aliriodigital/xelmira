@@ -12,13 +12,10 @@ const {
 } = require("../../controllers/programmes/course.controllers");
 
 router.get("/courses", isAuthenticated, read);
-
 router.get("/course/new/form", isAuthenticated, createForm);
-router.post("/course/new", create);
-
+router.post("/course/new", isAuthenticated, create);
 router.get("/course/edit/form/:id", isAuthenticated, editForm);
-router.post("/course/edit/:id", edit);
-
+router.post("/course/edit/:id", isAuthenticated, edit);
 router.get("/course/delete/:id", isAuthenticated, remove);
 
 module.exports = router;
