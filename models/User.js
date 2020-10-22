@@ -17,6 +17,11 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    user: {
+      type: String,
+      default: "Signup",
+      required: true,
+    }
   },
   { timestamps: true }
 );

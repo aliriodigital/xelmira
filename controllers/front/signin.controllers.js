@@ -18,7 +18,6 @@ controllers.signin = passport.authenticate("local", {
   successRedirect: "/courses",
   gSiteKey: gSiteKey,
   failureFlash: true,
-  
 });
 
 controllers.logout = (req, res) => {
