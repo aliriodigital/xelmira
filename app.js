@@ -50,6 +50,7 @@ app.use("/", require("./routes/front/signup.routes"));
 app.use("/", require("./routes/front/signin.routes"));
 app.use("/", require("./routes/front/others.routes"));
 app.use("/", require("./routes/users/user.routes"));
+app.use("/", require("./routes/users/role.routes"));
 app.use("/", require("./routes/programmes/courses.routes"));
 
 module.exports = app;

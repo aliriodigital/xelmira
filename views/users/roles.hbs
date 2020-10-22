@@ -1,0 +1,97 @@
+<div class="d-flex justify-content-between feature-header">
+    <div>
+        <h3 class="content-head">Manage Roles</h3>
+    </div>
+
+    <div>
+        <h4>
+            <a class="btn btn-primary" style="margin-top: -9px;" href="/role/new" id="new-crud-btn">New
+                Role</a>
+        </h4>
+    </div>
+</div>
+
+<div class="content-body">
+    <section id="basic-datatable">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="card-body card-dashboard card-dt">
+                            <div class="table-responsive">
+                                <table class="table  zero-configuration table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Description</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{#each roles}}
+                                        <tr data-crud="{{json this}}">
+                                            <td>{{name}}</td>
+                                            <td>{{description}}</td>
+                                            <td>
+                                                <div class="dropdown dropdown-dt">
+                                                    <button class="btn btn-outline-primary dropdown-toggle"
+                                                        type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                        Select
+                                                    </button>
+                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                        <a class="btn-edit dropdown-item"
+                                                            href="/role/edit/{{_id}}">Edit</a>
+                                                        <a class="btn-delete dropdown-item" href="#">Delete</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {{/each}}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+{{#contentFor "pageScripts"}}
+<script>
+    (function (window, $) {
+        "use strict";
+        $(".btn-delete").click(function () {
+            let $btn = $(this);
+            let $tr = $btn.closest("tr");
+            let $itm = $tr.data("crud");
+            let $upUrl = "/role/remove/" + $itm._id;
+            let crudName = $itm.name;
+
+            $.confirm({
+                // icon: "fa fa-trash-o",
+                closeIcon: true,
+                backgroundDismiss: true,
+                columnClass: "col-md-6",
+                title: "<h4>Delete Confirmation</h4>",
+                content: `<p class="mb-2">Are you sure you want to permanently remove <b>${crudName}</b>?</p>`,
+                buttons: {
+                    confirm: {
+                        text: "Delete",
+                        btnClass: "btn btn-danger",
+                        keys: ["enter", "shift"],
+                        action: function () {
+                            window.location.href = $upUrl;
+                        },
+                    },
+                    cancel: {
+                        action: function () { },
+                    },
+                },
+            });
+        });
+    })(window, jQuery);
+</script>
+{{/contentFor}}
