@@ -291,13 +291,17 @@ input:focus ~ .bg-primary {
 
 /* LEFT MENU ACTIVE */
 .main-menu.menu-light .navigation > li ul .active {
-  background: linear-gradient(118deg, $blue, $blue-gradient);
-  box-shadow: 0 0 10px 1px $blue-gradient;
+  background: none;
+  box-shadow: none;
+}
+
+.main-menu.menu-light .navigation > li ul .active > a {
+  color: $blue;
 }
 
 .main-menu.menu-light .navigation > li.active > a {
-  background: linear-gradient(118deg, $blue, $blue-gradient);
-  box-shadow: 0 0 10px 1px $blue-gradient;
+  background: none;
+  box-shadow: none;
 }
 
 /* FORM CONTROL */

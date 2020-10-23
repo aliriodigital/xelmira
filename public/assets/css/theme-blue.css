@@ -240,13 +240,17 @@ input:focus ~ .bg-primary {
 
 /* LEFT MENU ACTIVE */
 .main-menu.menu-light .navigation > li ul .active {
-  background: linear-gradient(118deg, #53aef8, rgba(43, 139, 228, 0.781));
-  box-shadow: 0 0 10px 1px rgba(43, 139, 228, 0.781);
+  background: none;
+  box-shadow: none;
+}
+
+.main-menu.menu-light .navigation > li ul .active > a {
+  color: #53aef8;
 }
 
 .main-menu.menu-light .navigation > li.active > a {
-  background: linear-gradient(118deg, #53aef8, rgba(43, 139, 228, 0.781));
-  box-shadow: 0 0 10px 1px rgba(43, 139, 228, 0.781);
+  background: none;
+  box-shadow: none;
 }
 
 /* FORM CONTROL */
