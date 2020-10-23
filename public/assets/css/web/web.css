@@ -46,3 +46,10 @@ html {
 .bg-dark {
   background-image: linear-gradient(to right, #034c93, /* red, */ #209de5) !important;
 }
+
+.front-logo {
+  margin-top: -10px;
+  margin-right: 10px;
+  height: 20px;
+  width: auto;
+}
