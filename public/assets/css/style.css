@@ -142,3 +142,7 @@ html body.navbar-sticky .app-content .content-wrapper {
 .jconfirm .jconfirm-box {
   padding: 25px 25px 15px 25px !important;
 }
+
+.main-menu.menu-light .navigation > li.active > a {
+  color: #565656;
+}
