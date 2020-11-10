@@ -32,7 +32,25 @@
                                                     <span>Email</span>
                                                 </div>
                                                 <div class="col-md-8">
-                                                    <input type="email" id="email" class="form-control" name="email" value="{{email}}">
+                                                    <input type="email" id="email" class="form-control" name="email"
+                                                        value="{{email}}">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <div class="form-group row">
+                                                <div class="col-md-4">
+                                                    <span>Role</span>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <select id="role" class="form-control" name="role"
+                                                        value="Select a role">
+                                                        <option selected>Select a role</option>
+                                                        {{#each roles}}
+                                                        <option value="{{name}}">{{name}}</option>
+                                                        {{/each}}
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
@@ -43,10 +61,11 @@
                                                     <span>Password</span>
                                                 </div>
                                                 <div class="col-md-8">
-                                                    <input type="password" id="password" class="form-control" name="password" value="{{password}}">
+                                                    <input type="password" id="password" class="form-control"
+                                                        name="password" value="{{password}}">
                                                 </div>
                                             </div>
-                                        </div>                                        
+                                        </div>
 
                                         <div class="col-md-8 offset-md-4">
                                             <button type="submit" class="btn btn-primary mr-1 mb-1"

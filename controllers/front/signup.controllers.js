@@ -1,4 +1,5 @@
 const User = require("../../models/User");
+const Role = require("../../models/Role");
 const controllers = {};
 require("dotenv").config();
 const { gSiteKey, gSecretKey } = process.env;
@@ -36,6 +37,9 @@ controllers.signup = async (req, res) => {
   } else {
     const user = new User(req.body);
     user.password = await user.encryptPassword(password);
+    const role = await Role.findOne({name: "admin"});
+    user.role = role.id;
+    user.creatorUser = "_self";
     await user.save();
     req.flash("success", "Congrats! Your registration was done.");
     res.redirect("/signin");

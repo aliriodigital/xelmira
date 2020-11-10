@@ -5,11 +5,14 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
 const flash = require("connect-flash");
 const passport = require("passport");
+const { initialRoles } = require("./config/initialSetup");
 
 /* INITIALIZATIONS */
 const app = express();
+initialRoles();
 require("./config/database.js");
 require("./config/passport-local");
+
 
 /* SETTINGS */
 const { hbs } = require("./config/handlebars");

@@ -11,6 +11,14 @@ helpers.isAuthenticated = (req, res, next) => {
   res.redirect("/signin");
 };
 
+helpers.isAdmin = (req, res, next) => {
+  if(req.user.admin) {
+    next();
+  } else {
+    req.flash("error", "You are not admin. Please try another route");
+    res.redirect("/courses");
+  }
+}
 
 helpers.verifyRecaptcha = async (req, res, next) => {
   const verificationURL =

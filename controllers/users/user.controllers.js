@@ -1,9 +1,10 @@
 const User = require("../../models/User");
+const Role = require("../../models/Role");
 const { trim } = require("../../utils/formatString");
 const controllers = {};
 
 controllers.read = async (req, res) => {
-  const users = await User.find({ user: req.user.id }).lean();
+  const users = await User.find({ creatorUser: req.user.id }).lean();
   res.render("users/users", {
     pageTitle: "Manage Users",
     userLink: true,
@@ -11,14 +12,16 @@ controllers.read = async (req, res) => {
   });
 };
 
-controllers.createForm = (req, res) => {
+controllers.createForm = async (req, res) => {
+  const role = await Role.find().lean();
   res.render("users/user-new", {
     pageTitle: "New User",
+    roles: role,
   });
 };
 
 controllers.create = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, role } = req.body;
   let error = "";
   if (password.length < 1) {
     error = "Please enter a password and try again";
@@ -35,13 +38,15 @@ controllers.create = async (req, res) => {
       name: name,
       email: email,
       password: password,
+      role: role,
     });
   } else {
     const user = await new User(req.body);
     user.name = trim(name);
     user.email = trim(email);
     user.password = await user.encryptPassword(password);
-    user.user = req.user.id;
+    user.creatorUser = req.user.id;
+    user.role = role;
     user.save();
     res.redirect("/users");
   }
