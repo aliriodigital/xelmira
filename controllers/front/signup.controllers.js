@@ -38,7 +38,7 @@ controllers.signup = async (req, res) => {
     const user = new User(req.body);
     user.password = await user.encryptPassword(password);
     const role = await Role.findOne({name: "admin"});
-    user.role = role.id;
+    user.role = role.name;
     user.creatorUser = "_self";
     await user.save();
     req.flash("success", "Congrats! Your registration was done.");

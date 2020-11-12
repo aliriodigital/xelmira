@@ -9,9 +9,9 @@ const { initialRoles } = require("./config/initialSetup");
 
 /* INITIALIZATIONS */
 const app = express();
-initialRoles();
 require("./config/database.js");
 require("./config/passport-local");
+initialRoles();
 
 
 /* SETTINGS */
