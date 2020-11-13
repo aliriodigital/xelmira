@@ -1,7 +1,8 @@
 const permissions = {};
+const { isAdmin } = require("../helpers/auth");
 
 permissions.isAdmin = (req, res, next) => {
-    if(req.user.role === "admin") {
+    if(isAdmin(req.user.role)) {
       next();
     } else {
       req.flash("error", "You are not admin. Please try another route");

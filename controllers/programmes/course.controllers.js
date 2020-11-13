@@ -3,8 +3,19 @@ const Course = require("../../models/Course");
 const { trim } = require("../../utils/formatString");
 const controllers = {};
 
+const { isAdmin } = require("../../helpers/auth");
+
+
 controllers.read = async (req, res) => {
-  const course = await Course.find({ user: req.user.id }).lean();
+
+  ["admin", "superadmin"].indexOf(req.user.role) !== -1
+  let filter = {};
+
+  if(!isAdmin(req.user.role)){
+    filter.user = req.user.id;
+  }
+
+  const course = await Course.find(filter).lean();
   res.render("programmes/courses", {
     pageTitle: "Courses",
     featureTitle: "Manage Courses",

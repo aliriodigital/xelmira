@@ -29,4 +29,10 @@ helpers.verifyRecaptcha = async (req, res, next) => {
   return next();
 };
 
+helpers.isAdmin = (role) => {
+  console.log(role);
+  return ["admin", "superadmin"].indexOf(role) !== -1 ? true : false
+};
+
+
 module.exports = helpers;
