@@ -25,13 +25,15 @@ helpers.verifyRecaptcha = async (req, res, next) => {
     req.flash("error", "Sorry! Failed captcha verification!");
     res.redirect("/signin");
   }
-
   return next();
 };
 
+helpers.isSuper = (role) => {
+  return ["superadmin"].indexOf(role) !== -1 ? true : false
+};
+
 helpers.isAdmin = (role) => {
-  console.log(role);
-  return ["admin", "superadmin"].indexOf(role) !== -1 ? true : false
+  return ["admin"].indexOf(role) !== -1 ? true : false
 };
 
 

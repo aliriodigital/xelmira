@@ -39,7 +39,7 @@ controllers.signup = async (req, res) => {
     user.password = await user.encryptPassword(password);
     const role = await Role.findOne({name: "admin"});
     user.role = role.name;
-    user.creatorUser = "_self";
+    user.sessionUser = "_self";
     await user.save();
     req.flash("success", "Congrats! Your registration was done.");
     res.redirect("/signin");

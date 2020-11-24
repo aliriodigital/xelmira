@@ -10,7 +10,7 @@ const courseSchema = new Schema(
     description: {
       type: String,
     },
-    user: {
+    sessionUser: {
       type: String,
       required: true,
     },

@@ -5,16 +5,11 @@ const controllers = {};
 
 const { isAdmin } = require("../../helpers/auth");
 
-
 controllers.read = async (req, res) => {
-
-  ["admin", "superadmin"].indexOf(req.user.role) !== -1
   let filter = {};
-
   if(!isAdmin(req.user.role)){
     filter.user = req.user.id;
   }
-
   const course = await Course.find(filter).lean();
   res.render("programmes/courses", {
     pageTitle: "Courses",
@@ -42,7 +37,7 @@ controllers.create = async (req, res) => {
     const course = new Course(req.body);
     course.name = trim(name);
     course.description = trim(description);
-    course.user = req.user.id;
+    course.sessionUser = req.user.id;
     await course.save();
     req.flash("success", "Course created successfully");
     res.redirect("/courses");

@@ -4,7 +4,7 @@ const { trim } = require("../../utils/formatString");
 const controllers = {};
 
 controllers.read = async (req, res) => {
-  const users = await User.find({ creatorUser: req.user.id }).lean();
+  const users = await User.find({ sessionUser: req.user.id }).lean();
   res.render("users/users", {
     pageTitle: "Manage Users",
     userLink: true,
@@ -45,7 +45,7 @@ controllers.create = async (req, res) => {
     user.name = trim(name);
     user.email = trim(email);
     user.password = await user.encryptPassword(password);
-    user.creatorUser = req.user.id;
+    user.sessionUser = req.user.id;
     user.role = role;
     user.save();
     res.redirect("/users");
