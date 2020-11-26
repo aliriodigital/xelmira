@@ -13,6 +13,9 @@ const userSchema = new Schema(
       unique: true,
       required: true,
     },
+    school: {
+      type: String,
+    },
     password: {
       type: String,
       required: true,
