@@ -1,5 +1,14 @@
 const permissions = {};
-const { isAdmin } = require("../helpers/auth");
+const { isSchool, isAdmin } = require("../helpers/auth");
+
+permissions.isSchool = (req, res, next) => {
+  if(isSchool(req.user.school)) {
+    next();
+  } else {
+    req.flash("error", "Sorry, you are not authorized to view this content");
+    res.redirect("/courses")
+  }
+}
 
 permissions.isAdmin = (req, res, next) => {
     if(isAdmin(req.user.role)) {

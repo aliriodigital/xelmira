@@ -3,7 +3,7 @@ const Role = require("../../models/Role");
 const { trim } = require("../../utils/formatString");
 const controllers = {};
 
-controllers.read = async (req, res) => {  
+controllers.read = async (req, res) => {
   const users = await User.find({ school: req.user.school }).lean();
   res.render("users/users", {
     pageTitle: "Manage Users",
@@ -22,15 +22,15 @@ controllers.createForm = async (req, res) => {
 
 controllers.create = async (req, res) => {
   const { name, email, password, role } = req.body;
-  const mailInUse = await User.findOne({email: email});  
+  const mailInUse = await User.findOne({ email: email });
   let error = "";
   if (password.length < 4) {
     error = "Please enter a password longer than 3 characters and try again";
   }
-  if(role === "Select a role") {
+  if (role === "Select a role") {
     error = "Please select a role and try again"
   }
-  if(mailInUse) {
+  if (mailInUse) {
     error = "Email already taken. Please enter another email"
   }
   if (email.length < 1) {

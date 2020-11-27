@@ -28,8 +28,8 @@ helpers.verifyRecaptcha = async (req, res, next) => {
   return next();
 };
 
-helpers.isSuper = (role) => {
-  return ["superadmin"].indexOf(role) !== -1 ? true : false
+helpers.isSchool = (school) => {
+  return school === req.user.school ? true : false;
 };
 
 helpers.isAdmin = (role) => {
