@@ -28,9 +28,9 @@ helpers.verifyRecaptcha = async (req, res, next) => {
   return next();
 };
 
-helpers.isSchool = (school) => {
-  return school === req.user.school ? true : false;
-};
+// helpers.isSchool = (school) => {
+//   return school === req.user.school ? true : false;
+// };
 
 helpers.isAdmin = (role) => {
   return ["admin"].indexOf(role) !== -1 ? true : false
