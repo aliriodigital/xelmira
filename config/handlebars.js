@@ -12,7 +12,7 @@ const hbs = expressHandlebars.create({
       return JSON.stringify(context);
     },
     field: (obj, fieldname) => {
-      return obj[fieldname]; //Serves properties of global objects
+      return obj &&  typeof obj[fieldname] !== 'undefined' ? obj[fieldname] : ''; //Serves properties of global objects
     },
     block: function (name) { //Run grabbed code. See contentFor helper.
       let blocks = this._blocks;
