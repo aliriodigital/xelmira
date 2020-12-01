@@ -1,6 +1,8 @@
 const User = require("../../models/User");
 const Role = require("../../models/Role");
 const { trim } = require("../../utils/formatString");
+const { canEditUser } = require("../../permissions/permissions");
+
 const controllers = {};
 
 controllers.read = async (req, res) => {
@@ -63,6 +65,9 @@ controllers.create = async (req, res) => {
 controllers.updateForm = async (req, res) => {
   const { id } = req.params;
   const user = await User.findById(id).lean();
+
+  canEditUser(req, res, user);
+
   res.render("users/user-edit", {
     pageTitle: "Edit User",
     user: user,
@@ -93,6 +98,9 @@ controllers.update = async (req, res) => {
     user.name = trim(name);
     user.email = trim(email);
     user.password = await user.encryptPassword(password);
+    if(!user.school){
+      user.school = req.user.school;
+    }
     user.save();
     res.redirect("/users");
   }
