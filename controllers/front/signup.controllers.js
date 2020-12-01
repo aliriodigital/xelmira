@@ -15,6 +15,7 @@ controllers.signupForm = (req, res) => {
 };
 
 controllers.signup = async (req, res) => {
+  console.log(req.body);
   const { name, email, password, confirmPassword } = req.body;
   const mailInUse = await User.findOne({ email: email });
   let error = "";
