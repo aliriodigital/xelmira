@@ -4,6 +4,7 @@ const { trim } = require("../../utils/formatString");
 const controllers = {};
 
 const { isAdmin } = require("../../helpers/auth");
+const { canEditCourse } = require("../../permissions/permissions");
 
 controllers.read = async (req, res) => {
   let filter = {};
@@ -47,6 +48,8 @@ controllers.create = async (req, res) => {
 controllers.editForm = async (req, res) => {
   const { id } = req.params;
   const course = await Course.findById(id).lean();
+  await canEditCourse(req, res, course);
+
   res.render("programmes/course-edit", {
     pageTitle: "Edit course",
     featureTitle: "Edit Course",
