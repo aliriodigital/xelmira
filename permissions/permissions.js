@@ -1,43 +1,35 @@
-const permissions = {};
-const { isSchool, isAdmin } = require("../helpers/auth");
+const School = require("../models/School");
+const { isAdmin } = require("../helpers/auth");
 const User = require("../models/User");
 
-
-// permissions.isSchool = (req, res, next) => {
-//   if(isSchool(req.user.school)) {
-//     next();
-//   } else {
-//     req.flash("error", "Sorry, you are not authorized to view this content");
-//     res.redirect("/courses");
-//   }
-// }
-
+const permissions = {};
 
 permissions.canEditUser = (req, res, user) => {
 	if(req.user.school != user.school){
-		req.flash("error", "Sorry, you are not authorized to view this content");
+		req.flash("error", "You can not access that route. Please try another one");
     	res.redirect("/users");
 	}
 }
 
 
 permissions.canEditCourse = async (req, res, course) => {
-	if(!course.sessionUser) return;
-	console.log(course.sessionUser);
-	const user = await User.findById(course.sessionUser);
+	if(!course.creatorUser) return;
+	console.log(course.creatorUser);
+	const user = await User.findById(course.creatorUser);
 	if(req.user.school != user.school){
 		req.flash("error", "Sorry, you are not authorized to view this content");
     	res.redirect("/courses");
 	}
 }
 
+
 permissions.isAdmin = (req, res, next) => {
-	if(isAdmin(req.user.role)) {
-	  next();
+	if (isAdmin(req.user.role)) {
+		next();
 	} else {
-	  req.flash("error", "You are not admin. Please try another route");
-	  res.redirect("/courses");
+		req.flash("error", "You are not admin. Please try another route");
+		res.redirect("/courses");
 	}
 }
 
-  module.exports = permissions;
+module.exports = permissions;

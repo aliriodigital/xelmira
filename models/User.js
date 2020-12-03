@@ -24,7 +24,7 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    sessionUser: {
+    creatorUser: {
       type: String,
       required: true,
     }

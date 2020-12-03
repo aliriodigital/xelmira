@@ -1,6 +1,5 @@
 const { session } = require("passport");
 const Course = require("../../models/Course");
-const { trim } = require("../../utils/formatString");
 const controllers = {};
 
 const { isAdmin } = require("../../helpers/auth");
@@ -36,9 +35,7 @@ controllers.create = async (req, res) => {
     });
   } else {
     const course = new Course(req.body);
-    course.name = trim(name);
-    course.description = trim(description);
-    course.sessionUser = req.user.id;
+    course.creatorUser = req.user.id;
     await course.save();
     req.flash("success", "Course created successfully");
     res.redirect("/courses");
@@ -66,8 +63,6 @@ controllers.edit = async (req, res) => {
     res.redirect("/course/edit/form/" + id);
   } else {
     const course = await Course.findById(id);
-    course.name = trim(name);
-    course.description = trim(description);
     await course.save();
     req.flash("success", "Course updated successfully");
     res.redirect("/courses");

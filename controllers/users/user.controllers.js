@@ -1,6 +1,5 @@
 const User = require("../../models/User");
 const Role = require("../../models/Role");
-const { trim } = require("../../utils/formatString");
 const { canEditUser } = require("../../permissions/permissions");
 
 const controllers = {};
@@ -51,11 +50,9 @@ controllers.create = async (req, res) => {
     });
   } else {
     const user = await new User(req.body);
-    user.name = trim(name);
-    user.email = trim(email);
     user.school = req.user.school;
     user.password = await user.encryptPassword(password);
-    user.sessionUser = req.user.id;
+    user.creatorUser = req.user.id;
     user.role = role;
     user.save();
     res.redirect("/users");
@@ -95,12 +92,10 @@ controllers.update = async (req, res) => {
     res.redirect("/user/edit/" + id);
   } else {
     const user = await User.findById(id);
-    user.name = trim(name);
-    user.email = trim(email);
     user.password = await user.encryptPassword(password);
-    if(!user.school){
-      user.school = req.user.school;
-    }
+    // if(!user.school){
+    //   user.school = req.user.school;
+    // }
     user.save();
     res.redirect("/users");
   }
