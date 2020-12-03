@@ -4,6 +4,7 @@ const User = require("../models/User");
 
 const permissions = {};
 
+
 permissions.canEditUser = (req, res, user) => {
 	if(req.user.school != user.school){
 		req.flash("error", "You can not access that route. Please try another one");

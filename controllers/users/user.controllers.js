@@ -93,9 +93,8 @@ controllers.update = async (req, res) => {
   } else {
     const user = await User.findById(id);
     user.password = await user.encryptPassword(password);
-    // if(!user.school){
-    //   user.school = req.user.school;
-    // }
+    user.name = name;
+    user.email = email;
     user.save();
     res.redirect("/users");
   }

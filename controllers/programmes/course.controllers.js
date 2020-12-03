@@ -63,6 +63,8 @@ controllers.edit = async (req, res) => {
     res.redirect("/course/edit/form/" + id);
   } else {
     const course = await Course.findById(id);
+    course.name = name;
+    course.description = description;
     await course.save();
     req.flash("success", "Course updated successfully");
     res.redirect("/courses");
