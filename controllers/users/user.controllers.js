@@ -1,6 +1,5 @@
 const User = require("../../models/User");
 const Role = require("../../models/Role");
-const { canEditUser } = require("../../permissions/permissions");
 
 const controllers = {};
 
@@ -63,7 +62,6 @@ controllers.updateForm = async (req, res) => {
   const { id } = req.params;
   const user = await User.findById(id).lean();
 
-  canEditUser(req, res, user);
 
   res.render("users/user-edit", {
     pageTitle: "Edit User",
