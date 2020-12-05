@@ -7,6 +7,11 @@ const schoolSchema = new Schema(
         },
         description: {
             type: String,
+        },
+        creatorUser: {
+            type: String,
+            required: true,
+            default: "_tenant",
         }
     },
     { timestamps: true }, { versionKey: false }

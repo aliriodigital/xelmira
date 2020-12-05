@@ -1,7 +1,6 @@
 const User = require("../../models/User");
 const Role = require("../../models/Role");
-const { trim } = require("../../utils/formatString");
-const { canEditUser } = require("../../permissions/permissions");
+const { isInSchool } = require("../../permissions/permissions");
 
 const controllers = {};
 
@@ -51,11 +50,11 @@ controllers.create = async (req, res) => {
     });
   } else {
     const user = await new User(req.body);
-    user.name = trim(name);
-    user.email = trim(email);
+    user.name = name;
+    user.email = email;
     user.school = req.user.school;
     user.password = await user.encryptPassword(password);
-    user.sessionUser = req.user.id;
+    user.creatorUser = req.user.id;
     user.role = role;
     user.save();
     res.redirect("/users");
@@ -65,9 +64,11 @@ controllers.create = async (req, res) => {
 controllers.updateForm = async (req, res) => {
   const { id } = req.params;
   const user = await User.findById(id).lean();
-
-  canEditUser(req, res, user);
-
+  await isInSchool(req, res, user);
+  // if (req.user.school !== user.school) {
+  //   req.flash("error", "You are not authorized to view this content. Try another route");
+  //   res.redirect("/users");
+  // }
   res.render("users/user-edit", {
     pageTitle: "Edit User",
     user: user,
@@ -95,12 +96,10 @@ controllers.update = async (req, res) => {
     res.redirect("/user/edit/" + id);
   } else {
     const user = await User.findById(id);
-    user.name = trim(name);
-    user.email = trim(email);
+    user.name = name;
+    user.email = email;
+    user.school = req.user.school;
     user.password = await user.encryptPassword(password);
-    if(!user.school){
-      user.school = req.user.school;
-    }
     user.save();
     res.redirect("/users");
   }
@@ -109,6 +108,7 @@ controllers.update = async (req, res) => {
 controllers.remove = async (req, res) => {
   const { id } = req.params;
   const user = await User.findById({ _id: id });
+  await isInSchool(req, res, user);
   user.remove();
   res.redirect("/users");
 };

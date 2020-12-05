@@ -15,6 +15,7 @@ const userSchema = new Schema(
     },
     school: {
       type: String,
+      required: true,
     },
     password: {
       type: String,
@@ -24,7 +25,7 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    sessionUser: {
+    creatorUser: {
       type: String,
       required: true,
     }

@@ -15,7 +15,6 @@ controllers.signupForm = (req, res) => {
 };
 
 controllers.signup = async (req, res) => {
-  console.log(req.body);
   const { name, email, password, confirmPassword } = req.body;
   const mailInUse = await User.findOne({ email: email });
   let error = "";
@@ -43,17 +42,17 @@ controllers.signup = async (req, res) => {
       confirmPassword: confirmPassword,
     });
   } else {
-    const schoolDoc = new School({});
-    schoolDoc.name = "";
-    schoolDoc.description = "";
-    await schoolDoc.save();
+    const newSchool = new School({});
+    newSchool.name = "";
+    newSchool.description = "";
+    await newSchool.save();
 
     const user = new User(req.body);
     user.password = await user.encryptPassword(password);
     const role = await Role.findOne({name: "admin"});
     user.role = role.name;
-    user.school = schoolDoc.id;
-    user.sessionUser = "_tenant";
+    user.school = newSchool.id;
+    user.creatorUser = "_tenant";
     await user.save();
     req.flash("success", "Congrats! Your registration was done.");
     res.redirect("/signin");
