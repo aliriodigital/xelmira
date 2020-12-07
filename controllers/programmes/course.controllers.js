@@ -1,9 +1,10 @@
 const { session } = require("passport");
 const Course = require("../../models/Course");
+const { trim } = require("../../utils/formatString");
 const controllers = {};
 
 const { isAdmin } = require("../../helpers/auth");
-const { isInSchool, canEditCourse } = require("../../permissions/permissions");
+const { canEditCourse } = require("../../permissions/permissions");
 
 controllers.read = async (req, res) => {
   let filter = {};
@@ -35,10 +36,9 @@ controllers.create = async (req, res) => {
     });
   } else {
     const course = new Course(req.body);
-    course.name = name;
-    course.description = description;
-    course.school = req.user.school;
-    course.creatorUser = req.user.id;
+    course.name = trim(name);
+    course.description = trim(description);
+    course.sessionUser = req.user.id;
     await course.save();
     req.flash("success", "Course created successfully");
     res.redirect("/courses");
@@ -48,8 +48,7 @@ controllers.create = async (req, res) => {
 controllers.editForm = async (req, res) => {
   const { id } = req.params;
   const course = await Course.findById(id).lean();
-  // await canEditCourse(req, res, course);
-  await isInSchool(req, res, course);
+  await canEditCourse(req, res, course);
 
   res.render("programmes/course-edit", {
     pageTitle: "Edit course",
@@ -67,8 +66,8 @@ controllers.edit = async (req, res) => {
     res.redirect("/course/edit/form/" + id);
   } else {
     const course = await Course.findById(id);
-    course.name = name;
-    course.description = description;
+    course.name = trim(name);
+    course.description = trim(description);
     await course.save();
     req.flash("success", "Course updated successfully");
     res.redirect("/courses");
