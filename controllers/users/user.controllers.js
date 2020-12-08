@@ -49,6 +49,8 @@ controllers.create = async (req, res) => {
     });
   } else {
     const user = await new User(req.body);
+    user.name = name;
+    user.email = email;
     user.school = req.user.school;
     user.password = await user.encryptPassword(password);
     user.creatorUser = req.user.id;
@@ -101,6 +103,7 @@ controllers.update = async (req, res) => {
 controllers.remove = async (req, res) => {
   const { id } = req.params;
   const user = await User.findById({ _id: id });
+  await isInSchool(req, res, user);
   user.remove();
   res.redirect("/users");
 };
