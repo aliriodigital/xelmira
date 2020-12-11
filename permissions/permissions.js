@@ -1,7 +1,7 @@
 const School = require("../models/School");
 const { isAdmin } = require("../helpers/auth");
 const User = require("../models/User");
-const Course = require("../models/Course");
+const mongoose = require("mongoose");
 
 const permissions = {};
 
@@ -25,44 +25,44 @@ var getItemObject = async (resource, id) => {
 };
 
 
-permissions.isInSchool = async (req, res, next) => {
-	var resourceMap = {
-		'user': 'users',
-		'course': 'courses',
-	};
-
-
-	var path = req.path;
-
-	var check = path.split('\/');
-	var resource = check[1];
-	var id = req.params.id;
-	console.log('id', id);
-	var user = null;
-	if(!id){
-		next();
-		return;
-	}
-	if(resource == 'user'){
-		 user = await User.findById(id).lean();
-	}else{
-
-		var item = await getItemObject(resource, id);
-
-		if(item)
-			user = await User.findById(item.creatorUser).lean();
-	}
-	
-	if(!user || req.user.school != user.school){
-		req.flash("error", "Sorry, you are not authorized to view this content");
-		if(resourceMap[resource])
-    		res.redirect('/'+resourceMap[resource]);
-    	else
-    		res.redirect('/');
-	}else{
-		next();
-	}
+permissions.isInSchoolV2 = (resource) => {
+  return function (req, res, next) {
+    if (role !== req.user.school){
+    	req.flash("error", "Sorry, you are not authorized to view this content");
+    	res.redirect('/'+resource);
+    } 
+    else next();
+  }
 }
+
+
+permissions.isInSchool = function (resource, modelname){
+
+	return async (req, res, next) => {
+		var resourceMap = {
+			'user': 'users',
+			'course': 'courses',
+		};
+
+		var id = req.params.id;
+		var user = null;
+		if(!id){
+			next();
+			return;
+		}
+
+	    var model = require("../models/"+modelname);
+
+		var item = await model.findById(id).lean();
+		if(!item || req.user.school != item.school){
+			req.flash("error", "Sorry, you are not authorized to view this content");
+			res.redirect('/'+resource);
+		}else{
+			next();
+		}
+	}
+
+} 
 
 
 
