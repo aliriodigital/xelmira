@@ -13,7 +13,6 @@ controllers.read = async (req, res) => {
     // filter.school = req.user.school;
   }
   const course = await Course.find(filter).lean();
-  console.log(course);
   res.render("programmes/courses", {
     pageTitle: "Courses",
     featureTitle: "Manage Courses",
@@ -39,6 +38,7 @@ controllers.create = async (req, res) => {
   } else {
     const course = new Course(req.body);
     course.creatorUser = req.user.id;
+    course.school = req.user.school;
     await course.save();
     req.flash("success", "Course created successfully");
     res.redirect("/courses");
