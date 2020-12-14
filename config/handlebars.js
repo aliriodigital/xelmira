@@ -1,5 +1,6 @@
 
 const expressHandlebars = require("express-handlebars");
+const { MongooseDocument } = require("mongoose");
 const path = require("path");
 
 const hbs = expressHandlebars.create({
@@ -12,7 +13,8 @@ const hbs = expressHandlebars.create({
       return JSON.stringify(context);
     },
     field: (obj, fieldname) => {
-      return obj &&  typeof obj[fieldname] !== 'undefined' ? obj[fieldname] : ''; //Serves properties of global objects
+      //Serves properties of global objects
+      return obj &&  typeof obj[fieldname] !== 'undefined' ? obj[fieldname] : '';
     },
     block: function (name) { //Run grabbed code. See contentFor helper.
       let blocks = this._blocks;
@@ -24,6 +26,9 @@ const hbs = expressHandlebars.create({
       let block = blocks[name] || (blocks[name] = []);
       block.push(options.fn(this));
     },
+    formatDate: function(date, format) {
+      return moment(date).format(format);
+    }
   },
 });
 

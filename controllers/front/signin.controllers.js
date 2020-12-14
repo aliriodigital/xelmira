@@ -15,7 +15,7 @@ controllers.signinForm = (req, res) => {
 
 controllers.signin = passport.authenticate("local", {
   failureRedirect: "/signin",
-  successRedirect: "/users",
+  successRedirect: "/user/profile",
   gSiteKey: gSiteKey,
   failureFlash: true,
 });

@@ -28,13 +28,14 @@ helpers.verifyRecaptcha = async (req, res, next) => {
   return next();
 };
 
-// helpers.isSchool = (school) => {
-//   return school === req.user.school ? true : false;
-// };
 
 helpers.isAdmin = (role) => {
   return ["admin"].indexOf(role) !== -1 ? true : false
 };
+
+helpers.isPES = (role) => { // is Parent, Employee or Student
+  return ["parent", "employee", "student"].indexOf(role) !== -1 ? true : false;
+}
 
 
 module.exports = helpers;
