@@ -55,6 +55,7 @@ app.use("/", require("./routes/front/others.routes"));
 app.use("/", require("./routes/users/user.routes"));
 app.use("/", require("./routes/users/role.routes"));
 app.use("/", require("./routes/users/profile.routes"));
-app.use("/", require("./routes/programmes/courses.routes"));
+app.use("/", require("./routes/programmes/course.routes"));
+app.use("/", require("./routes/programmes/batch.routes"));
 
 module.exports = app;

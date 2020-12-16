@@ -63,12 +63,15 @@ controllers.create = async (req, res) => {
 controllers.updateForm = async (req, res) => {
   const { id } = req.params;
   const user = await User.findById(id).lean();
-
-
-  res.render("users/user-edit", {
-    pageTitle: "Edit User",
-    user: user,
-  });
+  if (user.school !== req.user.school) {
+    req.flash("error", "You can not view this route. Try another one.");
+    res.redirect("/users");
+  } else {
+    res.render("users/user-edit", {
+      pageTitle: "Edit User",
+      user: user,
+    });
+  }
 };
 
 controllers.update = async (req, res) => {
@@ -92,20 +95,29 @@ controllers.update = async (req, res) => {
     res.redirect("/user/edit/" + id);
   } else {
     const user = await User.findById(id);
-    user.password = await user.encryptPassword(password);
-    user.name = name;
-    user.email = email;
-    user.save();
-    res.redirect("/users");
+    if (user.school !== req.user.school) {
+      req.flash("error", "You can not view this route. Try another one.");
+      res.redirect("/users");
+    } else {
+      user.password = await user.encryptPassword(password);
+      user.name = name;
+      user.email = email;
+      user.save();
+      res.redirect("/users");
+    }
   }
 };
 
 controllers.remove = async (req, res) => {
   const { id } = req.params;
-  const user = await User.findById({ _id: id });
-  await isInSchool(req, res, user);
-  user.remove();
-  res.redirect("/users");
+  const user = await User.findById(id);
+  if(user.school !== req.user.school) {
+    req.flash("error", "You can not view this route. Try another one.");
+    res.redirect("/users");
+  } else {
+    user.remove();
+    res.redirect("/users");
+  }
 };
 
 module.exports = controllers;
