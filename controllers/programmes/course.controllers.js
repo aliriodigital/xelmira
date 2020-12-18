@@ -39,7 +39,7 @@ controllers.create = async (req, res) => {
 controllers.editForm = async (req, res) => {
   const { id } = req.params;
   const course = await Course.findById(id).lean();
-  if (req.user.school !== course.school) {
+  if (!course ||  req.user.school !== course.school) {
     req.flash("error", "You can not edit this course. Please try another one!");
     res.redirect("/courses");
   } else {
@@ -60,7 +60,7 @@ controllers.edit = async (req, res) => {
     res.redirect("/course/edit/form/" + id);
   } else {
     const course = await Course.findById(id);
-    if (req.user.school !== course.school) {
+    if (!course ||  req.user.school !== course.school) {
       req.flash("error", "You can not use this route. Try another one!");
       res.redirect("/courses");
     } else {
@@ -76,7 +76,7 @@ controllers.edit = async (req, res) => {
 controllers.remove = async (req, res) => {
   const { id } = req.params;
   const course = await Course.findById(id);
-  if (req.user.school !== course.school) {
+  if (!course || req.user.school !== course.school) {
     req.flash("error", "You can not remove this course. Please try another one!");
     res.redirect("/courses");
   } else {

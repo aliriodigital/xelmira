@@ -52,7 +52,7 @@ controllers.editForm = async (req, res) => {
   const { id } = req.params;
   const batch = await Batch.findById(id).lean();
   const course = await Course.find({school: req.user.school}).lean();
-  if (req.user.school !== batch.school) {
+  if (!batch || req.user.school !== batch.school) {
     req.flash("error", "You can not edit this batch. Please try another one!");
     res.redirect("/batches");
   } else {
@@ -75,7 +75,7 @@ controllers.edit = async (req, res) => {
     res.redirect("/batch/edit/form/" + id);
   } else {
     const batch = await Batch.findById(id);
-    if (req.user.school !== batch.school) {
+    if (!batch ||  req.user.school !== batch.school) {
       req.flash("error", "You can not use this route. Try another one!");
       res.redirect("/batches");
     } else {
@@ -92,7 +92,7 @@ controllers.edit = async (req, res) => {
 controllers.remove = async (req, res) => {
   const { id } = req.params;
   const batch = await Batch.findById(id);
-  if (req.user.school !== batch.school) {
+  if (!batch ||  req.user.school !== batch.school) {
     req.flash("error", "You can not remove this batch. Please try another one!");
     res.redirect("/batches");
   } else {
