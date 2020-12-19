@@ -12,7 +12,6 @@ const {
   remove,
 } = require("../../controllers/programmes/batch.controllers");
 
-
 router.get("/batches", isAuthenticated, isAdmin, read);
 router.get("/batch/new/form", isAuthenticated, isAdmin, createForm);
 router.post("/batch/new", isAuthenticated, isAdmin, create);

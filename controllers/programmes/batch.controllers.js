@@ -68,7 +68,6 @@ controllers.editForm = async (req, res) => {
 controllers.edit = async (req, res) => {
   const { id } = req.params;
   const { name, description, course } = req.body;
-  console.log(course);
   if (name.length < 1) {
     req.session.name = name;
     req.flash("error", "Please enter a name and try again");
