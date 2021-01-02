@@ -1,12 +1,12 @@
 <div class="d-flex justify-content-between feature-header">
     <div>
-        <h3 class="content-head">{{featureTitle}}</h3>
+        <h3 class="content-head d-inline">{{featureTitle}}</h3><span> - courseId</span>
     </div>
 
     <div>
         <h4>
-            <a class="btn btn-primary" style="margin-top: -9px;" href="/course/new/form" id="new-crud-btn">New
-                Course</a>
+            <a class="btn btn-primary" style="margin-top: -9px;" href="/batch/new/form" id="new-crud-btn">New
+                Batch</a>
         </h4>
     </div>
 </div>
@@ -22,18 +22,18 @@
                                 <table class="table  zero-configuration table-striped">
                                     <thead>
                                         <tr>
-                                            <th>Course Name</th>
-                                            <th>Course Description</th>
-                                            <th>Batches</th>
+                                            <th>Batch Name</th>
+                                            <th>Batch Description</th>
+                                            <th>Course</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {{#each course}}
+                                        {{#each batch}}
                                         <tr data-crud="{{json this}}">
                                             <td>{{name}}</td>
                                             <td>{{description}}</td>
-                                            <td><a href="/batches/course/{{_id}}">View</a></td>
+                                            <td>{{course}}</td>
                                             <td>
                                                 <div class="dropdown dropdown-dt">
                                                     <button class="btn btn-outline-primary dropdown-toggle"
@@ -43,7 +43,7 @@
                                                     </button>
                                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                         <a class="btn-edit dropdown-item"
-                                                            href="/course/edit/form/{{_id}}">Edit</a>
+                                                            href="/batch/edit/form/{{_id}}">Edit</a>
                                                         <a class="btn-delete dropdown-item" href="#">Delete</a>
                                                     </div>
                                                 </div>
@@ -69,7 +69,7 @@
             let $btn = $(this);
             let $tr = $btn.closest("tr");
             let $itm = $tr.data("crud");
-            let $upUrl = "/course/delete/" + $itm._id;
+            let $upUrl = "/batch/delete/" + $itm._id;
             let crudName = $itm.name;
 
             //https://craftpip.github.io/jquery-confirm/

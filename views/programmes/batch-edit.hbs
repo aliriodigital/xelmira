@@ -1,6 +1,6 @@
 <div class="d-flex justify-content-between feature-header">
     <div>
-        <h3 class="content-head">{{featureTitle}}</h3>
+        <h3 class="content-head d-inline">{{featureTitle}}</h3> » <span>{{course.name}}</span>
     </div>
 </div>
 
@@ -11,7 +11,7 @@
                 <div class="card py-2">
                     <div class="card-content">
                         <div class="card-body">
-                            <form action="/batch/edit/{{batch._id}}" method="POST" class="form form-horizontal">
+                            <form action="/batch/edit/{{batch._id}}/course/{{course._id}}" method="POST" class="form form-horizontal">
                                 <div class="form-body">
                                     <div class="row">
                                         <div class="col-12">
@@ -25,22 +25,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-12">
-                                            <div class="form-group row">
-                                                <div class="col-md-4">
-                                                    <span>Assign Course</span>
-                                                </div>
-                                                <div class="col-md-8">
-                                                    <select id="course" class="form-control" name="course"
-                                                        value="Select a course">
-                                                        <option selected>Select a course</option>
-                                                        {{#each course}}
-                                                        <option value="{{name}}">{{name}}</option>
-                                                        {{/each}}
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        
                                         <div class="col-12">
                                             <div class="form-group row">
                                                 <div class="col-md-4">

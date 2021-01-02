@@ -3,7 +3,7 @@ const { isPES } = require("../../helpers/auth");
 const controllers = {};
 
 controllers.read = (req, res) => {
-    let pesRole = isPES(req.user.role)? true : false;
+    let pesRole = isPES(req.user.role);
 
     res.render("users/profile", {
         name: req.user.name,

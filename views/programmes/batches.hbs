@@ -1,11 +1,11 @@
 <div class="d-flex justify-content-between feature-header">
     <div>
-        <h3 class="content-head">{{featureTitle}}</h3>
+        <h3 class="content-head d-inline">{{featureTitle}}</h3><span> » {{course.name}}</span>
     </div>
 
     <div>
         <h4>
-            <a class="btn btn-primary" style="margin-top: -9px;" href="/batch/new/form" id="new-crud-btn">New
+            <a class="btn btn-primary" style="margin-top: -9px;" href="/batch/new/form/course/{{course._id}}" id="new-crud-btn">New
                 Batch</a>
         </h4>
     </div>
@@ -24,7 +24,7 @@
                                         <tr>
                                             <th>Batch Name</th>
                                             <th>Batch Description</th>
-                                            <th>Course</th>
+                                            <th>Subjects</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -33,7 +33,7 @@
                                         <tr data-crud="{{json this}}">
                                             <td>{{name}}</td>
                                             <td>{{description}}</td>
-                                            <td>{{course}}</td>
+                                            <td><a href="/batch/{{_id}}">View</a></td>
                                             <td>
                                                 <div class="dropdown dropdown-dt">
                                                     <button class="btn btn-outline-primary dropdown-toggle"
@@ -43,7 +43,7 @@
                                                     </button>
                                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                         <a class="btn-edit dropdown-item"
-                                                            href="/batch/edit/form/{{_id}}">Edit</a>
+                                                            href="/batch/edit/form/{{_id}}/course/{{course}}">Edit</a>
                                                         <a class="btn-delete dropdown-item" href="#">Delete</a>
                                                     </div>
                                                 </div>
