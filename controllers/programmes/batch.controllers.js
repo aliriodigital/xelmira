@@ -38,8 +38,14 @@ controllers.create = async (req, res) => {
       error: error,
     });
   } else if (batchInUse) {
-    req.flash("error", `${name} is in use. Please enter another name`);
-    res.redirect("/batch/new/form/course" + id);
+    const error = `${name} already exists. Please try another name`;
+    res.render("programmes/course-new", {
+      error: error,
+      pageTitle: "Create course",
+      featureTitle: "Create Course",
+      name: name,
+      description: description,
+    });
   } else {
     const batch = new Batch(req.body);
     batch.course = course._id;
@@ -95,13 +101,14 @@ controllers.edit = async (req, res) => {
 controllers.remove = async (req, res) => {
   const { id } = req.params;
   const batch = await Batch.findById(id);
+  console.log(batch);
   if (!batch ||  req.user.school !== batch.school) {
     req.flash("error", "You can not remove this batch. Please try another one!");
     res.redirect("/batches");
   } else {
     await batch.remove();
     req.flash("success", "Batch removed successfully");
-    res.redirect("/batches/course/" + id);
+    res.redirect("/batches/course/" + batch.course);
   }
 
 };

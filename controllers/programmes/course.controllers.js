@@ -22,11 +22,23 @@ controllers.createForm = (req, res) => {
 
 controllers.create = async (req, res) => {
   const { name, description } = req.body;
+  // console.log(description);
+  const courseInUse = await Course.findOne({$and: [{school: req.user.school}, {name: name}]});
   if (name.length < 1) {
     errorMsg = "Please enter a name and try again";
     res.render("programmes/course-new", {
       error: errorMsg,
     });
+  } else if(courseInUse) {
+      const error = `${name} already exists. Please try another name`;
+      res.render("programmes/course-new", {
+        pageTitle: "Create course",
+        featureTitle: "Create Course",
+        courseLink: true,
+        error: error,
+        name: name,
+        description: description,
+      })
   } else {
     const course = new Course(req.body);
     course.creatorUser = req.user.id;
@@ -36,16 +48,6 @@ controllers.create = async (req, res) => {
     res.redirect("/courses");
   }
 };
-
-// controllers.batches = async (req, res) => {
-//   const { id } = req.params;
-//   const batch = await Batch.findById(id).lean();
-//   // const course = await Course.findById();
-//   res.render("programmes/course-batches", {
-//     batch: batch,
-//     featureTitle: "Batches",
-//   });
-// }
 
 controllers.editForm = async (req, res) => {
   const { id } = req.params;
