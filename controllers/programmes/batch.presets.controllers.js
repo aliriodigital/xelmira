@@ -1,37 +1,28 @@
 const { session } = require("passport");
 const Batch = require("../../models/Batch");
-const Course = require("../../models/Course");
 const controllers = {};
 
 controllers.read = async (req, res) => {
-  const { courseId } = req.params;
-  const course = await Course.findById(courseId).lean();
-  const batch = await Batch.find({$and:[ {school: req.user.school}, {course: courseId} ]}).lean();
-  res.render("programmes/batches", {
-    pageTitle: "Batches",
-    featureTitle: "Manage Batches",
-    courseLink: true,
+  const batch = await Batch.find({$and:[ {school: req.user.school}, {preset: true} ]}).lean();
+  res.render("programmes/batch-presets", {
+    pageTitle: "Batch Presets",
+    featureTitle: "Manage Batch Presets",
+    batchPresetLink: true,
     batch: batch,
-    course: course,
   });
 };
 
 controllers.createForm = async (req, res) => {
-  const { courseId } = req.params;
-  const course = await Course.findById(courseId).lean();
-  res.render("programmes/batch-new", {
-    pageTitle: "Create Batch",
-    featureTitle: "Create Batch",
-    courseLink: true,
-    course: course,
+  res.render("programmes/batch-preset-new", {
+    pageTitle: "Create Preset Batch",
+    featureTitle: "Create Preset Batch",
+    batchPresetLink: true,
   });
 };
 
 controllers.create = async (req, res) => {
-  const { courseId } = req.params;
   const { name, description } = req.body;
-  const batchInUse = await Batch.findOne({ $and: [{school: req.user.school}, {course: courseId}]});
-  const course = await Course.findById(courseId);
+  const batchInUse = await Batch.findOne({ $and: [{school: req.user.school}, {preset: true}, {name: name}]});
   if (name.length < 1) {
     error = "Please enter a name and try again";
     res.render("programmes/batch-new", {
@@ -39,61 +30,60 @@ controllers.create = async (req, res) => {
     });
   } else if (batchInUse) {
     const error = `${name} already exists. Please try another name`;
-    res.render("programmes/course-new", {
+    res.render("programmes/batch-preset-new", {
       error: error,
-      pageTitle: "Create course",
-      featureTitle: "Create Course",
+      pageTitle: "Create Preset Batch",
+      featureTitle: "Create Preset Batch",
+      batchPresetLink: true,
       name: name,
       description: description,
     });
   } else {
     const batch = new Batch(req.body);
-    batch.course = course._id;
+    batch.course = "n/a-preset";
     batch.creatorUser = req.user.id;
     batch.school = req.user.school;
+    batch.preset = true;
     await batch.save();
-    req.flash("success", "Batch created successfully");
-    res.redirect("/batches/course/" + courseId);
+    req.flash("success", "Preset Batch created successfully");
+    res.redirect("/batch/presets");
   }
 };
 
 controllers.editForm = async (req, res) => {
-  const { id, courseId } = req.params;
+  const { id } = req.params;
   const batch = await Batch.findById(id).lean();
-  const course = await Course.findById({_id: courseId}).lean();
   if (!batch || req.user.school !== batch.school) {
     req.flash("error", "You can not edit this batch. Please try another one!");
-    res.redirect("/batches/course/" + courseId);
+    res.redirect("/batch/presets");
   } else {
-    res.render("programmes/batch-edit", {
-      pageTitle: "Edit batch",
-      featureTitle: "Edit batch",
-      courseLink: true,
+    res.render("programmes/batch-preset-edit", {
+      pageTitle: "Edit Preset Batch",
+      featureTitle: "Edit Preset Batch",
+      batchPresetLink: true,
       batch: batch,
-      course: course,
     });
   }
 };
 
 controllers.edit = async (req, res) => {
-  const { id, courseId } = req.params;
+  const { id } = req.params;
   const { name, description } = req.body;
   if (name.length < 1) {
     req.session.name = name;
     req.flash("error", "Please enter a name and try again");
-    res.redirect("/batch/edit/form/" + id + "/course/" + courseId);
+    res.redirect("/batch/preset/edit/form/" + id);
   } else {
     const batch = await Batch.findById(id);
     if (!batch ||  req.user.school !== batch.school) {
       req.flash("error", "You can not use this route. Try another one!");
-      res.redirect("/batches/course/" + courseId);
+      res.redirect("/batch/presets");
     } else {
       batch.name = name;
       batch.description = description;
-      batch.course = courseId;
       await batch.save();
       req.flash("success", "Batch updated successfully");
-      res.redirect("/batches/course/" + courseId);
+      res.redirect("/batch/presets");
     }
   }
 };
@@ -103,11 +93,11 @@ controllers.remove = async (req, res) => {
   const batch = await Batch.findById(id);
   if (!batch ||  req.user.school !== batch.school) {
     req.flash("error", "You can not remove this batch. Please try another one!");
-    res.redirect("/batches");
+    res.redirect("/batch/presets");
   } else {
     await batch.remove();
     req.flash("success", "Batch removed successfully");
-    res.redirect("/batches/course/" + batch.course);
+    res.redirect("/batch/presets");
   }
 
 };

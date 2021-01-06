@@ -20,6 +20,11 @@ const batchSchema = new Schema({
     creatorUser: {
         type: String,
         required: true,
+    },
+    preset: {
+        type: Boolean,
+        default: false,
+        required: true,
     }
 },
     { timestamps: true }
