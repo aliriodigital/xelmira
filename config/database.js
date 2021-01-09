@@ -7,7 +7,7 @@ const mongoAtlasURL = connectString;
 const localMongoURL = dbConnect;
 
 mongoose
-  .connect(localMongoURL, {
+  .connect(mongoAtlasURL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
