@@ -19,7 +19,7 @@ WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BET
   font-size: 19px;
 }
 
-#new-crud-btn {
+#new-crud-btn, #import-crud-btn {
   padding-left: 15px;
   padding-right: 15px;
 }
@@ -145,4 +145,11 @@ html body.navbar-sticky .app-content .content-wrapper {
 
 .main-menu.menu-light .navigation > li.active > a {
   color: #565656;
+}
+
+
+@media (max-width: 575.98px) {
+  #import-crud-btn {
+    margin-bottom: 15px;
+  }  
 }

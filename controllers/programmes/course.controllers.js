@@ -22,7 +22,6 @@ controllers.createForm = (req, res) => {
 
 controllers.create = async (req, res) => {
   const { name, description } = req.body;
-  // console.log(description);
   const courseInUse = await Course.findOne({$and: [{school: req.user.school}, {name: name}]});
   if (name.length < 1) {
     errorMsg = "Please enter a name and try again";

@@ -6,7 +6,7 @@ const controllers = {};
 controllers.read = async (req, res) => {
   const { courseId } = req.params;
   const course = await Course.findById(courseId).lean();
-  const batch = await Batch.find({$and:[ {school: req.user.school}, {course: courseId} ]}).lean();
+  const batch = await Batch.find({ $and: [{ school: req.user.school }, { course: courseId }] }).lean();
   res.render("programmes/batches", {
     pageTitle: "Batches",
     featureTitle: "Manage Batches",
@@ -15,6 +15,74 @@ controllers.read = async (req, res) => {
     course: course,
   });
 };
+
+controllers.getImport = async (req, res) => {
+  const { courseId } = req.params;
+  const batch = await Batch.find({ preset: true }).lean();
+  const course = await Course.findById(courseId).lean();
+  res.render("programmes/batch-import", {
+    pageTitle: "Import Batches",
+    featureTitle: "Import Batches",
+    courseLink: true,
+    batch: batch,
+    course: course,
+  })
+}
+
+controllers.postImport = async (req, res) => {
+  const { id, courseId } = req.params;
+  const data = req.body;
+  const batchArray = Object.keys(data).map(k => data[k]);
+  // console.log(batchArray);
+
+  const buildNewBatches = async () => {
+    const batchArrayLength = batchArray.length;
+    let i;
+    for (i = 0; i < batchArrayLength; i++) {
+      const presetBatch = await Batch.find({ _id: batchArray[i] });
+      const batchInUse = await Batch.findOne({ $and: [{ school: req.user.school }, { course: courseId }, { name: presetBatch[0].name }] });
+      console.log(batchInUse);
+      if (batchInUse) {
+        req.flash("error", "No batch name duplicate is allowed. Please try again");
+        res.redirect("/batches/course/" + courseId);
+        break;
+      } else {
+        const newBatch = new Batch();
+        newBatch.course = courseId;
+        newBatch.preset = false;
+        newBatch.school = req.user.school;
+        newBatch.creatorUser = req.user.id;
+        newBatch.description = presetBatch[0].description;
+        newBatch.name = presetBatch[0].name;
+        newBatch.save();
+        req.flash("success", "Batches imported successfully");
+        res.redirect("/batches/course/" + courseId);
+        // console.log(presetBatch);
+      }
+
+
+    }
+  }
+  buildNewBatches();
+
+  // const myFunction = async (value) => {
+  //   const presetBatch = await Batch.find({ _id: value });
+  //   const batchInUse = await Batch.findOne({$and: [{school:req.user.school}, {course: courseId}, {name: presetBatch[0].name}]});
+  //   const newBatch = new Batch();
+  //   newBatch.course = courseId;
+  //   newBatch.preset = false;
+  //   newBatch.school = req.user.school;
+  //   newBatch.creatorUser = req.user.id;
+  //   newBatch.description = presetBatch[0].description;
+  //   newBatch.name = presetBatch[0].name;
+  //   newBatch.save();
+  // };
+  // batchArray.map(myFunction);
+
+  // req.flash("success", "Batches imported successfully");
+  // res.redirect("/batches/course/" + courseId);
+}
+
 
 controllers.createForm = async (req, res) => {
   const { courseId } = req.params;
@@ -30,7 +98,7 @@ controllers.createForm = async (req, res) => {
 controllers.create = async (req, res) => {
   const { courseId } = req.params;
   const { name, description } = req.body;
-  const batchInUse = await Batch.findOne({ $and: [{school: req.user.school}, {course: courseId}]});
+  const batchInUse = await Batch.findOne({ $and: [{ school: req.user.school }, { course: courseId }, { name: name }] });
   const course = await Course.findById(courseId);
   if (name.length < 1) {
     error = "Please enter a name and try again";
@@ -39,10 +107,10 @@ controllers.create = async (req, res) => {
     });
   } else if (batchInUse) {
     const error = `${name} already exists. Please try another name`;
-    res.render("programmes/course-new", {
+    res.render("programmes/batch-new", {
       error: error,
-      pageTitle: "Create course",
-      featureTitle: "Create Course",
+      pageTitle: "Create Batch",
+      featureTitle: "Create Batch",
       name: name,
       description: description,
     });
@@ -60,7 +128,7 @@ controllers.create = async (req, res) => {
 controllers.editForm = async (req, res) => {
   const { id, courseId } = req.params;
   const batch = await Batch.findById(id).lean();
-  const course = await Course.findById({_id: courseId}).lean();
+  const course = await Course.findById({ _id: courseId }).lean();
   if (!batch || req.user.school !== batch.school) {
     req.flash("error", "You can not edit this batch. Please try another one!");
     res.redirect("/batches/course/" + courseId);
@@ -84,7 +152,7 @@ controllers.edit = async (req, res) => {
     res.redirect("/batch/edit/form/" + id + "/course/" + courseId);
   } else {
     const batch = await Batch.findById(id);
-    if (!batch ||  req.user.school !== batch.school) {
+    if (!batch || req.user.school !== batch.school) {
       req.flash("error", "You can not use this route. Try another one!");
       res.redirect("/batches/course/" + courseId);
     } else {
@@ -101,7 +169,7 @@ controllers.edit = async (req, res) => {
 controllers.remove = async (req, res) => {
   const { id } = req.params;
   const batch = await Batch.findById(id);
-  if (!batch ||  req.user.school !== batch.school) {
+  if (!batch || req.user.school !== batch.school) {
     req.flash("error", "You can not remove this batch. Please try another one!");
     res.redirect("/batches");
   } else {
