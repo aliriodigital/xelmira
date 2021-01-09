@@ -33,8 +33,6 @@ controllers.postImport = async (req, res) => {
   const { id, courseId } = req.params;
   const data = req.body;
   const batchArray = Object.keys(data).map(k => data[k]);
-  // console.log(batchArray);
-
   const buildNewBatches = async () => {
     const batchArrayLength = batchArray.length;
     let i;
@@ -64,23 +62,6 @@ controllers.postImport = async (req, res) => {
     }
   }
   buildNewBatches();
-
-  // const myFunction = async (value) => {
-  //   const presetBatch = await Batch.find({ _id: value });
-  //   const batchInUse = await Batch.findOne({$and: [{school:req.user.school}, {course: courseId}, {name: presetBatch[0].name}]});
-  //   const newBatch = new Batch();
-  //   newBatch.course = courseId;
-  //   newBatch.preset = false;
-  //   newBatch.school = req.user.school;
-  //   newBatch.creatorUser = req.user.id;
-  //   newBatch.description = presetBatch[0].description;
-  //   newBatch.name = presetBatch[0].name;
-  //   newBatch.save();
-  // };
-  // batchArray.map(myFunction);
-
-  // req.flash("success", "Batches imported successfully");
-  // res.redirect("/batches/course/" + courseId);
 }
 
 
