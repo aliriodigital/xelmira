@@ -88,9 +88,9 @@ controllers.update = async (req, res) => {
     error = "Please enter a name and try again";
   }
   if (error.length > 0) {
-    req.session.name = name;
-    req.session.email = email;
-    req.session.password = password;
+    // req.session.name = name;
+    // req.session.email = email;
+    // req.session.password = password;
     req.flash("error", error);
     res.redirect("/user/edit/" + id);
   } else {

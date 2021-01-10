@@ -42,7 +42,7 @@ controllers.postImport = async (req, res) => {
       console.log(batchInUse);
       if (batchInUse) {
         req.flash("error", "No batch name duplicate is allowed. Please try again");
-        res.redirect("/batches/course/" + courseId);
+        res.redirect("/batch/import/course/" + courseId);
         break;
       } else {
         const newBatch = new Batch();
@@ -53,13 +53,10 @@ controllers.postImport = async (req, res) => {
         newBatch.description = presetBatch[0].description;
         newBatch.name = presetBatch[0].name;
         newBatch.save();
-        req.flash("success", "Batches imported successfully");
-        res.redirect("/batches/course/" + courseId);
-        // console.log(presetBatch);
       }
-
-
     }
+    req.flash("success", "Batches imported successfully");
+    res.redirect("/batches/course/" + courseId);
   }
   buildNewBatches();
 }
@@ -80,20 +77,21 @@ controllers.create = async (req, res) => {
   const { courseId } = req.params;
   const { name, description } = req.body;
   const batchInUse = await Batch.findOne({ $and: [{ school: req.user.school }, { course: courseId }, { name: name }] });
-  const course = await Course.findById(courseId);
+  const course = await Course.findById(courseId).lean();
+  console.log(course);
   if (name.length < 1) {
-    error = "Please enter a name and try again";
-    res.render("programmes/batch-new", {
-      error: error,
-    });
+    req.flash("error", "Please submit a batch name and try again");
+    res.redirect("/batch/new/form/course/" + courseId);
   } else if (batchInUse) {
-    const error = `${name} already exists. Please try another name`;
+    const error = `${name} already exists. Please try a different name`;
     res.render("programmes/batch-new", {
       error: error,
       pageTitle: "Create Batch",
       featureTitle: "Create Batch",
+      courseLink: true,
       name: name,
       description: description,
+      course: course,
     });
   } else {
     const batch = new Batch(req.body);
@@ -128,7 +126,7 @@ controllers.edit = async (req, res) => {
   const { id, courseId } = req.params;
   const { name, description } = req.body;
   if (name.length < 1) {
-    req.session.name = name;
+    // req.session.name = name;
     req.flash("error", "Please enter a name and try again");
     res.redirect("/batch/edit/form/" + id + "/course/" + courseId);
   } else {
