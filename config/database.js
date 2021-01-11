@@ -1,13 +1,9 @@
 const mongoose = require("mongoose");
 require("dotenv").config();
 const { connectString } = process.env;
-const { dbConnect } = process.env;
-
-const mongoAtlasURL = connectString;
-const localMongoURL = dbConnect;
 
 mongoose
-  .connect(mongoAtlasURL, {
+  .connect(connectString, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,

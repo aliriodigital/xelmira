@@ -1,13 +1,12 @@
 <div class="d-flex justify-content-between feature-header">
     <div>
-        <h3 class="content-head d-inline">{{featureTitle}}</h3>
-        <span> » {{batch.name}} » <a href="/batches/course/{{course._id}}">{{course.name}}</a></span>
+        <h3 class="content-head">{{featureTitle}}</h3>
     </div>
 
     <div>
         <h4>
-            <a class="btn btn-primary" style="margin-top: -9px;" href="/subject/import/batch/{{batch._id}}/course/{{course._id}}" id="import-crud-btn">Import</a>
-            <a class="btn btn-primary" style="margin-top: -9px;" href="/subject/new/batch/{{batch._id}}/course/{{course._id}}" id="new-crud-btn">New</a>
+            <a class="btn btn-primary" style="margin-top: -9px;" href="/subject/preset/new" id="new-crud-btn">New
+                Batch</a>
         </h4>
     </div>
 </div>
@@ -23,8 +22,8 @@
                                 <table class="table  zero-configuration table-striped">
                                     <thead>
                                         <tr>
-                                            <th>Subject Name</th>
-                                            <th>Subject Description</th>
+                                            <th>Batch Name</th>
+                                            <th>Batch Description</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -42,7 +41,7 @@
                                                     </button>
                                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                         <a class="btn-edit dropdown-item"
-                                                            href="/subject/{{_id}}/edit/batch/{{batch}}/course/{{course}}">Edit</a>
+                                                            href="/subject/preset/edit/{{_id}}">Edit</a>
                                                         <a class="btn-delete dropdown-item" href="#">Delete</a>
                                                     </div>
                                                 </div>
@@ -68,7 +67,7 @@
             let $btn = $(this);
             let $tr = $btn.closest("tr");
             let $itm = $tr.data("crud");
-            let $upUrl = "/subject/delete/" + $itm._id + "/batch/" + $itm.batch + "/course/" + $itm.course;
+            let $upUrl = "/subject/preset/delete/" + $itm._id;
             let crudName = $itm.name;
 
             //https://craftpip.github.io/jquery-confirm/

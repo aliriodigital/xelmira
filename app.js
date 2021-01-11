@@ -60,5 +60,6 @@ app.use("/", require("./routes/programmes/course.routes"));
 app.use("/", require("./routes/programmes/batch.routes"));
 app.use("/", require("./routes/programmes/batch.presets.routes"));
 app.use("/", require("./routes/programmes/subject.routes"));
+app.use("/", require("./routes/programmes/subject.preset.routes"));
 
 module.exports = app;

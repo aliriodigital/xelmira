@@ -8,62 +8,71 @@ controllers.read = async (req, res) => {
   const { batchId, courseId } = req.params;
   const course = await Course.findById(courseId).lean();
   const batch = await Batch.findById(batchId).lean();
-  console.log(batch);
   const subject = await Subject.find({ $and: [{ school: req.user.school }, { course: courseId }, { batch: batchId }] }).lean();
   res.render("programmes/subjects", {
     pageTitle: "Subjects",
     featureTitle: "Manage Subjects",
-    subjectLink: true,
+    courseLink: true,
     course: course,
     batch: batch,
     subject: subject,
   });
 };
 
-// controllers.getImport = async (req, res) => {
-//   const { courseId } = req.params;
-//   const batch = await Batch.find({ preset: true }).lean();
-//   const course = await Course.findById(courseId).lean();
-//   res.render("programmes/batch-import", {
-//     pageTitle: "Import Batches",
-//     featureTitle: "Import Batches",
-//     courseLink: true,
-//     batch: batch,
-//     course: course,
-//   })
-// }
+controllers.importView = async (req, res) => {
+  const { batchId, courseId } = req.params;
+  const subject = await Subject.find({ preset: true }).lean();
+  const batch = await Batch.findById(batchId).lean();
+  const course = await Course.findById(courseId).lean();
+  res.render("programmes/subject-import", {
+    pageTitle: "Import Subjects",
+    featureTitle: "Import Subjects",
+    courseLink: true,
+    subject: subject,
+    batch: batch,
+    course: course,
+  });
+}
 
-// controllers.postImport = async (req, res) => {
-//   const { id, courseId } = req.params;
-//   const data = req.body;
-//   const batchArray = Object.keys(data).map(k => data[k]);
-//   const buildNewBatches = async () => {
-//     const batchArrayLength = batchArray.length;
-//     let i;
-//     for (i = 0; i < batchArrayLength; i++) {
-//       const presetBatch = await Batch.find({ _id: batchArray[i] });
-//       const batchInUse = await Batch.findOne({ $and: [{ school: req.user.school }, { course: courseId }, { name: presetBatch[0].name }] });
-//       console.log(batchInUse);
-//       if (batchInUse) {
-//         req.flash("error", "No batch name duplicate is allowed. Please try again");
-//         res.redirect("/batch/import/course/" + courseId);
-//         break;
-//       } else {
-//         const newBatch = new Batch();
-//         newBatch.course = courseId;
-//         newBatch.preset = false;
-//         newBatch.school = req.user.school;
-//         newBatch.creatorUser = req.user.id;
-//         newBatch.description = presetBatch[0].description;
-//         newBatch.name = presetBatch[0].name;
-//         newBatch.save();
-//       }
-//     }
-//     req.flash("success", "Batches imported successfully");
-//     res.redirect("/batches/course/" + courseId);
-//   }
-//   buildNewBatches();
-// }
+controllers.imports = async (req, res) => {
+  const { batchId, courseId } = req.params;
+  const data = req.body;
+  const arr = Object.keys(data).map(k => data[k]);
+  const buildSaveBatches = async () => {
+    const arrLength = arr.length;
+    let i;
+    for (i = 0; i < arrLength; i++) {
+      const preset = await Subject.find({ _id: arr[i] });
+      const presetInUse = await Subject.findOne({
+        $and:
+          [
+            { school: req.user.school },
+            { batch: batchId },
+            { name: preset[0].name }
+          ]
+      });
+      console.log(presetInUse);
+      if (presetInUse) {
+        req.flash("error", "No name duplicates are allowed. Please discard duplicates");
+        res.redirect("/subject/import/batch/" + batchId + "/course/" + courseId);
+        break;
+      } else {
+      const newPreset = new Subject();
+      newPreset.batch = batchId;
+      newPreset.course = courseId;
+      newPreset.preset = false;
+      newPreset.school = req.user.school;
+      newPreset.creatorUser = req.user.id;
+      newPreset.description = preset[0].description;
+      newPreset.name = preset[0].name;
+      newPreset.save();
+      }
+    }
+    req.flash("success", "Subjects imported successfully");
+    res.redirect("/subjects/batch/" + batchId + "/course/" + courseId);
+  }
+  buildSaveBatches();
+}
 
 
 controllers.createView = async (req, res) => {
@@ -74,6 +83,7 @@ controllers.createView = async (req, res) => {
     pageTitle: "Create Subject",
     featureTitle: "Create Subject",
     courseLink: true,
+    action: `/subject/new/batch/${batchId}/course/${courseId}`,
     course: course,
     batch: batch,
   });
@@ -91,7 +101,6 @@ controllers.create = async (req, res) => {
   });
   const course = await Course.findById(courseId).lean();
   const batch = await Batch.findById(batchId).lean();
-  console.log(course);
   if (name.length < 1) {
     req.flash("error", "Please submit a subject name and try again");
     res.redirect("/subject/new/batch/" + batchId + "/course/" + courseId);
@@ -120,58 +129,61 @@ controllers.create = async (req, res) => {
 };
 
 controllers.editView = async (req, res) => {
-  const { id, courseId } = req.params;
-  const batch = await Batch.findById(id).lean();
-  const course = await Course.findById({ _id: courseId }).lean();
-  if (!batch || req.user.school !== batch.school) {
-    req.flash("error", "You can not edit this batch. Please try another one!");
-    res.redirect("/batches/course/" + courseId);
+  const { subjectId, batchId, courseId } = req.params;
+  const subject = await Subject.findById(subjectId).lean();
+  const batch = await Batch.findById(batchId).lean();
+  const course = await Course.findById(courseId).lean();
+  if (!subject || req.user.school !== subject.school) {
+    req.flash("error", "You can not edit this subject. Please try another one!");
+    res.redirect("/subjects/batch/" + batchId + "/course/" + courseId);
   } else {
-    res.render("programmes/batch-edit", {
-      pageTitle: "Edit batch",
-      featureTitle: "Edit batch",
+    res.render("programmes/subject-new", {
+      pageTitle: "Edit Subject",
+      featureTitle: "Edit Subject",
       courseLink: true,
+      action: `/subject/${subjectId}/edit/batch/${batchId}/course/${courseId}`,
+      subject: subject,
       batch: batch,
       course: course,
     });
   }
 };
 
-// controllers.edit = async (req, res) => {
-//   const { id, courseId } = req.params;
-//   const { name, description } = req.body;
-//   if (name.length < 1) {
-//     // req.session.name = name;
-//     req.flash("error", "Please enter a name and try again");
-//     res.redirect("/batch/edit/form/" + id + "/course/" + courseId);
-//   } else {
-//     const batch = await Batch.findById(id);
-//     if (!batch || req.user.school !== batch.school) {
-//       req.flash("error", "You can not use this route. Try another one!");
-//       res.redirect("/batches/course/" + courseId);
-//     } else {
-//       batch.name = name;
-//       batch.description = description;
-//       batch.course = courseId;
-//       await batch.save();
-//       req.flash("success", "Batch updated successfully");
-//       res.redirect("/batches/course/" + courseId);
-//     }
-//   }
-// };
+controllers.edit = async (req, res) => {
+  const { subjectId, batchId, courseId } = req.params;
+  const { name, description } = req.body;
+  if (name.length < 1) {
+    req.flash("error", "Please enter a name and try again");
+    res.redirect("/subject/" + subjectId + "/edit/batch/" + batchId + "/course/" + courseId);
+  } else {
+    const subject = await Subject.findById(subjectId);
+    if (!subject || req.user.school !== subject.school) {
+      req.flash("error", "You can not use this route. Try another one!");
+      res.redirect("/subjects/batch/" + batchId + "/course/" + courseId);
+    } else {
+      subject.name = name;
+      subject.description = description;
+      subject.batch = batchId;
+      subject.course = courseId;
+      await subject.save();
+      req.flash("success", "Subject updated successfully");
+      res.redirect("/subjects/batch/" + batchId + "/course/" + courseId);
+    }
+  }
+};
 
-// controllers.remove = async (req, res) => {
-//   const { id } = req.params;
-//   const batch = await Batch.findById(id);
-//   if (!batch || req.user.school !== batch.school) {
-//     req.flash("error", "You can not remove this batch. Please try another one!");
-//     res.redirect("/batches");
-//   } else {
-//     await batch.remove();
-//     req.flash("success", "Batch removed successfully");
-//     res.redirect("/batches/course/" + batch.course);
-//   }
+controllers.remove = async (req, res) => {
+  const { subjectId, batchId, courseId } = req.params;
+  const subject = await Subject.findById(subjectId);
+  if (!subject || req.user.school !== subject.school) {
+    req.flash("error", "You can not remove this subject. Please try another one!");
+    res.redirect("/courses");
+  } else {
+    await subject.remove();
+    req.flash("success", "Subject removed successfully");
+    res.redirect("/subjects/batch/" + batchId + "/course/" + courseId);
+  }
 
-// };
+};
 
 module.exports = controllers;
