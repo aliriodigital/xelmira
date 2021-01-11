@@ -1,12 +1,13 @@
 <div class="d-flex justify-content-between feature-header">
     <div>
-        <h3 class="content-head d-inline">{{featureTitle}}</h3><span> » <a href="/courses">{{course.name}}</a></span>
+        <h3 class="content-head d-inline">{{featureTitle}}</h3>
+        <span> » {{batch.name}} » <a href="/batches/course/{{course._id}}">{{course.name}}</a></span>
     </div>
 
     <div>
         <h4>
             <a class="btn btn-primary" style="margin-top: -9px;" href="/batch/import/course/{{course._id}}" id="import-crud-btn">Import</a>
-            <a class="btn btn-primary" style="margin-top: -9px;" href="/batch/new/form/course/{{course._id}}" id="new-crud-btn">New</a>
+            <a class="btn btn-primary" style="margin-top: -9px;" href="/subject/new/batch/{{batch._id}}/course/{{course._id}}" id="new-crud-btn">New</a>
         </h4>
     </div>
 </div>
@@ -22,18 +23,16 @@
                                 <table class="table  zero-configuration table-striped">
                                     <thead>
                                         <tr>
-                                            <th>Batch Name</th>
-                                            <th>Batch Description</th>
-                                            <th>Subjects</th>
+                                            <th>Subject Name</th>
+                                            <th>Subject Description</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {{#each batch}}
+                                        {{#each subject}}
                                         <tr data-crud="{{json this}}">
                                             <td>{{name}}</td>
                                             <td>{{description}}</td>
-                                            <td><a href="/subjects/batch/{{_id}}/course/{{course}}">View</a></td>
                                             <td>
                                                 <div class="dropdown dropdown-dt">
                                                     <button class="btn btn-outline-primary dropdown-toggle"
