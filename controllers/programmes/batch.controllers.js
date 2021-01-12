@@ -39,7 +39,6 @@ controllers.postImport = async (req, res) => {
     for (i = 0; i < batchArrayLength; i++) {
       const presetBatch = await Batch.find({ _id: batchArray[i] });
       const batchInUse = await Batch.findOne({ $and: [{ school: req.user.school }, { course: courseId }, { name: presetBatch[0].name }] });
-      console.log(batchInUse);
       if (batchInUse) {
         req.flash("error", "No batch name duplicate is allowed. Please try again");
         res.redirect("/batch/import/course/" + courseId);
@@ -78,7 +77,6 @@ controllers.create = async (req, res) => {
   const { name, description } = req.body;
   const batchInUse = await Batch.findOne({ $and: [{ school: req.user.school }, { course: courseId }, { name: name }] });
   const course = await Course.findById(courseId).lean();
-  console.log(course);
   if (name.length < 1) {
     req.flash("error", "Please submit a batch name and try again");
     res.redirect("/batch/new/form/course/" + courseId);
