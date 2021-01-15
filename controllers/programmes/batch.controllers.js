@@ -17,57 +17,6 @@ controllers.read = async (req, res) => {
   });
 };
 
-controllers.bringInView = async (req, res) => {
-  const { courseId } = req.params;
-  const batch = await Batch.find({ preset: true }).lean();
-  const course = await Course.findById(courseId).lean();
-  res.render("programmes/batch-import", {
-    pageTitle: "Import Batches",
-    featureTitle: "Import Batches",
-    courseLink: true,
-    batch: batch,
-    course: course,
-  })
-}
-
-controllers.bringIn = async (req, res) => {
-  const { id, courseId } = req.params;
-  const data = req.body;
-  const batchArray = Object.keys(data).map(k => data[k]);
-  const buildNewBatches = async () => {
-    const batchArrayLength = batchArray.length;
-    let i;
-    for (i = 0; i < batchArrayLength; i++) {
-      const presetBatch = await Batch.find({ _id: batchArray[i] });
-      const batchInUse = await Batch.findOne({
-        $and: [
-          { school: req.user.school },
-          { course: courseId },
-          { name: presetBatch[0].name }
-        ]
-      });
-      if (batchInUse) {
-        req.flash("error", "No batch name duplicate is allowed. Please try again");
-        res.redirect("/batch/import/course/" + courseId);
-        break;
-      } else {
-        const newBatch = new Batch();
-        newBatch.course = courseId;
-        newBatch.preset = false;
-        newBatch.school = req.user.school;
-        newBatch.creatorUser = req.user.id;
-        newBatch.description = presetBatch[0].description;
-        newBatch.name = presetBatch[0].name;
-        newBatch.save();
-      }
-    }
-    req.flash("success", "Batches imported successfully");
-    res.redirect("/batches/course/" + courseId);
-  }
-  buildNewBatches();
-}
-
-
 controllers.createView = async (req, res) => {
   const { courseId } = req.params;
   const course = await Course.findById(courseId).lean();
