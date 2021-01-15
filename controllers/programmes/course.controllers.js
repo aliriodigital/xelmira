@@ -13,7 +13,7 @@ controllers.read = async (req, res) => {
   });
 };
 
-controllers.createForm = (req, res) => {
+controllers.createView = (req, res) => {
   res.render("programmes/course-new", {
     pageTitle: "Create course",
     featureTitle: "Create Course",
@@ -22,14 +22,19 @@ controllers.createForm = (req, res) => {
 
 controllers.create = async (req, res) => {
   const { name, description } = req.body;
-  const courseInUse = await Course.findOne({ $and: [{ school: req.user.school }, { name: name }] });
+  const courseInUse = await Course.findOne({
+    $and:
+      [
+        { school: req.user.school }, { name: name }
+      ]
+  });
   if (name.length < 1) {
     errorMsg = "Please enter a name and try again";
     res.render("programmes/course-new", {
       error: errorMsg,
     });
   } else if (courseInUse) {
-    const error = `${name} already exists. Please try another name`;
+    const error = `${name} is already taken. Please try a different name`;
     res.render("programmes/course-new", {
       pageTitle: "Create course",
       featureTitle: "Create Course",
@@ -48,7 +53,7 @@ controllers.create = async (req, res) => {
   }
 };
 
-controllers.editForm = async (req, res) => {
+controllers.editView = async (req, res) => {
   const { id } = req.params;
   const course = await Course.findById(id).lean();
   if (!course || req.user.school !== course.school) {
@@ -67,9 +72,20 @@ controllers.editForm = async (req, res) => {
 controllers.edit = async (req, res) => {
   const { id } = req.params;
   const { name, description } = req.body;
+  const courseInUse = await Course.findOne({
+    $and:
+      [
+        { school: req.user.school },
+        { name: name },
+        { _id: { $ne: id } }
+      ]
+  })
   if (name.length < 1) {
     req.session.name = name;
     req.flash("error", "Please enter a name and try again");
+    res.redirect("/course/edit/form/" + id);
+  } else if (courseInUse) {
+    req.flash("error", `${name} is already taken. Please try a different name`);
     res.redirect("/course/edit/form/" + id);
   } else {
     const course = await Course.findById(id);
@@ -89,13 +105,13 @@ controllers.edit = async (req, res) => {
 controllers.remove = async (req, res) => {
   const { id } = req.params;
   const course = await Course.findById(id);
-  const count = await Batch.countDocuments({ course: id });
+  const countBatches = await Batch.countDocuments({ course: id });
   if (!course || req.user.school !== course.school) {
     req.flash("error", "You can not remove this course. Please try a different one!");
     res.redirect("/courses");
-  } else if (count > 0) {
-      req.flash("error", `Dependency: Impossible to remove because there are batches associated`);
-      res. redirect("/courses");
+  } else if (countBatches > 0) {
+    req.flash("error", `Impossible to remove because there are batches associated`);
+    res.redirect("/courses");
   } else {
     await course.remove();
     req.flash("success", "Course removed successfully");

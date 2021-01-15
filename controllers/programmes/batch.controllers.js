@@ -1,6 +1,7 @@
 const { session } = require("passport");
-const Batch = require("../../models/Batch");
 const Course = require("../../models/Course");
+const Batch = require("../../models/Batch");
+const Subject = require("../../models/Subject");
 const controllers = {};
 
 controllers.read = async (req, res) => {
@@ -16,7 +17,7 @@ controllers.read = async (req, res) => {
   });
 };
 
-controllers.getImport = async (req, res) => {
+controllers.bringInView = async (req, res) => {
   const { courseId } = req.params;
   const batch = await Batch.find({ preset: true }).lean();
   const course = await Course.findById(courseId).lean();
@@ -29,7 +30,7 @@ controllers.getImport = async (req, res) => {
   })
 }
 
-controllers.postImport = async (req, res) => {
+controllers.bringIn = async (req, res) => {
   const { id, courseId } = req.params;
   const data = req.body;
   const batchArray = Object.keys(data).map(k => data[k]);
@@ -38,7 +39,13 @@ controllers.postImport = async (req, res) => {
     let i;
     for (i = 0; i < batchArrayLength; i++) {
       const presetBatch = await Batch.find({ _id: batchArray[i] });
-      const batchInUse = await Batch.findOne({ $and: [{ school: req.user.school }, { course: courseId }, { name: presetBatch[0].name }] });
+      const batchInUse = await Batch.findOne({
+        $and: [
+          { school: req.user.school },
+          { course: courseId },
+          { name: presetBatch[0].name }
+        ]
+      });
       if (batchInUse) {
         req.flash("error", "No batch name duplicate is allowed. Please try again");
         res.redirect("/batch/import/course/" + courseId);
@@ -61,7 +68,7 @@ controllers.postImport = async (req, res) => {
 }
 
 
-controllers.createForm = async (req, res) => {
+controllers.createView = async (req, res) => {
   const { courseId } = req.params;
   const course = await Course.findById(courseId).lean();
   res.render("programmes/batch-new", {
@@ -75,7 +82,14 @@ controllers.createForm = async (req, res) => {
 controllers.create = async (req, res) => {
   const { courseId } = req.params;
   const { name, description } = req.body;
-  const batchInUse = await Batch.findOne({ $and: [{ school: req.user.school }, { course: courseId }, { name: name }] });
+  const batchInUse = await Batch.findOne({
+    $and:
+      [
+        { school: req.user.school },
+        { course: courseId },
+        { name: name }
+      ]
+  });
   const course = await Course.findById(courseId).lean();
   if (name.length < 1) {
     req.flash("error", "Please submit a batch name and try again");
@@ -102,7 +116,7 @@ controllers.create = async (req, res) => {
   }
 };
 
-controllers.editForm = async (req, res) => {
+controllers.editView = async (req, res) => {
   const { id, courseId } = req.params;
   const batch = await Batch.findById(id).lean();
   const course = await Course.findById({ _id: courseId }).lean();
@@ -123,12 +137,22 @@ controllers.editForm = async (req, res) => {
 controllers.edit = async (req, res) => {
   const { id, courseId } = req.params;
   const { name, description } = req.body;
+  const batch = await Batch.findById(id);
+  const batchInUse = await Batch.findOne({
+    $and:
+      [
+        { school: req.user.school },
+        { name: name },
+        { _id: { $ne: id } },
+      ]
+  });
   if (name.length < 1) {
-    // req.session.name = name;
     req.flash("error", "Please enter a name and try again");
     res.redirect("/batch/edit/form/" + id + "/course/" + courseId);
+  } else if (batchInUse) {
+    req.flash("error", `${name} is already taken. Please try a different name`);
+    res.redirect("/batch/edit/form/" + id + "/course/" + courseId);
   } else {
-    const batch = await Batch.findById(id);
     if (!batch || req.user.school !== batch.school) {
       req.flash("error", "You can not use this route. Try another one!");
       res.redirect("/batches/course/" + courseId);
@@ -146,9 +170,14 @@ controllers.edit = async (req, res) => {
 controllers.remove = async (req, res) => {
   const { id } = req.params;
   const batch = await Batch.findById(id);
+  const countSubjects = await Subject.countDocuments({ batch: id });
+  console.log(countSubjects);
   if (!batch || req.user.school !== batch.school) {
     req.flash("error", "You can not remove this batch. Please try another one!");
     res.redirect("/batches");
+  } else if (countSubjects > 0) {
+    req.flash("error", "Impossible to remove because there are subjects associated");
+    res.redirect("/batches/course/" + batch.course);
   } else {
     await batch.remove();
     req.flash("success", "Batch removed successfully");

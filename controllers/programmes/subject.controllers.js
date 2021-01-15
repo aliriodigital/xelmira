@@ -8,7 +8,14 @@ controllers.read = async (req, res) => {
   const { batchId, courseId } = req.params;
   const course = await Course.findById(courseId).lean();
   const batch = await Batch.findById(batchId).lean();
-  const subject = await Subject.find({ $and: [{ school: req.user.school }, { course: courseId }, { batch: batchId }] }).lean();
+  const subject = await Subject.find({
+    $and:
+      [
+        { school: req.user.school },
+        { course: courseId },
+        { batch: batchId }
+      ]
+  }).lean();
   res.render("programmes/subjects", {
     pageTitle: "Subjects",
     featureTitle: "Manage Subjects",
@@ -19,7 +26,7 @@ controllers.read = async (req, res) => {
   });
 };
 
-controllers.importView = async (req, res) => {
+controllers.bringInView = async (req, res) => {
   const { batchId, courseId } = req.params;
   const subject = await Subject.find({ preset: true }).lean();
   const batch = await Batch.findById(batchId).lean();
@@ -34,7 +41,7 @@ controllers.importView = async (req, res) => {
   });
 }
 
-controllers.imports = async (req, res) => {
+controllers.bringIn = async (req, res) => {
   const { batchId, courseId } = req.params;
   const data = req.body;
   const arr = Object.keys(data).map(k => data[k]);
@@ -51,21 +58,20 @@ controllers.imports = async (req, res) => {
             { name: preset[0].name }
           ]
       });
-      console.log(presetInUse);
       if (presetInUse) {
         req.flash("error", "No name duplicates are allowed. Please discard duplicates");
         res.redirect("/subject/import/batch/" + batchId + "/course/" + courseId);
         break;
       } else {
-      const newPreset = new Subject();
-      newPreset.batch = batchId;
-      newPreset.course = courseId;
-      newPreset.preset = false;
-      newPreset.school = req.user.school;
-      newPreset.creatorUser = req.user.id;
-      newPreset.description = preset[0].description;
-      newPreset.name = preset[0].name;
-      newPreset.save();
+        const newPreset = new Subject();
+        newPreset.batch = batchId;
+        newPreset.course = courseId;
+        newPreset.preset = false;
+        newPreset.school = req.user.school;
+        newPreset.creatorUser = req.user.id;
+        newPreset.description = preset[0].description;
+        newPreset.name = preset[0].name;
+        newPreset.save();
       }
     }
     req.flash("success", "Subjects imported successfully");
@@ -152,11 +158,23 @@ controllers.editView = async (req, res) => {
 controllers.edit = async (req, res) => {
   const { subjectId, batchId, courseId } = req.params;
   const { name, description } = req.body;
+  const subject = await Subject.findById(subjectId);
+  const subjectInUse = await Subject.findOne({
+    $and:
+      [
+        { school: req.user.school },
+        { batch: batchId },
+        { name: name },
+        { _id: { $ne: subjectId } }
+      ]
+  })
   if (name.length < 1) {
     req.flash("error", "Please enter a name and try again");
     res.redirect("/subject/" + subjectId + "/edit/batch/" + batchId + "/course/" + courseId);
+  } else if (subjectInUse) {
+    req.flash("error", `${name} is already taken. Try a different name`);
+    res.redirect("/subject/" + subjectId + "/edit/batch/" + batchId + "/course/" + courseId);
   } else {
-    const subject = await Subject.findById(subjectId);
     if (!subject || req.user.school !== subject.school) {
       req.flash("error", "You can not use this route. Try another one!");
       res.redirect("/subjects/batch/" + batchId + "/course/" + courseId);
