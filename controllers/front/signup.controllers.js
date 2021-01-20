@@ -35,6 +35,7 @@ controllers.signup = async (req, res) => {
   }
   if (error.length > 0) {
     res.render("front/signupForm", {
+      layout: "front",
       error: error,
       name: name,
       email: email,

@@ -1,29 +1,47 @@
 <div class="d-flex justify-content-between feature-header">
     <div>
-        <h3 class="content-head d-inline">{{featureTitle}} </h3> 
-        <span> » <a href="/subjects/batch/{{batch._id}}/course/{{course._id}}">{{batch.name}}</a> » {{course.name}}</span>
+        <h3 class="content-head d-inline">{{featureTitle}} </h3>
+        <span> » <a href="/subjects/batch/{{batch._id}}/course/{{course._id}}">{{batch.name}}</a> »
+            {{course.name}}</span>
     </div>
 </div>
 
 <div class="content-body">
     <section class="mt-2" id="content-types">
         <div class="row match-height">
-
             <div class="col-xl-5 col-md-6 col-sm-12  mx-auto">
                 <div class="card">
-                    <div class="card-content">
-                        <form action="/subject/import/batch/{{batch._id}}/course/{{course._id}}" method="POST">
+                    <div class="card-content my-1">
+                        <form action="/subject/import/batch/{{batch._id}}/course/{{course._id}}" method="POST"
+                            id="subjectForm">
                             <div class="card-body">
-                                <h4 class="card-title">Batch List</h4>
-                                <p class="card-text">Check the batches you want to import.</p>
-                                <hr class="my-2">
 
-                                {{#each subject}}
-                                <ul class="list-unstyled mb-0">
+                                <ul class="list-unstyled">
                                     <li class="d-inline-block mr-2">
                                         <fieldset>
                                             <div class="vs-checkbox-con vs-checkbox-primary">
-                                                <input type="checkbox" name="{{name}}" value="{{_id}}">
+                                                <input type="checkbox" onclick="selectAll()" id="checkAll">
+                                                <span class="vs-checkbox vs-checkbox-md">
+                                                    <span class="vs-checkbox--check">
+                                                        <i class="vs-icon feather icon-check"></i>
+                                                    </span>
+                                                </span>
+                                                <span>
+                                                    <b>Select All</b>
+                                                </span>
+                                            </div>
+                                        </fieldset>
+                                    </li>
+                                </ul>
+
+                                <hr>
+
+                                {{#each subject}}
+                                <ul class="list-unstyled mb-0">
+                                    <li class="d-inline-block mr-2 mb-1">
+                                        <fieldset>
+                                            <div class="vs-checkbox-con vs-checkbox-primary">
+                                                <input type="checkbox" name="{{name}}" value="{{_id}}" id="checkbox">
                                                 <span class="vs-checkbox vs-checkbox-md">
                                                     <span class="vs-checkbox--check">
                                                         <i class="vs-icon feather icon-check"></i>
@@ -37,10 +55,11 @@
                                 {{/each}}
                             </div>
 
-                            <div class="card-body">
-                                <hr class="my-2">
+                            <div class="card-body" style="margin-top: -30px;">
+                                <hr class="mb-2">
                                 <button type="submit" href="#" class="btn btn-primary">Import</button>
-                                <a href="/subjects/batch/{{batch._id}}/course/{{course._id}}" class="btn btn-danger">Cancel</a>
+                                <a href="/subjects/batch/{{batch._id}}/course/{{course._id}}"
+                                    class="btn btn-danger">Cancel</a>
                             </div>
                         </form>
                     </div>
@@ -49,3 +68,20 @@
         </div>
     </section>
 </div>
+
+<script>
+    function selectAll() {
+        let form = document.getElementById("subjectForm").elements;
+        let checkAll =  form["checkAll"];
+        let checkbox = form["checkbox"];
+        let i;
+        for (i = 0; i < form.length; i++) {
+            if (checkAll.checked === true) {
+                checkbox[i].checked = true;
+            } else {
+                checkbox[i].checked = false;
+            }
+        }
+
+    }
+</script>

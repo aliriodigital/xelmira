@@ -5,18 +5,18 @@ const { isAdmin } = require("../../permissions/permissions");
 
 const {
   read,
-  createForm,
+  createView,
   create,
-  updateForm,
-  update,
+  editView,
+  edit,
   remove,
 } = require("../../controllers/users/user.controllers");
 
 router.get("/users", isAuthenticated, isAdmin, read);
-router.get("/user/new", isAuthenticated, isAdmin, createForm);
+router.get("/user/new", isAuthenticated, isAdmin, createView);
 router.post("/user/new", isAuthenticated, isAdmin, create);
-router.get("/user/edit/:id", isAuthenticated, isAdmin, updateForm);
-router.post("/user/edit/:id", isAuthenticated, isAdmin, update);
+router.get("/user/edit/:id", isAuthenticated, isAdmin, editView);
+router.post("/user/edit/:id", isAuthenticated, isAdmin, edit);
 router.get("/user/remove/:id", isAuthenticated, isAdmin, remove);
 
 module.exports = router;

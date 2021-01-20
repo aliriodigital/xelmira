@@ -14,15 +14,15 @@ const userSchema = new Schema(
       unique: true,
       required: true,
     },
-    school: {
-      type: String,
-      required: true,
-    },
     password: {
       type: String,
       required: true,
     },
     role: {
+      type: String,
+      required: true,
+    },
+    school: {
       type: String,
       required: true,
     },

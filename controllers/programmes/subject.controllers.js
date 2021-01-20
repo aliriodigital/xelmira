@@ -9,12 +9,9 @@ controllers.read = async (req, res) => {
   const course = await Course.findById(courseId).lean();
   const batch = await Batch.findById(batchId).lean();
   const subject = await Subject.find({
-    $and:
-      [
-        { school: req.user.school },
-        { course: courseId },
-        { batch: batchId }
-      ]
+    school: req.user.school,
+    course: courseId,
+    batch: batchId,
   }).lean();
   res.render("programmes/subjects", {
     pageTitle: "Subjects",
@@ -51,12 +48,9 @@ controllers.bringIn = async (req, res) => {
     for (i = 0; i < arrLength; i++) {
       const preset = await Subject.find({ _id: arr[i] });
       const presetInUse = await Subject.findOne({
-        $and:
-          [
-            { school: req.user.school },
-            { batch: batchId },
-            { name: preset[0].name }
-          ]
+        school: req.user.school,
+        batch: batchId,
+        name: preset[0].name,
       });
       if (presetInUse) {
         req.flash("error", "No name duplicates are allowed. Please discard duplicates");
@@ -99,11 +93,9 @@ controllers.create = async (req, res) => {
   const { batchId, courseId } = req.params;
   const { name, description } = req.body;
   const subjectInUse = await Subject.findOne({
-    $and: [
-      { school: req.user.school },
-      { batch: batchId },
-      { name: name }
-    ]
+    school: req.user.school,
+    batch: batchId,
+    name: name,
   });
   const course = await Course.findById(courseId).lean();
   const batch = await Batch.findById(batchId).lean();
@@ -160,14 +152,11 @@ controllers.edit = async (req, res) => {
   const { name, description } = req.body;
   const subject = await Subject.findById(subjectId);
   const subjectInUse = await Subject.findOne({
-    $and:
-      [
-        { school: req.user.school },
-        { batch: batchId },
-        { name: name },
-        { _id: { $ne: subjectId } }
-      ]
-  })
+    school: req.user.school,
+    batch: batchId,
+    name: name,
+    _id: { $ne: subjectId }
+  });
   if (name.length < 1) {
     req.flash("error", "Please enter a name and try again");
     res.redirect("/subject/" + subjectId + "/edit/batch/" + batchId + "/course/" + courseId);

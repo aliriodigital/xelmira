@@ -12,7 +12,7 @@ controllers.read = async (req, res) => {
   });
 };
 
-controllers.createForm = async (req, res) => {
+controllers.createView = async (req, res) => {
   const role = await Role.find().lean();
   res.render("users/user-new", {
     pageTitle: "New User",
@@ -24,17 +24,17 @@ controllers.create = async (req, res) => {
   const { name, email, password, role } = req.body;
   const mailInUse = await User.findOne({ email: email });
   let error = "";
+  if (email.length < 1) {
+    error = "Please enter an email and try again";
+  }
+  if (mailInUse) {
+    error = "Email already taken. Please try a different email"
+  }
   if (password.length < 4) {
     error = "Please enter a password longer than 3 characters and try again";
   }
   if (role === "Select a role") {
     error = "Please select a role and try again"
-  }
-  if (mailInUse) {
-    error = "Email already taken. Please enter another email"
-  }
-  if (email.length < 1) {
-    error = "Please enter an email and try again";
   }
   if (name.length < 1) {
     error = "Please enter a name and try again";
@@ -60,7 +60,7 @@ controllers.create = async (req, res) => {
   }
 };
 
-controllers.updateForm = async (req, res) => {
+controllers.editView = async (req, res) => {
   const { id } = req.params;
   const user = await User.findById(id).lean();
   if (user.school !== req.user.school) {
@@ -74,7 +74,7 @@ controllers.updateForm = async (req, res) => {
   }
 };
 
-controllers.update = async (req, res) => {
+controllers.edit = async (req, res) => {
   const { id } = req.params;
   const { name, email, password } = req.body;
   let error = "";
@@ -88,9 +88,6 @@ controllers.update = async (req, res) => {
     error = "Please enter a name and try again";
   }
   if (error.length > 0) {
-    // req.session.name = name;
-    // req.session.email = email;
-    // req.session.password = password;
     req.flash("error", error);
     res.redirect("/user/edit/" + id);
   } else {

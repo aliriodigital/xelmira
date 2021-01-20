@@ -7,7 +7,10 @@ const controllers = {};
 controllers.read = async (req, res) => {
   const { courseId } = req.params;
   const course = await Course.findById(courseId).lean();
-  const batch = await Batch.find({ $and: [{ school: req.user.school }, { course: courseId }] }).lean();
+  const batch = await Batch.find({
+    school: req.user.school,
+    course: courseId,
+  }).lean();
   res.render("programmes/batches", {
     pageTitle: "Batches",
     featureTitle: "Manage Batches",
@@ -32,12 +35,9 @@ controllers.create = async (req, res) => {
   const { courseId } = req.params;
   const { name, description } = req.body;
   const batchInUse = await Batch.findOne({
-    $and:
-      [
-        { school: req.user.school },
-        { course: courseId },
-        { name: name }
-      ]
+    school: req.user.school,
+    course: courseId,
+    name: name,
   });
   const course = await Course.findById(courseId).lean();
   if (name.length < 1) {
@@ -88,12 +88,9 @@ controllers.edit = async (req, res) => {
   const { name, description } = req.body;
   const batch = await Batch.findById(id);
   const batchInUse = await Batch.findOne({
-    $and:
-      [
-        { school: req.user.school },
-        { name: name },
-        { _id: { $ne: id } },
-      ]
+    school: req.user.school,
+    name: name,
+    _id: { $ne: id },
   });
   if (name.length < 1) {
     req.flash("error", "Please enter a name and try again");
@@ -120,7 +117,6 @@ controllers.remove = async (req, res) => {
   const { id } = req.params;
   const batch = await Batch.findById(id);
   const countSubjects = await Subject.countDocuments({ batch: id });
-  console.log(countSubjects);
   if (!batch || req.user.school !== batch.school) {
     req.flash("error", "You can not remove this batch. Please try another one!");
     res.redirect("/batches");

@@ -23,10 +23,8 @@ controllers.createView = (req, res) => {
 controllers.create = async (req, res) => {
   const { name, description } = req.body;
   const courseInUse = await Course.findOne({
-    $and:
-      [
-        { school: req.user.school }, { name: name }
-      ]
+    school: req.user.school,
+    name: name,
   });
   if (name.length < 1) {
     errorMsg = "Please enter a name and try again";
@@ -72,14 +70,12 @@ controllers.editView = async (req, res) => {
 controllers.edit = async (req, res) => {
   const { id } = req.params;
   const { name, description } = req.body;
+  const course = await Course.findById(id);
   const courseInUse = await Course.findOne({
-    $and:
-      [
-        { school: req.user.school },
-        { name: name },
-        { _id: { $ne: id } }
-      ]
-  })
+    school: req.user.school,
+    name: name,
+    _id: { $ne: id }
+  });
   if (name.length < 1) {
     req.session.name = name;
     req.flash("error", "Please enter a name and try again");
@@ -88,9 +84,8 @@ controllers.edit = async (req, res) => {
     req.flash("error", `${name} is already taken. Please try a different name`);
     res.redirect("/course/edit/form/" + id);
   } else {
-    const course = await Course.findById(id);
     if (!course || req.user.school !== course.school) {
-      req.flash("error", "You can not use this route. Try another one!");
+      req.flash("error", "You are not authorized to view this page");
       res.redirect("/courses");
     } else {
       course.name = name;

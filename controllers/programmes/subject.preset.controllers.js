@@ -3,7 +3,10 @@ const Subject = require("../../models/Subject");
 const controllers = {};
 
 controllers.read = async (req, res) => {
-  const subject = await Subject.find({ $and: [{ school: req.user.school }, { preset: true }] }).lean();
+  const subject = await Subject.find({
+    school: req.user.school,
+    preset: true
+  }).lean();
   console.log(subject);
   res.render("programmes/subject-presets", {
     pageTitle: "Subject Presets",
@@ -25,12 +28,9 @@ controllers.createView = async (req, res) => {
 controllers.create = async (req, res) => {
   const { name, description } = req.body;
   const subjectInUse = await Subject.findOne({
-    $and:
-      [
-        { school: req.user.school },
-        { preset: true },
-        { name: name }
-      ]
+    school: req.user.school,
+    preset: true,
+    name: name,
   });
   if (name.length < 1) {
     error = "Please enter a name and try again";
@@ -80,13 +80,20 @@ controllers.editView = async (req, res) => {
 controllers.edit = async (req, res) => {
   const { subjectPresetId } = req.params;
   const { name, description } = req.body;
+  const subject = await Subject.findById(subjectPresetId);
+  const subjectInUse = await Subject.findOne({
+    school: req.user.school,
+    name: name,
+    _id: {$ne: subjectPresetId},
+  });
   if (name.length < 1) {
-    // req.session.name = name;
     req.flash("error", "The subject name field was blank. Please submit a name");
     res.redirect("/subject/preset/edit/" + subjectPresetId);
+  } else if (subjectInUse) {
+    req.flash("error", `${name} is already taken. Try a different name`);
+    res.redirect("/subject/preset/edit/" + subjectPresetId);
   } else {
-    const subject = await Subject.findById(subjectPresetId);
-    if (!subject ||  req.user.school !== subject.school) {
+    if (!subject || req.user.school !== subject.school) {
       req.flash("error", "You can not use this route. Try another one!");
       res.redirect("/subject/presets");
     } else {
@@ -102,7 +109,7 @@ controllers.edit = async (req, res) => {
 controllers.remove = async (req, res) => {
   const { subjectPresetId } = req.params;
   const subject = await Subject.findById(subjectPresetId);
-  if (!subject ||  req.user.school !== subject.school) {
+  if (!subject || req.user.school !== subject.school) {
     req.flash("error", "You can not remove this subject. Please try a different one!");
     res.redirect("/subject/presets");
   } else {

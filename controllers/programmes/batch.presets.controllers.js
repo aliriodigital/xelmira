@@ -3,7 +3,10 @@ const Batch = require("../../models/Batch");
 const controllers = {};
 
 controllers.read = async (req, res) => {
-  const batch = await Batch.find({$and:[ {school: req.user.school}, {preset: true} ]}).lean();
+  const batch = await Batch.find({
+    school: req.user.school,
+    preset: true,
+  }).lean();
   res.render("programmes/batch-presets", {
     pageTitle: "Batch Presets",
     featureTitle: "Manage Batch Presets",
@@ -22,7 +25,11 @@ controllers.createForm = async (req, res) => {
 
 controllers.create = async (req, res) => {
   const { name, description } = req.body;
-  const batchInUse = await Batch.findOne({ $and: [{school: req.user.school}, {preset: true}, {name: name}]});
+  const batchInUse = await Batch.findOne({
+    school: req.user.school,
+    preset: true,
+    name: name
+  });
   if (name.length < 1) {
     error = "Please enter a name and try again";
     res.render("programmes/batch-new", {
@@ -69,13 +76,22 @@ controllers.editForm = async (req, res) => {
 controllers.edit = async (req, res) => {
   const { id } = req.params;
   const { name, description } = req.body;
+  const batch = await Batch.findById(id);
+  const batchInUse = await Batch.findOne({
+    school: req.user.school,
+    preset: true,
+    name: name,
+    _id: { $ne: id },
+  });
   if (name.length < 1) {
     req.session.name = name;
     req.flash("error", "Please enter a name and try again");
     res.redirect("/batch/preset/edit/form/" + id);
+  } else if (batchInUse) {
+    req.flash("error", `${name} is already taken. Try a different name`);
+    res.redirect("/batch/preset/edit/form/" + id);
   } else {
-    const batch = await Batch.findById(id);
-    if (!batch ||  req.user.school !== batch.school) {
+    if (!batch || req.user.school !== batch.school) {
       req.flash("error", "You can not use this route. Try another one!");
       res.redirect("/batch/presets");
     } else {
@@ -91,7 +107,7 @@ controllers.edit = async (req, res) => {
 controllers.remove = async (req, res) => {
   const { id } = req.params;
   const batch = await Batch.findById(id);
-  if (!batch ||  req.user.school !== batch.school) {
+  if (!batch || req.user.school !== batch.school) {
     req.flash("error", "You can not remove this batch. Please try another one!");
     res.redirect("/batch/presets");
   } else {

@@ -1,9 +1,9 @@
 const Role = require("../../models/Role");
-const { trim } = require("../../utils/formatString");
+const { presetRoleInUse } = require("../../utils/presetRoleInUse");
 const controllers = {};
 
 controllers.read = async (req, res) => {
-  const roles = await Role.find().lean();
+  const roles = await Role.find({ school: req.user.school }).lean();
   res.render("users/roles", {
     pageTitle: "Manage Roles",
     roleLink: true,
@@ -11,52 +11,75 @@ controllers.read = async (req, res) => {
   });
 };
 
-controllers.createForm = (req, res) => {
+controllers.createView = (req, res) => {
   res.render("users/role-new", {
     pageTitle: "New Role",
+    roleLink: true,
   });
 };
 
 controllers.create = async (req, res) => {
   const { name, description } = req.body;
-  if (name.length < 1) {    
+  const roleInUse = await Role.findOne({
+    school: req.user.school,
+    name: name.toLowerCase(),
+  });
+  if (name.length < 1) {
     error = "Please enter a name and try again";
     res.render("users/role-new", {
       name: name,
       description: description,
       error: error,
     });
+  } else if (roleInUse || presetRoleInUse(name)) {
+    req.flash("error", `${name} is already in use. Please try a different name`);
+    res.redirect("/role/new");
   } else {
     const role = await new Role(req.body);
-    role.name = trim(name);
-    role.description = trim(description);
+    role.name = name;
+    role.description = description;
+    role.school = req.user.school;
+    role.creatorUser = req.user.id;
     role.save();
     res.redirect("/roles");
   }
 };
 
-controllers.updateForm = async (req, res) => {
+controllers.editView = async (req, res) => {
   const { id } = req.params;
   const role = await Role.findById(id).lean();
-  res.render("users/role-edit", {
-    pageTitle: "Edit Role",
-    role: role,
-  });
+  if(!role || role.school !== req.user.school) {
+    req.flash("error", "You are not authorized to edit the requested page");
+    res.redirect("/roles");
+  } else {
+    res.render("users/role-edit", {
+      pageTitle: "Edit Role",
+      role: role,
+    });
+  }
 };
 
-controllers.update = async (req, res) => {
+controllers.edit = async (req, res) => {
   const { id } = req.params;
   const { name, description } = req.body;
+  const role = await Role.findById(id);
+  const roleInUse = await Role.findOne({
+    school: req.user.school,
+    name: name.toLowerCase(),
+    _id: { $ne: id },
+  });
   if (name.length < 1) {
-    error = "Please enter a password and try again";
-    req.session.name = name;
-    req.session.description = email;
-    req.flash("error", error);
+    req.flash("error", "The name field was blank. Submit a name and try again");
+    res.redirect("/role/edit/" + id);
+  } else if (!role || role.school !== req.user.school) {
+    req.flash("error", "You are not authorized to edit the requested page");
+    res.redirect("/roles");
+  } else if (roleInUse || presetRoleInUse(name)) {
+    req.flash("error", `${name} is already in use. Please try a different name`);
     res.redirect("/role/edit/" + id);
   } else {
-    const role = await Role.findById(id);
-    role.name = trim(name);
-    role.description = trim(description);
+    role.name = name;
+    role.description = description;
     role.save();
     res.redirect("/roles");
   }
@@ -65,8 +88,13 @@ controllers.update = async (req, res) => {
 controllers.remove = async (req, res) => {
   const { id } = req.params;
   const role = await Role.findById({ _id: id });
-  role.remove();
-  res.redirect("/roles");
+  if(!role || role.school !== req.user.school) {
+    req.flash("error", "You are not authorized to access this route");
+    res.redirect("/roles");
+  } else {
+    role.remove();
+    res.redirect("/roles");
+  }
 };
 
 module.exports = controllers;
