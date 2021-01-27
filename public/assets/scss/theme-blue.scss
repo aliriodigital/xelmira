@@ -304,6 +304,11 @@ input:focus ~ .bg-primary {
   box-shadow: none;
 }
 
+.main-menu.menu-light .navigation > li .active {
+  color: $blue;
+  background: none;
+}
+
 /* FORM CONTROL */
 .form-control:focus {
   border-color: $blue;

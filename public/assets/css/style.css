@@ -153,3 +153,7 @@ html body.navbar-sticky .app-content .content-wrapper {
     margin-bottom: 15px;
   }  
 }
+
+.radiobtn label {
+  font-size: 13px;
+}

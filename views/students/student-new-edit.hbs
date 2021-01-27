@@ -1,6 +1,7 @@
 <div class="d-flex justify-content-between feature-header">
     <div>
-        <h3 class="content-head">Edit User</h3>
+        <h3 class="content-head d-inline">{{featureTitle}}</h3> »
+        <span><a href="/students"> Students</a></span>
     </div>
 </div>
 
@@ -11,16 +12,39 @@
                 <div class="card py-2">
                     <div class="card-content">
                         <div class="card-body">
-                            <form action="/user/edit/{{user._id}}" method="POST" class="form form-horizontal">
+                            <form action="{{action}}" method="POST" class="form form-horizontal">
                                 <div class="form-body">
                                     <div class="row">
+
                                         <div class="col-12">
                                             <div class="form-group row">
                                                 <div class="col-md-4">
-                                                    <span>Name</span>
+                                                    <span>First Name</span>
                                                 </div>
                                                 <div class="col-md-8">
-                                                    <input type="text" id="name" class="form-control" name="name"
+                                                    <input type="text" id="firstname" class="form-control" name="firstname"
+                                                        value="{{user.name}}" autofocus>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group row">
+                                                <div class="col-md-4">
+                                                    <span>Middle Name</span>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <input type="text" id="middlename" class="form-control" name="middlename"
+                                                        value="{{user.name}}" autofocus>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group row">
+                                                <div class="col-md-4">
+                                                    <span>Last Name</span>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <input type="text" id="lastname" class="form-control" name="lastname"
                                                         value="{{user.name}}" autofocus>
                                                 </div>
                                             </div>
@@ -40,18 +64,18 @@
                                         <div class="col-12">
                                             <div class="form-group row">
                                                 <div class="col-md-4">
-                                                    <span>Password1</span>
+                                                    <span>Phone</span>
                                                 </div>
                                                 <div class="col-md-8">
-                                                    <input type="password" id="password" class="form-control"
-                                                        name="password" value="{{user.password}}">
+                                                    <input type="text" id="phone" class="form-control" name="phone"
+                                                        value="{{student.email}}">
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="col-md-8 offset-md-4">
                                             <button type="submit" class="btn btn-primary mr-1 mb-1"
-                                                href="#">Update</button>
+                                                href="#">Create</button>
                                             <a class="btn btn-secondary mr-1 mb-1" href="/users">Cancel</a>
                                         </div>
                                     </div>

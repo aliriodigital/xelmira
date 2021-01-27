@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "sass": "node-sass public/assets/scss/theme-blue.scss public/assets/css/theme-blue.css -w"
   },
   "repository": {
     "type": "git",
@@ -39,5 +40,7 @@
     "passport": "^0.4.1",
     "passport-local": "^1.0.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "node-sass": "^5.0.0"
+  }
 }

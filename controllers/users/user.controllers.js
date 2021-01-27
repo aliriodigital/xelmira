@@ -14,8 +14,11 @@ controllers.read = async (req, res) => {
 
 controllers.createView = async (req, res) => {
   const role = await Role.find().lean();
-  res.render("users/user-new", {
+  res.render("users/user-new-edit", {
     pageTitle: "New User",
+    featureTitle: "Create User",
+    action: "/user/new",
+    userLink: true,
     roles: role,
   });
 };
@@ -63,20 +66,25 @@ controllers.create = async (req, res) => {
 controllers.editView = async (req, res) => {
   const { id } = req.params;
   const user = await User.findById(id).lean();
+  const roles = await Role.find().lean();
+  // let userRole = user.role === role.name? true : false;
   if (user.school !== req.user.school) {
-    req.flash("error", "You can not view this route. Try another one.");
+    req.flash("error", "You can not view this route. Try a different one");
     res.redirect("/users");
   } else {
-    res.render("users/user-edit", {
+    res.render("users/user-new-edit", {
       pageTitle: "Edit User",
+      featureTitle: "Edit User",
+      action: "/user/edit/" + id,
       user: user,
+      roles: roles, 
     });
   }
 };
 
 controllers.edit = async (req, res) => {
   const { id } = req.params;
-  const { name, email, password } = req.body;
+  const { name, email, role, password } = req.body;
   let error = "";
   if (password.length < 1) {
     error = "Please enter a password and try again";
@@ -99,6 +107,7 @@ controllers.edit = async (req, res) => {
       user.password = await user.encryptPassword(password);
       user.name = name;
       user.email = email;
+      user.role = role;
       user.save();
       res.redirect("/users");
     }

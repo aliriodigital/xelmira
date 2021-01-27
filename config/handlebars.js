@@ -12,6 +12,10 @@ const hbs = expressHandlebars.create({
     json: (context) => {
       return JSON.stringify(context);
     },
+    check: (property1, property2) => {
+      let validate = property1 === property2 ? "checked" : "";
+      return validate;
+    },
     field: (obj, fieldname) => {
       //Serves properties of global objects
       return obj &&  typeof obj[fieldname] !== 'undefined' ? obj[fieldname] : '';

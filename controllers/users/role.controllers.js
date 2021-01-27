@@ -1,4 +1,6 @@
+const { count } = require("../../models/Role");
 const Role = require("../../models/Role");
+const User = require("../../models/User");
 const { presetRoleInUse } = require("../../utils/presetRoleInUse");
 const controllers = {};
 
@@ -88,9 +90,16 @@ controllers.edit = async (req, res) => {
 controllers.remove = async (req, res) => {
   const { id } = req.params;
   const role = await Role.findById({ _id: id });
+  const countUsersWithRole = await User.countDocuments({
+    role: {$in: role.name},
+  });
+  console.log(countUsersWithRole);
   if(!role || role.school !== req.user.school) {
     req.flash("error", "You are not authorized to access this route");
     res.redirect("/roles");
+  } else if (countUsersWithRole > 0) {
+    req.flash("error", "Imposible to remove because there are users associated");
+    res. redirect("/roles");
   } else {
     role.remove();
     res.redirect("/roles");
