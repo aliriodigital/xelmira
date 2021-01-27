@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/aliriodigital/xelmira#readme",
   "dependencies": {
-    "axios": "^0.20.0",
+    "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
     "connect-flash": "^0.1.1",
     "connect-mongo": "^3.2.0",
