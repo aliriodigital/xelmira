@@ -24,7 +24,38 @@ const studentSchema = new Schema(
             type: String,
             required: true,
         },
+        batch: {
+            type: String,
+            required: true,
+        },
+        firstClass: {
+            type: Date,
+            required: true,
+        },
+        idType: {
+            type: String,
+            required: true,
+        },
+        idNumber: {
+            type: String,
+            required: true,
+        },
+        gender: {
+            type: String,
+            required: true,
+        },
+        birthdate: {
+            type: Date,
+            required: true,
+        },
+        insurance: {
+            type: String,
+            required: true,
+        },
         phone: String,
+        mobile: String,
+        address: String,
+        notes: String,
     },
     { timestamps: true }
 );

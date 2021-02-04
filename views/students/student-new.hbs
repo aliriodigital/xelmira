@@ -1,0 +1,167 @@
+<div class="d-flex justify-content-between feature-header">
+    <div>
+        <h3 class="content-head d-inline">{{featureTitle}}</h3> »
+        <span><a href="/students"> Students</a></span>
+    </div>
+</div>
+
+<div class="content-body">
+    <section id="basic-horizontal-layouts">
+        <div class="row match-height">
+            <div class="col-12 mx-auto">
+                <div class="card py-2">
+                    <div class="card-content">
+                        <div class="card-body">
+                            <form action="{{action}}" method="POST" class="form form-horizontal">
+                                <div class="form-body">
+                                    <div class="row">
+
+                                        <div class="col-md-4 col-12">
+                                            <div class="form-group">
+                                                <label for="firstname">First Name</label>
+                                                <input type="text" id="firstname" class="form-control" name="firstname"
+                                                    value="{{firstname}}" autofocus>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4 col-12">
+                                            <div class="form-group">
+                                                <label for="middlename">Middle Name</label>
+                                                <input type="text" id="middlename" class="form-control"
+                                                    name="middlename" value="{{middlename}}" autofocus>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4 col-12">
+                                            <div class="form-group">
+                                                <label for="lastname">Last Name</label>
+                                                <input type="text" id="lastname" class="form-control" name="lastname"
+                                                    value="{{lastname}}" autofocus>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4 col-12">
+                                            <div class="form-group">
+                                                <label for="batch">Batch</label>
+                                                <select class="form-control" id="batch" name="batch">
+                                                    <option selected>Select a batch</option>
+                                                    {{#each batches}}
+                                                    <option value="{{name}}" {{selected ../batch name}}>{{name}}
+                                                    </option>
+                                                    {{/each}}
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4 col-12">
+                                            <div class="form-group">
+                                                <label for="firstclass">First Class Date</label>
+                                                <input type="date" id="firstclass" class="form-control"
+                                                    name="firstclass" value="{{firstclass}}">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4 col-12">
+                                            <div class="form-group">
+                                                <label for="idtype">ID Type</label>
+                                                <select class="form-control" id="idtype" name="idtype">
+                                                    <option selected>Select an ID type</option>
+                                                    <option value="registrocivil" {{selected idtype "registrocivil"}}>
+                                                        Registro Civil</option>
+                                                    <option value="passportid" {{selected idtype "passportid"}}>Passport
+                                                        ID</option>
+                                                    <option value="other" {{selected idtype "other"}}>Other</option>
+
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4 col-12">
+                                            <div class="form-group">
+                                                <label for="idnumber">ID Number</label>
+                                                <input type="text" id="idnumber" class="form-control" name="idnumber"
+                                                    value="{{idnumber}}">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4 col-12">
+                                            <div class="form-group">
+                                                <label for="gender">Gender</label>
+                                                <select class="form-control" id="gender" name="gender">
+                                                    <option selected>Select a gender</option>
+                                                    <option value="male" {{selected gender "male"}}>Male</option>
+                                                    <option value="female" {{selected gender "female"}}>Female</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4 col-12">
+                                            <div class="form-group">
+                                                <label for="email">Email</label>
+                                                <input type="email" id="email" class="form-control" name="email"
+                                                    value="{{email}}">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4 col-12">
+                                            <div class="form-group">
+                                                <label for="birthdate">Birth Date</label>
+                                                <input type="date" id="birthdate" class="form-control" name="birthdate"
+                                                    value="{{birthdate}}">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4 col-12">
+                                            <div class="form-group">
+                                                <label for="insurance">Health Insurance</label>
+                                                <input type="text" id="insurance" class="form-control" name="insurance"
+                                                    value="{{insurance}}">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4 col-12">
+                                            <div class="form-group">
+                                                <label for="phone">Phone</label>
+                                                <input type="text" id="phone" class="form-control" name="phone"
+                                                    value="{{phone}}">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4 col-12">
+                                            <div class="form-group">
+                                                <label for="mobile">Mobile</label>
+                                                <input type="text" id="mobile" class="form-control" name="mobile"
+                                                    value="{{mobile}}">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4 col-12">
+                                            <div class="form-group">
+                                                <label for="address">Address</label>
+                                                <textarea id="address" class="form-control" name="address">{{address}}</textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4 col-12">
+                                            <div class="form-group">
+                                                <label for="notes">Admission Notes</label>
+                                                <textarea id="notes" class="form-control"
+                                                    name="notes">{{notes}}</textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="mx-auto">
+                                            <button type="submit" class="btn btn-primary mr-1 mb-1"
+                                                href="#">Save</button>
+                                            <a class="btn btn-secondary mr-1 mb-1" href="/students">Cancel</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

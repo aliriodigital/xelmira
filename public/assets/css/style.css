@@ -157,3 +157,37 @@ html body.navbar-sticky .app-content .content-wrapper {
 .radiobtn label {
   font-size: 13px;
 }
+
+.form-label-group > input:not(:placeholder-shown) ~ label {
+  font-size: 0.9rem;
+  top: -23px;
+}
+
+.feature-header {
+  margin-bottom: 20px;
+}
+
+.card {
+  padding-top: 5px !important;
+  padding-bottom: 0 !important;
+}
+
+label {
+  font-size: 13px;
+  color: #979797;
+}
+
+
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: #626262 !important;
+}
+::-moz-placeholder { /* Firefox 19+ */
+  color: #626262 !important;
+}
+:-ms-input-placeholder { /* IE 10+ */
+  color: #626262 !important;
+}
+:-moz-placeholder { /* Firefox 18- */
+  color: #626262 !important;
+}
