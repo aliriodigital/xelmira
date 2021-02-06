@@ -51,20 +51,22 @@ controllers.create = async (req, res) => {
   } = req.body;
   const mailInUse = await User.findOne({ email: email });
   let error = "";
-  if (firstname.length < 1) error = "Please enter First Name";
-  if (lastname.length < 1) error = "Please enter Last Name";
-  if (batch === "Select a batch") error = "Please select a Batch";
-  if (firstclass === "") error = "Please enter a First Class Date";
-  if (idtype === "Select an ID type") error = "Please enter an ID Type";
-  if (idnumber.length < 1) error = "Please enter an ID Number";
-  if (gender === "Select a gender") error = "Please enter a Gender";
-  if (email.length < 1) error = "Please enter an Email";
-  if (mailInUse) error = "Email already taken. Please try a different email";
-  if (birthdate.length < 1) error = "Please enter a Birth Date";
-  if (insurance.length < 1) error = "Please enter a Health Insurance";
-  if (phone.length < 1 || /[A-z]/.test(phone)) error = "Please enter a real phone number";
-  if (mobile.length < 1 || /[A-z]/.test(mobile)) error = "Please enter a real mobile number";
-  if (address.length < 1) error = "Please enter an address";
+  if (firstname === "") error = "Enter First Name";
+  if (lastname === "") error = "Enter Last Name";
+  if (batch === "Select a batch") error = "Select a Batch";
+  if (firstclass === "") error = "Enter a First Class Date";
+  if (idtype === "Select an ID type") error = "Enter an ID Type";
+  if (idnumber === "" || /[A-z]/.test(idnumber))
+    error = "Enter a valid ID Number";
+  if (gender === "Select a gender") error = "Enter a Gender";
+  if (email === "") error = "Enter an email";
+  if (mailInUse) error = "Email already taken. Try a different email";
+  if (birthdate === "") error = "Enter a birth date";
+  if (insurance === "") error = "Enter a Health Insurance";
+  if (phone === "" || /[A-z]/.test(phone)) error = "Enter a valid phone number";
+  if (mobile === "" || /[A-z]/.test(mobile))
+    error = "Enter a real mobile number";
+  if (address === "") error = "Enter an address";
   if (error.length > 0) {
     const batches = await Batch.find({ school: req.user.school }).lean();
     res.render("students/student-new", {
@@ -99,14 +101,14 @@ controllers.create = async (req, res) => {
     student.middleName = middlename;
     student.lastName = lastname;
     student.batch = batch;
-    student.firstClass = firstclass,
-      student.idType = idtype,
-      student.idNumber = idnumber,
-      student.gender = gender;
-    student.birthdate = birthdate;
+    student.firstClass = firstclass;
+    student.idType = idtype;
+    student.idNumber = idnumber;
+    student.gender = gender;
+    student.birthDate = birthdate;
     student.phone = phone;
-    student.mobile = mobile,
-      student.address = address;
+    student.mobile = mobile;
+    student.address = address;
     student.insurance = insurance;
     student.notes = notes;
     await student.save();
@@ -124,13 +126,10 @@ controllers.create = async (req, res) => {
 
 controllers.editView = async (req, res) => {
   const { id } = req.params;
-  const student = await Student.findOne({
-    school: req.user.school,
-    _id: id,
-  }).populate("userId").lean();
+  const student = await Student.findById(id).populate("userId").lean();
   const batches = await Batch.find().lean();
-  if (student.school !== req.user.school) {
-    req.flash("error", "You can not view this route. Try a different one");
+  if (student.userId.school !== req.user.school) {
+    req.flash("error", "You can not view this route");
     res.redirect("/students");
   } else {
     res.render("students/student-edit", {
@@ -139,62 +138,107 @@ controllers.editView = async (req, res) => {
       action: "/student/edit/" + id,
       student: student,
       batches: batches,
-      // user: user,
-      // roles: roles, 
     });
   }
 };
 
-// controllers.edit = async (req, res) => {
-//   const { id } = req.params;
-//   const { name, email, password } = req.body;
-//   let error = "";
-//   if (password.length < 1) {
-//     error = "Please enter a password and try again";
-//   }
-//   if (email.length < 1) {
-//     error = "Please enter an email and try again";
-//   }
-//   if (name.length < 1) {
-//     error = "Please enter a name and try again";
-//   }
-//   if (error.length > 0) {
-//     req.flash("error", error);
-//     res.redirect("/user/edit/" + id);
-//   } else {
-//     const user = await User.findById(id);
-//     if (user.school !== req.user.school) {
-//       req.flash("error", "You can not view this route. Try another one.");
-//       res.redirect("/users");
-//     } else {
-//       user.password = await user.encryptPassword(password);
-//       user.name = name;
-//       user.email = email;
-//       user.save();
-//       res.redirect("/users");
-//     }
-//   }
-// };
-
-controllers.profile = async (req, res) => {
-  res.render("students/student.profile", {
-
-  })
+controllers.edit = async (req, res) => {
+  const { id } = req.params;
+  let {
+    firstname,
+    middlename,
+    lastname,
+    batch,
+    firstclass,
+    idtype,
+    idnumber,
+    gender,
+    email,
+    birthdate,
+    insurance,
+    phone,
+    mobile,
+    address,
+    notes,
+  } = req.body;
+  const student = await Student.findById(id).populate("userId");
+  const user = await User.findById({ _id: student.userId._id });
+  const batches = await Batch.find({ school: req.user.school }).lean();
+  const mailInUse = await User.findOne({
+    school: req.user.school,
+    email: email,
+    _id: { $ne: student.userId._id },
+  });
+  if (user.school !== req.user.school) {
+    req.flash("error", "You can not view this route");
+    res.redirect("/students");
+  }
+  let error = "";
+  if (firstname === "") error = "First Name was empty.";
+  if (lastname === "") error = "Last Name was empty.";
+  if (batch === "Select a batch") error = "No batch was selected";
+  if (firstclass === "") error = "No First Class Date was set";
+  if (idtype === "Select an ID type") error = "No ID Type was selected";
+  if (idnumber === "" || /[A-z]/.test(idnumber))
+    error = "ID Number was invalid or empty";
+  if (gender === "Select a gender") error = "Gender was empty";
+  if (email === "") error = "Email was empty";
+  if (mailInUse) error = "Email already taken. Try a different email";
+  if (birthdate === "") error = "No Birth date was set";
+  if (insurance === "") error = "Health Insurance was empty";
+  if (phone === "" || /[A-z]/.test(phone)) error = "Phone was invalid or empty";
+  if (mobile === "" || /[A-z]/.test(mobile))
+    error = "Mobile number was invalid or empty";
+  if (address === "") error = "Address was empty";
+  if (error.length > 0) {
+    req.flash("error", "Error: " + error);
+    res.redirect("/student/edit/" + id);
+  } else {
+    student.firstName = firstname;
+    student.middleName = middlename;
+    student.lastName = lastname;
+    student.batch = batch;
+    student.firstClass = firstclass;
+    student.idType = idtype;
+    student.idNumber = idnumber;
+    student.gender = gender;
+    student.birthDate = birthdate;
+    student.phone = phone;
+    student.mobile = mobile;
+    student.address = address;
+    student.insurance = insurance;
+    student.notes = notes;
+    await student.save();
+    user.name = `${firstname} ${middlename} ${lastname}`;
+    user.email = email;
+    await user.save();
+    res.redirect("/students");
+  }
 };
 
 controllers.remove = async (req, res) => {
   const { id } = req.params;
   const student = await Student.findById(id);
   const user = await User.findById(student.userId);
-  // if (user.school !== req.user.school) {
-  //   req.flash("error", "You can not view this route. Try another one.");
-  //   res.redirect("/users");
-  // } else {
-  student.remove();
-  user.remove();
+  if (user.school !== req.user.school) {
+    req.flash("error", "You can not view this route");
+    res.redirect("/students");
+  } else {
+    student.remove();
+    user.remove();
+    res.redirect("/students");
+  }
+};
 
-  res.redirect("/students");
-  // }
+controllers.profile = async (req, res) => {
+  const { id } = req.params;
+  const student = await Student.findById(id).populate("userId").lean();
+  res.render("students/student-profile", {
+    pageTitle: "Student Profile",
+    featureTitle: "Student Profile",
+    studentLink: true,
+    student,
+  });
 };
 
 module.exports = controllers;

@@ -8,17 +8,17 @@ const {
   createView,
   create,
   editView,
-  // edit,
-  profile,
+  edit,
   remove,
+  profile,
 } = require("../../controllers/students/student.controllers");
 
 router.get("/students", isAuthenticated, isAdmin, read);
 router.get("/student/new", isAuthenticated, isAdmin, createView);
 router.post("/student/new", isAuthenticated, isAdmin, create);
 router.get("/student/edit/:id", isAuthenticated, isAdmin, editView);
-// router.post("/student/edit/:id", isAuthenticated, isAdmin, edit);
-router.get("/student/profile/:id", isAuthenticated, isAdmin, profile);
+router.post("/student/edit/:id", isAuthenticated, isAdmin, edit);
 router.get("/student/remove/:id", isAuthenticated, isAdmin, remove);
+router.get("/student/profile/:id", isAuthenticated, isAdmin, profile);
 
 module.exports = router;

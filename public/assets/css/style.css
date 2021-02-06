@@ -26,7 +26,7 @@ WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BET
 
 @media (max-width: 575.98px) {
   #new-crud-btn {
-    margin-top: -10px !important;
+    margin-top: -13px !important;
     margin-bottom: 10px !important;
   }
 }
@@ -164,7 +164,8 @@ html body.navbar-sticky .app-content .content-wrapper {
 }
 
 .feature-header {
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
+  height: 2.8rem;
 }
 
 .card {
@@ -176,7 +177,6 @@ label {
   font-size: 13px;
   color: #979797;
 }
-
 
 
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
@@ -191,3 +191,23 @@ label {
 :-moz-placeholder { /* Firefox 18- */
   color: #626262 !important;
 }
+
+.profile-header-bottom {
+  border-bottom: 1px #e0e0e0 solid;
+  height: 25px;
+}
+
+.student-profile {
+  padding-top: 0;
+}
+
+
+/* @media (max-width: 1000px) {
+  .profile-avatar {
+    margin-bottom: 25px !important;
+  }
+}
+
+.student-details {
+  margin-top: 10px;
+} */
