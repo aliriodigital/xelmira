@@ -1,0 +1,185 @@
+<div class="d-flex justify-content-between feature-header">
+    <div>
+        <h3 class="content-head d-inline">{{featureTitle}}</h3> »
+        <span>
+            <a href="/student/profile/{{student._id}}">
+                {{student.firstName}}
+                {{student.middleName}}
+                {{student.lastName}}
+            </a>
+        </span>
+    </div>
+</div>
+
+<div class="content-body">
+    <section id="basic-horizontal-layouts">
+        <div class="row match-height">
+            <div class="col-12 mx-auto">
+                <div class="card py-2">
+                    <div class="card-content">
+                        <div class="card-body">
+                            <form action="{{action}}" method="POST" class="form form-horizontal">
+                                <div class="form-body">
+                                    <div class="row">
+                                        <div class="col-md-4 col-12">
+                                            <div class="form-group">
+                                                <label for="firstname">First Name</label>
+                                                <input type="text" id="firstname" class="form-control" name="firstname"
+                                                    value="{{firstname}}">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4 col-12">
+                                            <div class="form-group">
+                                                <label for="middlename">Middle Name</label>
+                                                <input type="text" id="middlename" class="form-control"
+                                                    name="middlename" value="{{middlename}}">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4 col-12">
+                                            <div class="form-group">
+                                                <label for="lastname">Last Name</label>
+                                                <input type="text" id="lastname" class="form-control" name="lastname"
+                                                    value="{{lastname}}">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-4 col-12">
+                                            <div class="form-group">
+                                                <label for="kinship">Kinship</label>
+                                                <select class="form-control" id="kinship" name="kinship">
+                                                    <option selected>Select a kinship</option>
+                                                    <option value="Mother" {{selected kinship "Mother"}}>Mother
+                                                    </option>
+                                                    <option value="Father" {{selected kinship "Father"}}>Father
+                                                    </option>
+                                                    <option value="Aunt" {{selected kinship "Aunt"}}>Aunt
+                                                    </option>
+                                                    <option value="Uncle" {{selected kinship "Uncle"}}>Uncle
+                                                    </option>
+                                                    <option value="Sibling" {{selected kinship "Sibling"}}>Sibling
+                                                    </option>
+                                                    <option value="Grant Mother" {{selected kinship "Grant Mother"}}>
+                                                        Grant Mother
+                                                    </option>
+                                                    <option value="Grant Father" {{selected kinship "Grant Father"}}>
+                                                        Grant Father
+                                                    </option>
+                                                    <option value="Other" {{selected kinship "Other"}}>Other
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4 col-12">
+                                            <div class="form-group">
+                                                <label for="idtype">ID Type</label>
+                                                <select class="form-control" id="idtype" name="idtype">
+                                                    <option selected>Select an ID type</option>
+                                                    <option value="Cédula De Ciudadanía"
+                                                        {{selected idtype "Cédula De Ciudadanía"}}>
+                                                        Cédula De Ciudadanía</option>
+                                                    <option value="Registro Civil" {{selected idtype "Registro Civil"}}>
+                                                        Registro Civil</option>
+                                                    <option value="Passport ID" {{selected idtype "Passport ID"}}>
+                                                        Passport
+                                                        ID</option>
+                                                    <option value="Other" {{selected idtype "Other"}}>Other</option>
+
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4 col-12">
+                                            <div class="form-group">
+                                                <label for="idnumber">ID Number</label>
+                                                <input type="text" id="idnumber" class="form-control" name="idnumber"
+                                                    value="{{idnumber}}">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-4 col-12">
+                                            <div class="form-group">
+                                                <label for="gender">Gender</label>
+                                                <select class="form-control" id="gender" name="gender">
+                                                    <option selected>Select a gender</option>
+                                                    <option value="Male" {{selected gender "Male"}}>Male</option>
+                                                    <option value="Female" {{selected gender "Female"}}>Female</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4 col-12">
+                                            <div class="form-group">
+                                                <label for="email">Email</label>
+                                                <input type="email" id="email" class="form-control" name="email"
+                                                    value="{{email}}">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4 col-12">
+                                            <div class="form-group">
+                                                <label for="birthdate">Birth Date</label>
+                                                <input type="date" id="birthdate" class="form-control" name="birthdate"
+                                                    value="{{birthdate}}">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-4 col-12">
+                                            <div class="form-group">
+                                                <label for="phone">Phone</label>
+                                                <input type="text" id="phone" class="form-control" name="phone"
+                                                    value="{{phone}}">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4 col-12">
+                                            <div class="form-group">
+                                                <label for="mobile">Mobile</label>
+                                                <input type="text" id="mobile" class="form-control" name="mobile"
+                                                    value="{{mobile}}">
+                                            </div>
+                                        </div>
+
+                                        
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-4 col-12">
+                                            <div class="form-group">
+                                                <label for="address">Address</label>
+                                                <textarea id="address" class="form-control"
+                                                    name="address">{{address}}</textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4 col-12">
+                                            <div class="form-group">
+                                                <label for="notes">Notes</label>
+                                                <textarea id="notes" class="form-control"
+                                                    name="notes">{{notes}}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-primary mr-1 mb-1" href="#">Save</button>
+                                        <a class="btn btn-secondary mr-1 mb-1" href="/student/profile/{{student._id}}">Cancel</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

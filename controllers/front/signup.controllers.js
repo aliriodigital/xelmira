@@ -15,47 +15,53 @@ controllers.signupForm = (req, res) => {
 };
 
 controllers.signup = async (req, res) => {
-  const { name, email, password, confirmPassword } = req.body;
-  const mailInUse = await User.findOne({ email: email });
+  const { 
+    name,
+    school,
+    email, 
+    username,
+    password, 
+    confirmPassword 
+  } = req.body;
+
+  const usernameInUse = await User.findOne({ username: username });
+  const schoolInUse = await School.findOne({name: school.toLowerCase()});
+  console.log(schoolInUse);
   let error = "";
-  if (password.length < 4) {
-    error = "Password must be longer than 3 characters and try again";
-  }
-  if (password !== confirmPassword) {
-    error = "Password and confirm password must match";
-  }
-  if (mailInUse) {
-    error = "Email is already taken. Please enter another email";
-  }
-  if(email.length < 1) {
-    error = "Please enter an email and try again";
-  }
-  if(name.length < 1) {
-    error = "Please enter a name and try again"
-  }
+  if (password.length < 4) error = "Password must be longer than 3 characters";
+  if (password !== confirmPassword) error = "Password and confirm password must match";
+  if (username === "") error = "Enter a username";
+  if (usernameInUse) error = "Username already taken. Enter another username";
+  if (email === "") error = "Enter an email";
+  if (school === "") error = "Enter a school name";
+  if (schoolInUse) error = "School already taken. Try another school.";
+  if (name === "") error = "Enter a name";
   if (error.length > 0) {
     res.render("front/signupForm", {
       layout: "front",
       error: error,
       name: name,
+      school: school,
       email: email,
+      username: username,
       password: password,
       confirmPassword: confirmPassword,
     });
   } else {
     const addSchool = new School({});
-    addSchool.name = "";
+    addSchool.name = school;
     addSchool.description = "";
     await addSchool.save();
 
     const user = new User(req.body);
+    user.name = name;
+    user.username = username;
     user.password = await user.encryptPassword(password);
-    const role = await Role.findOne({name: "admin"});
-    user.role = role.name;
-    user.school = addSchool.id;
+    user.role = "admin";
+    user.school = addSchool._id;
     user.creatorUser = "_tenant";
     await user.save();
-    req.flash("success", "Congrats! Your registration was done.");
+    req.flash("success", "Congrats! Your registration is done.");
     res.redirect("/signin");
   }
 };
