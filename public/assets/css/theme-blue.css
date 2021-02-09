@@ -204,7 +204,7 @@ input:focus ~ .bg-primary {
 
 .vs-radio-primary input:checked ~ .vs-radio .vs-radio--circle {
   background: #53aef8 !important;
-  box-shadow: 0 3px 12px 0 rgba(36, 134, 214, 0.548) !important; }
+  box-shadow: 0 3px 12px 0 #044da1 !important; }
 
 /* BUTTON OUTLINE PRIMARY */
 .btn-outline-primary {
@@ -218,7 +218,7 @@ input:focus ~ .bg-primary {
 
 .btn-outline-primary:focus,
 .btn-outline-primary.focus {
-  box-shadow: 0 0 0 0.2rem rgba(36, 134, 214, 0.548); }
+  box-shadow: 0 0 0 0.2rem #044da1; }
 
 .btn-outline-primary.disabled,
 .btn-outline-primary:disabled {
@@ -235,7 +235,7 @@ input:focus ~ .bg-primary {
 .btn-outline-primary:not(:disabled):not(.disabled):active:focus,
 .btn-outline-primary:not(:disabled):not(.disabled).active:focus,
 .show > .btn-outline-primary.dropdown-toggle:focus {
-  box-shadow: 0 0 0 0.2rem rgba(36, 134, 214, 0.548); }
+  box-shadow: 0 0 0 0.2rem #044da1; }
 
 /* PAGINATION */
 .pagination .page-item.active .page-link {
@@ -298,3 +298,6 @@ table.dataTable.dtr-inline.collapsed
 .pagination .page-item.active .page-link {
   background-color: #53aef8;
   color: #fff; }
+
+a:hover:not(.btn) {
+  color: gray !important; }

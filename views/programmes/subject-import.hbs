@@ -9,59 +9,39 @@
 <div class="content-body">
     <section class="mt-2" id="content-types">
         <div class="row match-height">
-            <div class="col-xl-5 col-md-6 col-sm-12  mx-auto">
+            <div class="col-md-12">
                 <div class="card">
                     <div class="card-content my-1">
+
                         <form action="/subject/import/batch/{{batch._id}}/course/{{course._id}}" method="POST"
                             id="subjectForm">
                             <div class="card-body">
 
-                                <ul class="list-unstyled">
-                                    <li class="d-inline-block mr-2">
-                                        <fieldset>
-                                            <div class="vs-checkbox-con vs-checkbox-primary">
-                                                <input type="checkbox" onclick="selectAll()" id="checkAll">
-                                                <span class="vs-checkbox vs-checkbox-md">
-                                                    <span class="vs-checkbox--check">
-                                                        <i class="vs-icon feather icon-check"></i>
-                                                    </span>
-                                                </span>
-                                                <span>
-                                                    <b>Select All</b>
-                                                </span>
-                                            </div>
-                                        </fieldset>
-                                    </li>
-                                </ul>
-
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" id="checkall" onclick="selectAll()"
+                                        class="custom-control-input checkall">
+                                    <label class="custom-control-label" for="checkall">Select All</label>
+                                </div>
                                 <hr>
 
                                 {{#each subject}}
-                                <ul class="list-unstyled mb-0">
-                                    <li class="d-inline-block mr-2 mb-1">
-                                        <fieldset>
-                                            <div class="vs-checkbox-con vs-checkbox-primary">
-                                                <input type="checkbox" name="{{name}}" value="{{_id}}" id="checkbox">
-                                                <span class="vs-checkbox vs-checkbox-md">
-                                                    <span class="vs-checkbox--check">
-                                                        <i class="vs-icon feather icon-check"></i>
-                                                    </span>
-                                                </span>
-                                                <span class="">{{name}}</span>
-                                            </div>
-                                        </fieldset>
-                                    </li>
-                                </ul>
+                                <div class="custom-control custom-checkbox mb-1">
+                                    <input type="checkbox" name="{{name}}" value="{{_id}}" id="{{name}}"
+                                        class="custom-control-input checkbox">
+                                    <label class="custom-control-label" for="{{name}}">{{name}}</label>
+                                </div>
                                 {{/each}}
+
                             </div>
 
                             <div class="card-body" style="margin-top: -30px;">
                                 <hr class="mb-2">
                                 <button type="submit" href="#" class="btn btn-primary">Import</button>
                                 <a href="/subjects/batch/{{batch._id}}/course/{{course._id}}"
-                                    class="btn btn-danger">Cancel</a>
+                                    class="btn btn-secondary">Cancel</a>
                             </div>
                         </form>
+
                     </div>
                 </div>
             </div>
@@ -72,16 +52,15 @@
 <script>
     function selectAll() {
         let form = document.getElementById("subjectForm").elements;
-        let checkAll =  form["checkAll"];
-        let checkbox = form["checkbox"];
+        let checkall = document.getElementsByClassName("checkall")
+        let checkbox = document.getElementsByClassName("checkbox");
         let i;
         for (i = 0; i < form.length; i++) {
-            if (checkAll.checked === true) {
+            if (checkall[0].checked === true) {
                 checkbox[i].checked = true;
             } else {
                 checkbox[i].checked = false;
             }
         }
-
     }
 </script>

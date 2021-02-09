@@ -69,9 +69,9 @@ controllers.editView = async (req, res) => {
   const { id, courseId } = req.params;
   const batch = await Batch.findById(id).lean();
   const course = await Course.findById({ _id: courseId }).lean();
-  if (!batch || req.user.school !== batch.school) {
-    req.flash("error", "You can not edit this batch. Please try another one!");
-    res.redirect("/batches/course/" + courseId);
+  if (!batch || batch.school.toString() !== req.user.school.toString()) {
+    req.flash("error", "You can not access that route");
+    res.redirect("/user/profile");
   } else {
     res.render("programmes/batch-edit", {
       pageTitle: "Edit batch",
@@ -99,9 +99,9 @@ controllers.edit = async (req, res) => {
     req.flash("error", `${name} is already taken. Please try a different name`);
     res.redirect("/batch/edit/form/" + id + "/course/" + courseId);
   } else {
-    if (!batch || req.user.school !== batch.school) {
-      req.flash("error", "You can not use this route. Try another one!");
-      res.redirect("/batches/course/" + courseId);
+    if (!batch || batch.school.toString() !== req.user.school.toString()) {
+      req.flash("error", "You can not access that route");
+      res.redirect("/user/profile");
     } else {
       batch.name = name;
       batch.description = description;
@@ -117,9 +117,9 @@ controllers.remove = async (req, res) => {
   const { id } = req.params;
   const batch = await Batch.findById(id);
   const countSubjects = await Subject.countDocuments({ batch: id });
-  if (!batch || req.user.school !== batch.school) {
-    req.flash("error", "You can not remove this batch. Please try another one!");
-    res.redirect("/batches");
+  if (!batch || batch.school.toString() !== req.user.school.toString()) {
+    req.flash("error", "You can not access that route");
+    res.redirect("/user/profile");
   } else if (countSubjects > 0) {
     req.flash("error", "Impossible to remove because there are subjects associated");
     res.redirect("/batches/course/" + batch.course);

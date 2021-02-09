@@ -1,5 +1,6 @@
 const Student = require("../../models/Student");
 const User = require("../../models/User");
+const Course = require("../../models/Course");
 const Batch = require("../../models/Batch");
 const Role = require("../../models/Role");
 
@@ -22,6 +23,14 @@ controllers.read = async (req, res) => {
 
 controllers.createView = async (req, res) => {
   const batches = await Batch.find({ school: req.user.school }).lean();
+  const countBatches = await Batch.countDocuments();
+  if (countBatches < 1) {
+    req.flash(
+      "error",
+      "Create a course and then a batch before creating students"
+    );
+    res.redirect("/courses");
+  }
   res.render("students/student-new", {
     pageTitle: "New Student",
     featureTitle: "Create Student",
@@ -46,6 +55,8 @@ controllers.create = async (req, res) => {
     insurance,
     phone,
     mobile,
+    username,
+    password,
     address,
     notes,
   } = req.body;
@@ -66,6 +77,7 @@ controllers.create = async (req, res) => {
   if (phone === "" || /[A-z]/.test(phone)) error = "Enter a valid phone number";
   if (mobile === "" || /[A-z]/.test(mobile))
     error = "Enter a real mobile number";
+  if (username.length < 4) error = "Enter a username longer than 4 characters";
   if (address === "") error = "Enter an address";
   if (error.length > 0) {
     const batches = await Batch.find({ school: req.user.school }).lean();
@@ -88,6 +100,8 @@ controllers.create = async (req, res) => {
       insurance,
       phone,
       mobile,
+      username,
+      password,
       address,
       notes,
     });
@@ -115,8 +129,9 @@ controllers.create = async (req, res) => {
 
     user.name = `${firstname} ${middlename} ${lastname}`;
     user.email = email;
+    user.username = username;
+    user.password = await user.encryptPassword(password);
     user.school = req.user.school;
-    user.password = await user.encryptPassword(`${firstname}123`);
     user.creatorUser = req.user.id;
     user.role = "student";
     await user.save();
@@ -128,13 +143,14 @@ controllers.editView = async (req, res) => {
   const { id } = req.params;
   const student = await Student.findById(id).populate("userId").lean();
   const batches = await Batch.find().lean();
-  if (student.userId.school !== req.user.school) {
-    req.flash("error", "You can not view this route");
-    res.redirect("/students");
+  if (!student || student.school.toString() !== req.user.school.toString()) {
+    req.flash("error", "You can not access that route");
+    res.redirect("/user/profile");
   } else {
     res.render("students/student-edit", {
       pageTitle: "Edit Student",
       featureTitle: "Edit Student",
+      studentLink: true,
       action: "/student/edit/" + id,
       student: student,
       batches: batches,
@@ -158,6 +174,8 @@ controllers.edit = async (req, res) => {
     insurance,
     phone,
     mobile,
+    username,
+    password,
     address,
     notes,
   } = req.body;
@@ -169,9 +187,9 @@ controllers.edit = async (req, res) => {
     email: email,
     _id: { $ne: student.userId._id },
   });
-  if (user.school !== req.user.school) {
-    req.flash("error", "You can not view this route");
-    res.redirect("/students");
+  if (!student || student.school.toString() !== req.user.school.toString()) {
+    req.flash("error", "You can not access that route");
+    res.redirect("/user/profile");
   }
   let error = "";
   if (firstname === "") error = "First Name was empty.";
@@ -210,6 +228,8 @@ controllers.edit = async (req, res) => {
     student.notes = notes;
     await student.save();
     user.name = `${firstname} ${middlename} ${lastname}`;
+    user.username = username;
+    user.password = await user.encryptPassword(password);
     user.email = email;
     await user.save();
     res.redirect("/students");
@@ -219,10 +239,11 @@ controllers.edit = async (req, res) => {
 controllers.remove = async (req, res) => {
   const { id } = req.params;
   const student = await Student.findById(id);
-  const user = await User.findById(student.userId);
-  if (user.school !== req.user.school) {
-    req.flash("error", "You can not view this route");
-    res.redirect("/students");
+  const user = await User.findById(student.userId._id);
+  res.redirect("/students");
+  if (!student || student.school.toString() !== req.user.school.toString()) {
+    req.flash("error", "You can not access that route");
+    res.redirect("/user/profile");
   } else {
     student.remove();
     user.remove();
@@ -233,6 +254,10 @@ controllers.remove = async (req, res) => {
 controllers.profile = async (req, res) => {
   const { id } = req.params;
   const student = await Student.findById(id).populate("userId").lean();
+  if (student.userId.school.toString() !== req.user.school.toString()) {
+    req.flash("error", "You can not access that route");
+    res.redirect("/user/profile");
+  }
   res.render("students/student-profile", {
     pageTitle: "Student Profile",
     featureTitle: "Student Profile",

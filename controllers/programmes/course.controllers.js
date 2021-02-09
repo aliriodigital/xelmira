@@ -54,7 +54,7 @@ controllers.create = async (req, res) => {
 controllers.editView = async (req, res) => {
   const { id } = req.params;
   const course = await Course.findById(id).lean();
-  if (!course || req.user.school !== course.school) {
+  if (!course || course.school.toString() !== req.user.school.toString()) {
     req.flash("error", "You can not edit this course. Please try another one!");
     res.redirect("/courses");
   } else {
@@ -84,7 +84,7 @@ controllers.edit = async (req, res) => {
     req.flash("error", `${name} is already taken. Please try a different name`);
     res.redirect("/course/edit/form/" + id);
   } else {
-    if (!course || req.user.school !== course.school) {
+    if (!course || course.school.toString() !== req.user.school.toString()) {
       req.flash("error", "You are not authorized to view this page");
       res.redirect("/courses");
     } else {
@@ -101,7 +101,7 @@ controllers.remove = async (req, res) => {
   const { id } = req.params;
   const course = await Course.findById(id);
   const countBatches = await Batch.countDocuments({ course: id });
-  if (!course || req.user.school !== course.school) {
+  if (!course || course.school.toString() !== req.user.school.toString()) {
     req.flash("error", "You can not remove this course. Please try a different one!");
     res.redirect("/courses");
   } else if (countBatches > 0) {

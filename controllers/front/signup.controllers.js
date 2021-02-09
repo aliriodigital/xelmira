@@ -21,12 +21,11 @@ controllers.signup = async (req, res) => {
     email, 
     username,
     password, 
-    confirmPassword 
+    confirmPassword,
   } = req.body;
 
   const usernameInUse = await User.findOne({ username: username });
   const schoolInUse = await School.findOne({name: school.toLowerCase()});
-  console.log(schoolInUse);
   let error = "";
   if (password.length < 4) error = "Password must be longer than 3 characters";
   if (password !== confirmPassword) error = "Password and confirm password must match";

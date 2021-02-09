@@ -6,6 +6,7 @@ const parentSchema = new Schema(
         userId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "user",
+            required: true,
         },
         school: {
             type: String,
@@ -15,8 +16,9 @@ const parentSchema = new Schema(
             type: String,
             required: true,
         },
-        student: {
-            type: String,
+        studentId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "student",
             required: true,
         },
         firstName: {

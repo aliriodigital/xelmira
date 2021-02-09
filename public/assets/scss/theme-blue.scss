@@ -11,7 +11,8 @@ PLACE HERE YOUR OWN SCSS CODES AND IF NEEDED, OVERRIDE THE STYLES FROM THE OTHER
 WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BETTER LIKE THIS.  */
 
 $blue: #53aef8;
-$blue-light: rgba(36, 134, 214, 0.548);
+$gray: rgb(128, 128, 128);
+$blue-light: rgb(4, 77, 161);
 $blue-ultralight: #d0e7fa;
 $blue-gradient: rgba(43, 139, 228, 0.781);
 $white: white;
@@ -355,5 +356,8 @@ table.dataTable.dtr-inline.collapsed
   color: #fff;
 }
 
+a:hover:not(.btn) {
+  color: $gray !important;
+}
 
 

@@ -4,12 +4,12 @@
         <span><a href="/students"> Students</a></span>
     </div>
 
-    <div>
+    {{!-- <div>
         <h4>
             <a class="btn btn-primary" style="margin-top: -9px;" href="/student/change/password"
                 id="new-crud-btn">Change Password</a>
         </h4>
-    </div>
+    </div> --}}
 </div>
 
 <div class="content-body">
@@ -17,128 +17,145 @@
         <div class="row">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-body">
-                        <h4 class="primary">{{student.firstName}} {{student.middleName}} {{student.lastName}}
-                        </h4>
+                    <div class="card-body d-flex justify-content-between">
                         <div>
-                            <p class="d-inline">{{student.idType}}: </p>
-                            <h4 class="d-inline-block">{{student.idNumber}}</h4>
+                            <h4 class="primary">{{student.firstName}} {{student.middleName}} {{student.lastName}}
+                            </h4>
+                            <div>
+                                <p class="d-inline">{{student.idType}}: </p>
+                                <h5 class="d-inline-block">{{student.idNumber}}</h5>
+                            </div>
+                            <div>
+                                <p class="d-inline">Phone: </p>
+                                <h5 class="d-inline-block">{{student.phone}}</h5>
+                            </div>
                         </div>
+
                         <div>
-                            <p class="d-inline">Phone: </p>
-                            <h4 class="d-inline-block">{{student.phone}}</h4>
+                            <b>
+                                <a class="btn btn-primary" href="/student/edit/{{student._id}}">Edit Student</a>
+                            </b>
                         </div>
+                    </div>
+
+                    <div class="card-body student-profile">
+                        <p class="profile-header-bottom primary">STUDENT DETAILS</p>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h6 class="mb-0">Joined: </h6>
+                                <p>{{formatDate student.createdAt "LL"}}</p>
+                            </div>
+                            <div class="col-md-4 ">
+                                <h6 class="mb-0">First Class Date: </h6>
+                                <p>{{formatDate student.firstClass "LL"}}</p>
+                            </div>
+                            <div class="col-md-4">
+                                <h6 class="mb-0">Batch: </h6>
+                                <p>{{student.batch}}</p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 mt-1">
+                                <h6 class="mb-0">ID Type: </h6>
+                                <p>{{student.idType}}</p>
+                            </div>
+                            <div class="col-md-4 mt-1">
+                                <h6 class="mb-0">ID Number: </h6>
+                                <p>{{student.idNumber}}</p>
+                            </div>
+                            <div class="col-md-4 mt-1">
+                                <h6 class="mb-0">Email:</h6>
+                                <p>{{student.userId.email}}</p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 mt-1">
+                                <h6 class="mb-0">Gender: </h6>
+                                <p>{{student.gender}}</p>
+                            </div>
+                            <div class="col-md-4 mt-1">
+                                <h6 class="mb-0">Birth Date: </h6>
+                                <p>{{formatDate student.birthDate "LL"}}</p>
+                            </div>
+                            <div class="col-md-4 mt-1">
+                                <h6 class="mb-0">Age: </h6>
+                                <p>{{ageInYears birthDate}} años</p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 mt-1">
+                                <h6 class="mb-0">Insurance: </h6>
+                                <p>{{student.insurance}}</p>
+                            </div>
+                            <div class="col-md-4 mt-1">
+                                <h6 class="mb-0">Phone: </h6>
+                                <p>{{student.phone}}</p>
+                            </div>
+                            <div class="col-md-4 mt-1">
+                                <h6 class="mb-0">Mobile: </h6>
+                                <p>{{student.mobile}}</p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 mt-1">
+                                <h6 class="mb-0">Username: </h6>
+                                <p>{{student.userId.username}}</p>
+                            </div>
+                            <div class="col-md-4 mt-1">
+                                <h6 class="mb-0">Address: </h6>
+                                <p>{{student.address}}</p>
+                            </div>
+                            <div class="col-md-4 mt-1">
+                                <h6 class="mb-0">Notes: </h6>
+                                <p>{{student.notes}}</p>
+                            </div>
+                        </div>
+                        
+
+                        <div class="d-flex flex-row-reverse">
+                            <a class="btn btn-primary" href="/parent/new/{{student._id}}">Add Parent</a>
+                        </div>
+
+                        <p class="profile-header-bottom primary mt-1">PARENT DETAILS</p>
+                        <div class="row">
+                            <div class="col-md-4 mt-1">
+                                <h6 class="mb-0">Relationship: </h6>
+                                <p>Tío</p>
+                            </div>
+                            <div class="col-md-4 mt-1">
+                                <h6 class="mb-0">Phone: </h6>
+                                <p>{{student.phone}}</p>
+                            </div>
+                            <div class="col-md-4 mt-1">
+                                <h6 class="mb-0">Mobile: </h6>
+                                <p>{{student.mobile}}</p>
+                            </div>
+                        </div>
+
+                        <div class="mt-5">
+                            <h6 class="mb-0">Website:</h6>
+                            <p>www.pixinvent.com</p>
+                        </div>
+
+                        <div class="mt-1">
+                            <button type="button" class="btn btn-sm btn-icon btn-primary mr-25 p-25"><i
+                                    class="feather icon-facebook"></i></button>
+                            <button type="button" class="btn btn-sm btn-icon btn-primary mr-25 p-25"><i
+                                    class="feather icon-twitter"></i></button>
+                            <button type="button" class="btn btn-sm btn-icon btn-primary p-25"><i
+                                    class="feather icon-instagram"></i></button>
+                        </div>
+
+                    </div>
                 </div>
-                <div class="card-body student-profile">
-                    <p class="profile-header-bottom primary">STUDENT DETAILS</p>
 
-                    <div class="row">
-                        <div class="col-md-4">
-                            <h6 class="mb-0">Joined: </h6>
-                            <p>{{formatDate student.createdAt "LL"}}</p>
-                        </div>
-                        <div class="col-md-4 ">
-                            <h6 class="mb-0">First Class Date: </h6>
-                            <p>{{formatDate student.firstClass "LL"}}</p>
-                        </div>
-                        <div class="col-md-4">
-                            <h6 class="mb-0">Batch: </h6>
-                            <p>{{student.batch}}</p>
-                        </div>
-                    </div>
 
-                    <div class="row">
-                        <div class="col-md-4 mt-1">
-                            <h6 class="mb-0">ID Type: </h6>
-                            <p>{{student.idType}}</p>
-                        </div>
-                        <div class="col-md-4 mt-1">
-                            <h6 class="mb-0">ID Number: </h6>
-                            <p>{{student.idNumber}}</p>
-                        </div>
-                        <div class="col-md-4 mt-1">
-                            <h6 class="mb-0">Email:</h6>
-                            <p>{{student.userId.email}}</p>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-4 mt-1">
-                            <h6 class="mb-0">Gender: </h6>
-                            <p>{{student.gender}}</p>
-                        </div>
-                        <div class="col-md-4 mt-1">
-                            <h6 class="mb-0">Birth Date: </h6>
-                            <p>{{formatDate student.birthDate "LL"}}</p>
-                        </div>
-                        <div class="col-md-4 mt-1">
-                            <h6 class="mb-0">Age: </h6>
-                            <p>{{ageInYears birthDate}} años</p>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-4 mt-1">
-                            <h6 class="mb-0">Insurance: </h6>
-                            <p>{{student.insurance}}</p>
-                        </div>
-                        <div class="col-md-4 mt-1">
-                            <h6 class="mb-0">Phone: </h6>
-                            <p>{{student.phone}}</p>
-                        </div>
-                        <div class="col-md-4 mt-1">
-                            <h6 class="mb-0">Mobile: </h6>
-                            <p>{{student.mobile}}</p>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-4 mt-1">
-                            <h6 class="mb-0">Address: </h6>
-                            <p>{{student.address}}</p>
-                        </div>
-                        <div class="col-md-4 mt-1">
-                            <h6 class="mb-0">Notes: </h6>
-                            <p>{{student.notes}}</p>
-                        </div>
-                    </div>
-
-                    <p class="profile-header-bottom primary mt-1">PARENT DETAILS</p>
-                    <a class="btn btn-primary" href="/parent/new/{{student._id}}">Add Parent</a>
-                    <div class="row">
-                        <div class="col-md-4 mt-1">
-                            <h6 class="mb-0">Relationship: </h6>
-                            <p>Tío</p>
-                        </div>
-                        <div class="col-md-4 mt-1">
-                            <h6 class="mb-0">Phone: </h6>
-                            <p>{{student.phone}}</p>
-                        </div>
-                        <div class="col-md-4 mt-1">
-                            <h6 class="mb-0">Mobile: </h6>
-                            <p>{{student.mobile}}</p>
-                        </div>
-                    </div>
-
-                    <div class="mt-5">
-                        <h6 class="mb-0">Website:</h6>
-                        <p>www.pixinvent.com</p>
-                    </div>
-                    
-                    <div class="mt-1">
-                        <button type="button" class="btn btn-sm btn-icon btn-primary mr-25 p-25"><i
-                                class="feather icon-facebook"></i></button>
-                        <button type="button" class="btn btn-sm btn-icon btn-primary mr-25 p-25"><i
-                                class="feather icon-twitter"></i></button>
-                        <button type="button" class="btn btn-sm btn-icon btn-primary p-25"><i
-                                class="feather icon-instagram"></i></button>
-                    </div>
-
-                </div>
             </div>
-
-
         </div>
-</div>
-</section>
+    </section>
 </div>

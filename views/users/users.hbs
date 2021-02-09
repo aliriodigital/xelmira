@@ -23,6 +23,7 @@
                                     <thead>
                                         <tr>
                                             <th>Name</th>
+                                            <th>Username</th>
                                             <th>Email</th>
                                             <th>Role</th>
                                             <th>Actions</th>
@@ -32,6 +33,7 @@
                                         {{#each users}}
                                         <tr data-crud="{{json this}}">
                                             <td>{{name}}</td>
+                                            <td>{{username}}</td>
                                             <td>{{email}}</td>
                                             <td>{{role}}</td>
                                             <td>

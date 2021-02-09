@@ -14,8 +14,8 @@
                         <div class="card-body">
                             <form action="{{action}}" method="POST" class="form form-horizontal">
                                 <div class="form-body">
-                                    <div class="row">
 
+                                    <div class="row">
                                         <div class="col-md-4 col-12">
                                             <div class="form-group">
                                                 <label for="firstname">First Name</label>
@@ -23,7 +23,6 @@
                                                     value="{{firstname}}">
                                             </div>
                                         </div>
-
                                         <div class="col-md-4 col-12">
                                             <div class="form-group">
                                                 <label for="middlename">Middle Name</label>
@@ -31,7 +30,6 @@
                                                     name="middlename" value="{{middlename}}">
                                             </div>
                                         </div>
-
                                         <div class="col-md-4 col-12">
                                             <div class="form-group">
                                                 <label for="lastname">Last Name</label>
@@ -39,12 +37,14 @@
                                                     value="{{lastname}}">
                                             </div>
                                         </div>
+                                    </div>
 
+                                    <div class="row">
                                         <div class="col-md-4 col-12">
                                             <div class="form-group">
                                                 <label for="batch">Batch</label>
                                                 <select class="form-control" id="batch" name="batch">
-                                                    <option selected>Select a batch</option>
+                                                    <option selected>Select A Batch</option>
                                                     {{#each batches}}
                                                     <option value="{{name}}" {{selected ../batch name}}>{{name}}
                                                     </option>
@@ -65,17 +65,20 @@
                                             <div class="form-group">
                                                 <label for="idtype">ID Type</label>
                                                 <select class="form-control" id="idtype" name="idtype">
-                                                    <option selected>Select an ID type</option>
+                                                    <option selected>Select An ID type</option>
                                                     <option value="Registro Civil" {{selected idtype "Registro Civil"}}>
                                                         Registro Civil</option>
-                                                    <option value="Passport ID" {{selected idtype "Passport ID"}}>Passport
+                                                    <option value="Passport ID" {{selected idtype "Passport ID"}}>
+                                                        Passport
                                                         ID</option>
                                                     <option value="Other" {{selected idtype "Other"}}>Other</option>
 
                                                 </select>
                                             </div>
                                         </div>
+                                    </div>
 
+                                    <div class="row">
                                         <div class="col-md-4 col-12">
                                             <div class="form-group">
                                                 <label for="idnumber">ID Number</label>
@@ -88,7 +91,7 @@
                                             <div class="form-group">
                                                 <label for="gender">Gender</label>
                                                 <select class="form-control" id="gender" name="gender">
-                                                    <option selected>Select a gender</option>
+                                                    <option selected>Select A Gender</option>
                                                     <option value="male" {{selected gender "male"}}>Male</option>
                                                     <option value="female" {{selected gender "female"}}>Female</option>
                                                 </select>
@@ -102,7 +105,9 @@
                                                     value="{{email}}">
                                             </div>
                                         </div>
+                                    </div>
 
+                                    <div class="row">
                                         <div class="col-md-4 col-12">
                                             <div class="form-group">
                                                 <label for="birthdate">Birth Date</label>
@@ -126,7 +131,9 @@
                                                     value="{{phone}}">
                                             </div>
                                         </div>
+                                    </div>
 
+                                    <div class="row">
                                         <div class="col-md-4 col-12">
                                             <div class="form-group">
                                                 <label for="mobile">Mobile</label>
@@ -137,25 +144,46 @@
 
                                         <div class="col-md-4 col-12">
                                             <div class="form-group">
+                                                <label for="username">Username</label>
+                                                <input type="text" id="username" class="form-control" name="username"
+                                                    value="{{username}}">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4 col-12">
+                                            <div class="form-group">
+                                                <label for="password">Password</label>
+                                                <input type="text" id="password" class="form-control" name="password"
+                                                    value="{{password}}">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-4 col-12">
+                                            <div class="form-group">
                                                 <label for="address">Address</label>
                                                 <textarea id="address" class="form-control"
                                                     name="address">{{address}}</textarea>
                                             </div>
                                         </div>
 
-                                        <div class="col-md-4 col-12">
+                                        <div class="col-md-8 col-12">
                                             <div class="form-group">
                                                 <label for="notes">Admission Notes</label>
                                                 <textarea id="notes" class="form-control"
                                                     name="notes">{{notes}}</textarea>
                                             </div>
                                         </div>
+                                    </div>
 
-                                        <div class="mx-auto">
+                                    <div class="row">
+                                        <div class="col-12 d-flex flex-row-reverse">
                                             <button type="submit" class="btn btn-primary mr-1 mb-1"
                                                 href="#">Save</button>
                                             <a class="btn btn-secondary mr-1 mb-1" href="/students">Cancel</a>
                                         </div>
+
                                     </div>
                                 </div>
                             </form>

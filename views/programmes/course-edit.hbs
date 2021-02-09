@@ -8,39 +8,37 @@
 <div class="content-body">
     <section id="basic-horizontal-layouts">
         <div class="row match-height">
-            <div class="col-md-5 col-12 mx-auto">
+            <div class="col-md-12">
                 <div class="card py-2">
                     <div class="card-content">
                         <div class="card-body">
                             <form action="/course/edit/{{course._id}}" method="POST" class="form form-horizontal">
                                 <div class="form-body">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="form-group row">
-                                                <div class="col-md-4">
-                                                    <span>Name</span>
-                                                </div>
-                                                <div class="col-md-8">
-                                                    <input type="text" id="name" class="form-control" name="name"
-                                                       value="{{course.name}}" autofocus>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="form-group row">
-                                                <div class="col-md-4">
-                                                    <span>Descripcion</span>
-                                                </div>
-                                                <div class="col-md-8">
-                                                    <textarea id="description" class="form-control"
-                                                        name="description">{{course.description}}</textarea>
-                                                </div>
-                                            </div>
-                                        </div>
 
-                                        <div class="col-md-8 offset-md-4">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="name">Name</label>
+                                                <input type="text" id="name" class="form-control" name="name"
+                                                    value="{{course.name}}" autofocus>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="description">Description</label>
+                                                <textarea id="description" class="form-control"
+                                                    name="description">{{course.description}}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-4">
                                             <button type="submit" class="btn btn-primary mr-1 mb-1"
-                                                href="#">Update</button>
+                                                href="#">Save</button>
                                             <a class="btn btn-secondary mr-1 mb-1" href="/courses">Cancel</a>
                                         </div>
                                     </div>

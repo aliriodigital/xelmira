@@ -50,8 +50,9 @@ controllers.create = async (req, res) => {
 controllers.editView = async (req, res) => {
   const { id } = req.params;
   const role = await Role.findById(id).lean();
-  if(!role || role.school !== req.user.school) {
-    req.flash("error", "You are not authorized to edit the requested page");
+  console.log(role);
+  if(!role || role.school.toString() !== req.user.school.toString()) {
+    req.flash("error", "You can not access that route");
     res.redirect("/roles");
   } else {
     res.render("users/role-edit", {
@@ -73,8 +74,8 @@ controllers.edit = async (req, res) => {
   if (name.length < 1) {
     req.flash("error", "The name field was blank. Submit a name and try again");
     res.redirect("/role/edit/" + id);
-  } else if (!role || role.school !== req.user.school) {
-    req.flash("error", "You are not authorized to edit the requested page");
+  } else if (!role || role.school.toString() !== req.user.school.toString()) {
+    req.flash("error", "You can not access that route");
     res.redirect("/roles");
   } else if (roleInUse || presetRoleInUse(name)) {
     req.flash("error", `${name} is already in use. Please try a different name`);
@@ -89,13 +90,12 @@ controllers.edit = async (req, res) => {
 
 controllers.remove = async (req, res) => {
   const { id } = req.params;
-  const role = await Role.findById({ _id: id });
+  const role = await Role.findById(id);
   const countUsersWithRole = await User.countDocuments({
     role: {$in: role.name},
   });
-  console.log(countUsersWithRole);
-  if(!role || role.school !== req.user.school) {
-    req.flash("error", "You are not authorized to access this route");
+  if(!role || role.school.toString() !== req.user.school.toString()) {
+    req.flash("error", "You can not access that route");
     res.redirect("/roles");
   } else if (countUsersWithRole > 0) {
     req.flash("error", "Imposible to remove because there are users associated");
