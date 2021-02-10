@@ -18,9 +18,8 @@ const hbs = expressHandlebars.create({
       return JSON.stringify(context);
     },
 
-    check: (property1, property2) => {
-      let validate = property1 === property2 ? "checked" : "";
-      return validate;
+    check: (value) => {
+      return value === "true" ? "checked" : "";
     },
 
     selected: (property1, property2) => {
@@ -55,6 +54,9 @@ const hbs = expressHandlebars.create({
 
     firstLetter: function (string) {
       return string.charAt(0);
+    },
+    numberedSort: function (value) {
+      return parseInt(value) + 1;
     }
   },
 });

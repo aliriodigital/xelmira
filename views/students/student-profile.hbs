@@ -118,10 +118,12 @@
                         
 
                         <div class="d-flex flex-row-reverse">
-                            <a class="btn btn-primary" href="/parent/new/{{student._id}}">Add Parent</a>
+                            <a class="btn btn-primary" href="/student/{{student._id}}/parent/new">Add Parent</a>
                         </div>
 
-                        <p class="profile-header-bottom primary mt-1">PARENT DETAILS</p>
+                        {{#each parents}}
+
+                        <p class="profile-header-bottom primary mt-1">PARENT # {{numberedSort @index}}</p>
                         <div class="row">
                             <div class="col-md-4 mt-1">
                                 <h6 class="mb-0">Relationship: </h6>
@@ -136,6 +138,8 @@
                                 <p>{{student.mobile}}</p>
                             </div>
                         </div>
+
+                        {{/each}}
 
                         <div class="mt-5">
                             <h6 class="mb-0">Website:</h6>

@@ -1,5 +1,6 @@
 const Student = require("../../models/Student");
 const User = require("../../models/User");
+const Parent = require("../../models/Parent");
 const Course = require("../../models/Course");
 const Batch = require("../../models/Batch");
 const Role = require("../../models/Role");
@@ -60,24 +61,25 @@ controllers.create = async (req, res) => {
     address,
     notes,
   } = req.body;
-  const mailInUse = await User.findOne({ email: email });
+  const usernameInUse = await User.findOne({ username: username });
   let error = "";
   if (firstname === "") error = "Enter First Name";
   if (lastname === "") error = "Enter Last Name";
-  if (batch === "Select a batch") error = "Select a Batch";
+  if (batch === "Select A Batch") error = "Select a Batch";
   if (firstclass === "") error = "Enter a First Class Date";
-  if (idtype === "Select an ID type") error = "Enter an ID Type";
+  if (idtype === "Select An ID Type") error = "Enter an ID Type";
   if (idnumber === "" || /[A-z]/.test(idnumber))
     error = "Enter a valid ID Number";
-  if (gender === "Select a gender") error = "Enter a Gender";
-  if (email === "") error = "Enter an email";
-  if (mailInUse) error = "Email already taken. Try a different email";
+  if (gender === "Select A Gender") error = "Enter a Gender";
+  if (email.length < 4) error = "Email must be longer than 4 characters";
   if (birthdate === "") error = "Enter a birth date";
   if (insurance === "") error = "Enter a Health Insurance";
   if (phone === "" || /[A-z]/.test(phone)) error = "Enter a valid phone number";
   if (mobile === "" || /[A-z]/.test(mobile))
     error = "Enter a real mobile number";
   if (username.length < 4) error = "Enter a username longer than 4 characters";
+  if (usernameInUse) error = "Username already taken. Try a different username";
+  if (password.length < 4) error = "Password must be longer than 4 characters";
   if (address === "") error = "Enter an address";
   if (error.length > 0) {
     const batches = await Batch.find({ school: req.user.school }).lean();
@@ -108,9 +110,9 @@ controllers.create = async (req, res) => {
   } else {
     const student = await new Student({});
     const user = await new User(req.body);
+    student.userId = user._id;
     student.school = req.user.school;
     student.creatorUser = req.user.id;
-    student.userId = user._id;
     student.firstName = firstname;
     student.middleName = middlename;
     student.lastName = lastname;
@@ -160,7 +162,7 @@ controllers.editView = async (req, res) => {
 
 controllers.edit = async (req, res) => {
   const { id } = req.params;
-  let {
+  const {
     firstname,
     middlename,
     lastname,
@@ -182,9 +184,8 @@ controllers.edit = async (req, res) => {
   const student = await Student.findById(id).populate("userId");
   const user = await User.findById({ _id: student.userId._id });
   const batches = await Batch.find({ school: req.user.school }).lean();
-  const mailInUse = await User.findOne({
-    school: req.user.school,
-    email: email,
+  const usernameInUse = await User.findOne({
+    username: username,
     _id: { $ne: student.userId._id },
   });
   if (!student || student.school.toString() !== req.user.school.toString()) {
@@ -200,8 +201,10 @@ controllers.edit = async (req, res) => {
   if (idnumber === "" || /[A-z]/.test(idnumber))
     error = "ID Number was invalid or empty";
   if (gender === "Select a gender") error = "Gender was empty";
-  if (email === "") error = "Email was empty";
-  if (mailInUse) error = "Email already taken. Try a different email";
+  if (email.length < 4) error = "Email was less than 4 characters";
+  if (usernameInUse)
+    error = "Username already taken. Try a different username.";
+  if (username.length < 4) error = "Username was less than 4 characters";
   if (birthdate === "") error = "No Birth date was set";
   if (insurance === "") error = "Health Insurance was empty";
   if (phone === "" || /[A-z]/.test(phone)) error = "Phone was invalid or empty";
@@ -254,6 +257,8 @@ controllers.remove = async (req, res) => {
 controllers.profile = async (req, res) => {
   const { id } = req.params;
   const student = await Student.findById(id).populate("userId").lean();
+  const parents = await Parent.find({ studentId: id }).populate("studentId");
+  console.log(parents);
   if (student.userId.school.toString() !== req.user.school.toString()) {
     req.flash("error", "You can not access that route");
     res.redirect("/user/profile");
@@ -263,7 +268,111 @@ controllers.profile = async (req, res) => {
     featureTitle: "Student Profile",
     studentLink: true,
     student,
+    parents,
   });
+};
+
+controllers.parentCreateView = async (req, res) => {
+  const { id } = req.params;
+  const student = await Student.findById(id).lean();
+  res.render("parents/parent-new", {
+    pageTitle: "New Parent",
+    featureTitle: "Create Parent",
+    studentLink: true,
+    student: student,
+  });
+};
+
+controllers.parentCreate = async (req, res) => {
+  const { id } = req.params;
+  let {
+    firstName,
+    middleName,
+    lastName,
+    kinship,
+    idType,
+    idNumber,
+    gender,
+    email,
+    birthDate,
+    phone,
+    mobile,
+    username,
+    password,
+    address,
+    notes,
+    representative,
+  } = req.body;
+  req.body.representative === true
+    ? (req.body.representative = true)
+    : (req.body.representative = false);
+  const student = await Student.findById(id).lean();
+  const usernameInUse = await User.findOne({ username: username });
+  const parents = await Parent.find({ studentId: id });
+  // console.log(req.body);
+  // if(representative === true) {
+  //   parents.forEach((item) => {
+
+  //   });
+  // }
+  let error = "";
+  if (firstName === "") error = "Enter First Name";
+  if (lastName === "") error = "Enter Lastname";
+  if (kinship === "") error = "Enter Kinship";
+  if (idType === "Select An ID type") error = "Select an ID Type";
+  if (idNumber === "" || /[A-z]/.test(idNumber))
+    error = "Enter a valid ID number";
+  if (gender === "Select A Gender") error = "Enter a gender";
+  if (email.length < 4) error = "Email must be longer than 4 characters";
+  if (birthDate === "") error = "Enter a birthdate";
+  if (phone === "" || /[A-z]/.test(phone)) error = "Enter a valid phone";
+  if (mobile === "" || /[A-z]/.test(phone)) error = "Enter a valid mobile";
+  if (usernameInUse)
+    error = `${username} already taken. Try a different username`;
+  if (username.length < 4) error = "Username must be longer than 4 characters";
+  if (password.length < 4) error = "Password must be longer than 4 characters";
+  if (address === "") error = "Enter an address";
+  if (error.length > 0) {
+    res.render("parents/parent-new", {
+      pageTitle: "New Parent",
+      featureTitle: "Create Parent",
+      studentLink: true,
+      student: student,
+      error: error,
+      firstName,
+      middleName,
+      lastName,
+      kinship,
+      idType,
+      idNumber,
+      gender,
+      email,
+      birthDate,
+      phone,
+      mobile,
+      username,
+      password,
+      address,
+      notes,
+      representative,
+    });
+  } else {
+    const student = await Student.findById(id);
+    const newParent = await new Parent(req.body);
+    const newUser = await new User(req.body);
+    newParent.userId = newUser._id;
+    newParent.school = req.user.school;
+    newParent.creatorUser = req.user._id;
+    newParent.studentId = student._id;    
+    newUser.school = req.user.school;
+    newUser.creatorUser = req.user._id;
+    newUser.role = "parent";
+    newUser.name = `${firstName} ${middleName} ${lastName}`;
+    newUser.password = await newUser.encryptPassword(password);
+    newParent.save();
+    newUser.save();
+    res.redirect("/student/profile/" + id);
+  }
 };
 
 module.exports = controllers;

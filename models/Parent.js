@@ -34,6 +34,10 @@ const parentSchema = new Schema(
             type: String,
             required: true,
         },
+        representative: {
+            type: Boolean,
+            required: true,
+        },
         idType: {
             type: String,
             required: true,

@@ -14,13 +14,13 @@ controllers.read = async (req, res) => {
 };
 
 controllers.createView = async (req, res) => {
-  const role = await Role.find().lean();
+  const roles = await Role.find().lean();
   res.render("users/user-new", {
     pageTitle: "New User",
     featureTitle: "Create User",
     action: "/user/new",
     userLink: true,
-    roles: role,
+    roles: roles,
   });
 };
 
@@ -28,24 +28,25 @@ controllers.create = async (req, res) => {
   const { name, email, username, password, role } = req.body;
   const usernameInUse = await User.findOne({ username: username });
   let error = "";
-  if (email === "") error = "Enter an email";
-  if (usernameInUse)
-    error = "Username already taken. Try a different username.";
-  if (username === "") error = "Enter a username";
-  if (password.length < 4) error = "Enter a password longer than 3 characters";
-  if (role === "Select a role") error = "Select a role";
+  if (email.length < 4) error = "Email must be longer than 4 characters";
+  if (usernameInUse) error = "Username already taken. Try a different username.";
+  if (username.length < 4) error = "Username must be longer than 4 characters";
+  if (password.length < 4) error = "Password must be longer than 4 characters";
+  if (role === "Select A Role") error = "Select a role";
   if (name === "") error = "Enter a name.";
   if (error.length > 0) {
+    const roles = await Role.find().lean();
     res.render("users/user-new", {
       pageTitle: "New User",
       featureTitle: "Create User",
       userLink: true,
       error: error,
+      roles: roles,
       name: name,
       email: email,
+      role: role,
       username: username,
       password: password,
-      role: role,
     });
   } else {
     const user = await new User(req.body);
@@ -88,13 +89,13 @@ controllers.edit = async (req, res) => {
     _id: { $ne: id },
   });
   let error = "";
-  if (email === "") error = "Enter an email";
+  if (email.length < 4) error = "Email was less than 4 characters";
   if (usernameInUse)
-    error = "Username already taken. Try a different username.";
-  if (username === "") error = "Enter a username";
-  if (password.length < 4) error = "Enter a password longer than 3 characters";
-  if (role === "Select a role") error = "Select a role";
-  if (name === "") error = "Enter a name.";
+    error = `${username} was already taken. Try a different username.`;
+  if (username.length < 4) error = "Username was less than 4 characters";
+  if (password.length < 4) error = "Password was less than 4 characters";
+  if (role === "Select A Role") error = "Role was empty";
+  if (name === "") error = "Name was empty";
   if (error.length > 0) {
     req.flash("error", error);
     res.redirect("/user/edit/" + id);
@@ -104,7 +105,7 @@ controllers.edit = async (req, res) => {
       res.redirect("/users");
     } else {
       user.password = await user.encryptPassword(password);
-      (user.username = username), (user.name = name);
+      user.username = username, user.name = name;
       user.email = email;
       user.role = role;
       user.save();

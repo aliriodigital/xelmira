@@ -24,8 +24,8 @@
                                         <div class="col-md-4 col-12">
                                             <div class="form-group">
                                                 <label for="firstname">First Name</label>
-                                                <input type="text" id="firstname" class="form-control" name="firstname"
-                                                    value="{{firstname}}">
+                                                <input type="text" id="firstname" class="form-control" name="firstName"
+                                                    value="{{firstName}}">
                                             </div>
                                         </div>
 
@@ -33,15 +33,15 @@
                                             <div class="form-group">
                                                 <label for="middlename">Middle Name</label>
                                                 <input type="text" id="middlename" class="form-control"
-                                                    name="middlename" value="{{middlename}}">
+                                                    name="middleName" value="{{middleName}}">
                                             </div>
                                         </div>
 
                                         <div class="col-md-4 col-12">
                                             <div class="form-group">
                                                 <label for="lastname">Last Name</label>
-                                                <input type="text" id="lastname" class="form-control" name="lastname"
-                                                    value="{{lastname}}">
+                                                <input type="text" id="lastname" class="form-control" name="lastName"
+                                                    value="{{lastName}}">
                                             </div>
                                         </div>
                                     </div>
@@ -51,7 +51,7 @@
                                             <div class="form-group">
                                                 <label for="kinship">Kinship</label>
                                                 <select class="form-control" id="kinship" name="kinship">
-                                                    <option selected>Select a kinship</option>
+                                                    <option selected>Select A Kinship</option>
                                                     <option value="Mother" {{selected kinship "Mother"}}>Mother
                                                     </option>
                                                     <option value="Father" {{selected kinship "Father"}}>Father
@@ -77,17 +77,17 @@
                                         <div class="col-md-4 col-12">
                                             <div class="form-group">
                                                 <label for="idtype">ID Type</label>
-                                                <select class="form-control" id="idtype" name="idtype">
-                                                    <option selected>Select an ID type</option>
+                                                <select class="form-control" id="idtype" name="idType">
+                                                    <option selected>Select An ID type</option>
                                                     <option value="Cédula De Ciudadanía"
-                                                        {{selected idtype "Cédula De Ciudadanía"}}>
+                                                        {{selected idType "Cédula De Ciudadanía"}}>
                                                         Cédula De Ciudadanía</option>
-                                                    <option value="Registro Civil" {{selected idtype "Registro Civil"}}>
+                                                    <option value="Registro Civil" {{selected idType "Registro Civil"}}>
                                                         Registro Civil</option>
-                                                    <option value="Passport ID" {{selected idtype "Passport ID"}}>
+                                                    <option value="Passport ID" {{selected idType "Passport ID"}}>
                                                         Passport
                                                         ID</option>
-                                                    <option value="Other" {{selected idtype "Other"}}>Other</option>
+                                                    <option value="Other" {{selected idType "Other"}}>Other</option>
 
                                                 </select>
                                             </div>
@@ -96,8 +96,8 @@
                                         <div class="col-md-4 col-12">
                                             <div class="form-group">
                                                 <label for="idnumber">ID Number</label>
-                                                <input type="text" id="idnumber" class="form-control" name="idnumber"
-                                                    value="{{idnumber}}">
+                                                <input type="text" id="idnumber" class="form-control" name="idNumber"
+                                                    value="{{idNumber}}">
                                             </div>
                                         </div>
                                     </div>
@@ -107,7 +107,7 @@
                                             <div class="form-group">
                                                 <label for="gender">Gender</label>
                                                 <select class="form-control" id="gender" name="gender">
-                                                    <option selected>Select a gender</option>
+                                                    <option selected>Select A Gender</option>
                                                     <option value="Male" {{selected gender "Male"}}>Male</option>
                                                     <option value="Female" {{selected gender "Female"}}>Female</option>
                                                 </select>
@@ -125,8 +125,8 @@
                                         <div class="col-md-4 col-12">
                                             <div class="form-group">
                                                 <label for="birthdate">Birth Date</label>
-                                                <input type="date" id="birthdate" class="form-control" name="birthdate"
-                                                    value="{{birthdate}}">
+                                                <input type="date" id="birthdate" class="form-control" name="birthDate"
+                                                    value="{{birthDate}}">
                                             </div>
                                         </div>
                                     </div>
@@ -148,10 +148,24 @@
                                             </div>
                                         </div>
 
-                                        
+                                        <div class="col-md-4 col-12">
+                                            <div class="form-group">
+                                                <label for="username">Username</label>
+                                                <input type="text" id="username" class="form-control" name="username"
+                                                    value="{{username}}">
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <div class="row">
+                                        <div class="col-md-4 col-12">
+                                            <div class="form-group">
+                                                <label for="password">Password</label>
+                                                <input type="text" id="password" class="form-control" name="password"
+                                                    value="{{password}}">
+                                            </div>
+                                        </div>
+
                                         <div class="col-md-4 col-12">
                                             <div class="form-group">
                                                 <label for="address">Address</label>
@@ -169,12 +183,26 @@
                                         </div>
                                     </div>
 
-
-                                    <div class="text-center">
-                                        <button type="submit" class="btn btn-primary mr-1 mb-1" href="#">Save</button>
-                                        <a class="btn btn-secondary mr-1 mb-1" href="/student/profile/{{student._id}}">Cancel</a>
+                                    <div class="row">
+                                        <div class="col-md-4 col-12">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" id="checkbox" name="representative"
+                                                    value="true" class="custom-control-input"
+                                                    {{check representative}}>
+                                                <label class="custom-control-label" for="checkbox">Is
+                                                    Representative?</label>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
+
+                                    <div class="d-flex flex-row mt-3">
+                                        <div>
+                                            <button type="submit" class="btn btn-primary mr-1 mb-1"
+                                                href="#">Save</button>
+                                            <a class="btn btn-secondary mr-1 mb-1"
+                                                href="/student/profile/{{student._id}}">Cancel</a>
+                                        </div>
+                                    </div>
                             </form>
                         </div>
                     </div>

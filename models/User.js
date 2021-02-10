@@ -4,6 +4,11 @@ const bcrypt = require("bcryptjs");
 
 const userSchema = new Schema(
   {
+    school: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "school",
+      required: true,
+    },
     creatorUser: {
       type: String,
       required: true,
@@ -16,15 +21,9 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    school: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "school",
-      required: true,
-    },
     email: {
       type: String,
       lowercase: true,
-      required: true,
     },
     username: {
       type: String,
