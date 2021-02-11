@@ -201,6 +201,15 @@ label {
   padding-top: 0;
 }
 
+.student-profile-title {
+  padding-bottom: 5px;
+}
+
+.collapse-student-profile {
+  padding-top: 0 !important;
+  margin-top: -5px !important;
+  margin-bottom: 0 !important;
+}
 
 /* @media (max-width: 1000px) {
   .profile-avatar {

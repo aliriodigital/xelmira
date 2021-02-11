@@ -258,7 +258,6 @@ controllers.profile = async (req, res) => {
   const { id } = req.params;
   const student = await Student.findById(id).populate("userId").lean();
   const parents = await Parent.find({ studentId: id }).populate("studentId");
-  console.log(parents);
   if (student.userId.school.toString() !== req.user.school.toString()) {
     req.flash("error", "You can not access that route");
     res.redirect("/user/profile");
@@ -275,11 +274,16 @@ controllers.profile = async (req, res) => {
 controllers.parentCreateView = async (req, res) => {
   const { id } = req.params;
   const student = await Student.findById(id).lean();
+  const representativeExists = await Parent.findOne({
+    studentId: id,
+    representative: { $in: ["true"] },
+  });
   res.render("parents/parent-new", {
     pageTitle: "New Parent",
     featureTitle: "Create Parent",
     studentLink: true,
     student: student,
+    representativeExists,
   });
 };
 
@@ -303,18 +307,11 @@ controllers.parentCreate = async (req, res) => {
     notes,
     representative,
   } = req.body;
-  req.body.representative === true
-    ? (req.body.representative = true)
-    : (req.body.representative = false);
+  req.body.representative === "true"
+    ? (req.body.representative = "true")
+    : (req.body.representative = "false");
   const student = await Student.findById(id).lean();
   const usernameInUse = await User.findOne({ username: username });
-  const parents = await Parent.find({ studentId: id });
-  // console.log(req.body);
-  // if(representative === true) {
-  //   parents.forEach((item) => {
-
-  //   });
-  // }
   let error = "";
   if (firstName === "") error = "Enter First Name";
   if (lastName === "") error = "Enter Lastname";
@@ -363,14 +360,34 @@ controllers.parentCreate = async (req, res) => {
     newParent.userId = newUser._id;
     newParent.school = req.user.school;
     newParent.creatorUser = req.user._id;
-    newParent.studentId = student._id;    
+    newParent.studentId = student._id;
+
+    const representativeExists = await Parent.findOne({
+      studentId: id,
+      representative: { $in: ["true"] },
+    });
+
+    if (representativeExists) {
+      newParent.representative = "false";
+    } else {
+      newParent.representative = "true";
+    }
+
+    await newParent.save();
+
     newUser.school = req.user.school;
     newUser.creatorUser = req.user._id;
     newUser.role = "parent";
     newUser.name = `${firstName} ${middleName} ${lastName}`;
     newUser.password = await newUser.encryptPassword(password);
-    newParent.save();
-    newUser.save();
+    await newUser.save();
+    // else {
+    //   await Parent.updateMany(
+    //     { studentId: id },
+    //     { _id: {$ne: newParent._id} },
+    //     { $set: { representative: "false" } }
+    //   );
+    // }
     res.redirect("/student/profile/" + id);
   }
 };

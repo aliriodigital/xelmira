@@ -3,13 +3,6 @@
         <h3 class="content-head d-inline">{{featureTitle}}</h3> »
         <span><a href="/students"> Students</a></span>
     </div>
-
-    {{!-- <div>
-        <h4>
-            <a class="btn btn-primary" style="margin-top: -9px;" href="/student/change/password"
-                id="new-crud-btn">Change Password</a>
-        </h4>
-    </div> --}}
 </div>
 
 <div class="content-body">
@@ -19,7 +12,8 @@
                 <div class="card">
                     <div class="card-body d-flex justify-content-between">
                         <div>
-                            <h4 class="primary">{{student.firstName}} {{student.middleName}} {{student.lastName}}
+                            <h4 id="student-name" class="primary text-uppercase font-weight-bold">{{student.firstName}}
+                                {{student.middleName}} {{student.lastName}}
                             </h4>
                             <div>
                                 <p class="d-inline">{{student.idType}}: </p>
@@ -30,16 +24,13 @@
                                 <h5 class="d-inline-block">{{student.phone}}</h5>
                             </div>
                         </div>
-
-                        <div>
-                            <b>
-                                <a class="btn btn-primary" href="/student/edit/{{student._id}}">Edit Student</a>
-                            </b>
-                        </div>
                     </div>
 
                     <div class="card-body student-profile">
-                        <p class="profile-header-bottom primary">STUDENT DETAILS</p>
+                        <h5 class="text-bold-400 mb-2">STUDENT DETAILS
+                            <span> | </span>
+                            <a href="/student/edit/{{student._id}}">Edit</a>
+                        </h5>
 
                         <div class="row">
                             <div class="col-md-4">
@@ -115,31 +106,107 @@
                                 <p>{{student.notes}}</p>
                             </div>
                         </div>
-                        
 
-                        <div class="d-flex flex-row-reverse">
-                            <a class="btn btn-primary" href="/student/{{student._id}}/parent/new">Add Parent</a>
-                        </div>
+                        <h5 class="text-bold-400 mt-2 student-profile-title">PARENTS
+                            <span> | </span>
+                            <a href="/student/{{student._id}}/parent/new">Add Parent</a>
+                        </h5>
 
-                        {{#each parents}}
 
-                        <p class="profile-header-bottom primary mt-1">PARENT # {{numberedSort @index}}</p>
-                        <div class="row">
-                            <div class="col-md-4 mt-1">
-                                <h6 class="mb-0">Relationship: </h6>
-                                <p>Tío</p>
+                        <section id="accordion-with-margin">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="card collapse-icon accordion-icon-rotate collapse-student-profile">
+                                        <div class="card-body" style="padding:0;">
+                                            <div class="accordion" id="accordionExample">
+                                                {{#each parents}}
+                                                <div class="collapse-margin">
+                                                    <div class="card-header" id="heading{{@index}}"
+                                                        data-toggle="collapse" role="button"
+                                                        data-target="#collapse{{@index}}" aria-expanded="true"
+                                                        aria-controls="collapse{{@index}}">
+                                                        <span class="lead collapse-title">
+                                                            {{firstName}} {{middleName}} {{lastName}}
+                                                        </span>
+                                                    </div>
+
+                                                    <div id="collapse{{@index}}" class="collapse"
+                                                        aria-labelledby="heading{{@index}}"
+                                                        data-parent="#accordionExample">
+                                                        <div class="card-body">
+                                                            <div class="row">
+                                                                <div class="col-md-4 mt-1">
+                                                                    <h6 class="mb-0">Joined: </h6>
+                                                                    <p>{{formatDate createdAt "LL"}}</p>
+                                                                </div>
+                                                                <div class="col-md-4 mt-1">
+                                                                    <h6 class="mb-0">Kinship: </h6>
+                                                                    <p>{{kinship}}</p>
+                                                                </div>
+                                                                <div class="col-md-4 mt-1">
+                                                                    <h6 class="mb-0">Gender: </h6>
+                                                                    <p>{{gender}}</p>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row">
+                                                                <div class="col-md-4 mt-1">
+                                                                    <h6 class="mb-0">ID Type: </h6>
+                                                                    <p>{{idType}}</p>
+                                                                </div>
+                                                                <div class="col-md-4 mt-1">
+                                                                    <h6 class="mb-0">ID Number: </h6>
+                                                                    <p>{{idNumber}}</p>
+                                                                </div>
+                                                                <div class="col-md-4 mt-1">
+                                                                    <h6 class="mb-0">Birth Date: </h6>
+                                                                    <p>{{formatDate birthDate "LL"}}</p>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row">
+                                                                <div class="col-md-4 mt-1">
+                                                                    <h6 class="mb-0">Age: </h6>
+                                                                    <p>{{ageInYears birthDate}} years</p>
+                                                                </div>
+                                                                <div class="col-md-4 mt-1">
+                                                                    <h6 class="mb-0">Phone: </h6>
+                                                                    <p>{{phone}}</p>
+                                                                </div>
+                                                                <div class="col-md-4 mt-1">
+                                                                    <h6 class="mb-0">Mobile: </h6>
+                                                                    <p>{{mobile}}</p>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row">
+                                                                <div class="col-md-4 mt-1">
+                                                                    <h6 class="mb-0">Address: </h6>
+                                                                    <p>{{address}}</p>
+                                                                </div>
+                                                                <div class="col-md-4 mt-1">
+                                                                    <h6 class="mb-0">Notes: </h6>
+                                                                    <p>{{notes}}</p>
+                                                                </div>
+                                                                <div class="col-md-4 mt-1">
+                                                                    <a class="btn btn-primary"
+                                                                        href="/student/:id/parent/:parentId/edit">Edit</a>
+                                                                </div>
+
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {{/each}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-md-4 mt-1">
-                                <h6 class="mb-0">Phone: </h6>
-                                <p>{{student.phone}}</p>
-                            </div>
-                            <div class="col-md-4 mt-1">
-                                <h6 class="mb-0">Mobile: </h6>
-                                <p>{{student.mobile}}</p>
-                            </div>
-                        </div>
+                        </section>
 
-                        {{/each}}
+
 
                         <div class="mt-5">
                             <h6 class="mb-0">Website:</h6>
