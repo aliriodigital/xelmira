@@ -112,7 +112,6 @@
                             <a href="/student/{{student._id}}/parent/new">Add Parent</a>
                         </h5>
 
-
                         <section id="accordion-with-margin">
                             <div class="row">
                                 <div class="col-sm-12">
@@ -120,13 +119,19 @@
                                         <div class="card-body" style="padding:0;">
                                             <div class="accordion" id="accordionExample">
                                                 {{#each parents}}
-                                                <div class="collapse-margin">
+                                                <div data-crud="{{json this}}" class="collapse-margin">
                                                     <div class="card-header" id="heading{{@index}}"
                                                         data-toggle="collapse" role="button"
-                                                        data-target="#collapse{{@index}}" aria-expanded="true"
+                                                        data-target="#collapse{{@index}}" aria-expanded="false"
                                                         aria-controls="collapse{{@index}}">
                                                         <span class="lead collapse-title">
                                                             {{firstName}} {{middleName}} {{lastName}}
+                                                            {{#if representative}}
+                                                            <span class="badge badge-danger">
+                                                                Emergency
+                                                            </span>
+                                                            {{/if}}
+
                                                         </span>
                                                     </div>
 
@@ -159,12 +164,16 @@
                                                                     <p>{{idNumber}}</p>
                                                                 </div>
                                                                 <div class="col-md-4 mt-1">
-                                                                    <h6 class="mb-0">Birth Date: </h6>
-                                                                    <p>{{formatDate birthDate "LL"}}</p>
+                                                                    <h6 class="mb-0">Email: </h6>
+                                                                    <p>{{userId.email}}</p>
                                                                 </div>
                                                             </div>
 
                                                             <div class="row">
+                                                                <div class="col-md-4 mt-1">
+                                                                    <h6 class="mb-0">Birth Date: </h6>
+                                                                    <p>{{formatDate birthDate "LL"}}</p>
+                                                                </div>
                                                                 <div class="col-md-4 mt-1">
                                                                     <h6 class="mb-0">Age: </h6>
                                                                     <p>{{ageInYears birthDate}} years</p>
@@ -173,13 +182,13 @@
                                                                     <h6 class="mb-0">Phone: </h6>
                                                                     <p>{{phone}}</p>
                                                                 </div>
+                                                            </div>
+
+                                                            <div class="row">
                                                                 <div class="col-md-4 mt-1">
                                                                     <h6 class="mb-0">Mobile: </h6>
                                                                     <p>{{mobile}}</p>
                                                                 </div>
-                                                            </div>
-
-                                                            <div class="row">
                                                                 <div class="col-md-4 mt-1">
                                                                     <h6 class="mb-0">Address: </h6>
                                                                     <p>{{address}}</p>
@@ -188,12 +197,14 @@
                                                                     <h6 class="mb-0">Notes: </h6>
                                                                     <p>{{notes}}</p>
                                                                 </div>
+                                                            </div>
+                                                            <div class="row">
                                                                 <div class="col-md-4 mt-1">
-                                                                    <a class="btn btn-primary"
-                                                                        href="/student/:id/parent/:parentId/edit">Edit</a>
+                                                                    <a
+                                                                        href="/student/{{../student._id}}/parent/{{_id}}/edit">Edit
+                                                                    </a> | 
+                                                                    <a class="link-delete" href="#">Delete</a>
                                                                 </div>
-
-
                                                             </div>
                                                         </div>
                                                     </div>
@@ -230,3 +241,40 @@
         </div>
     </section>
 </div>
+
+{{#contentFor "pageScripts"}}
+<script>
+    (function (window, $) {
+        "use strict";
+        $(".link-delete").click(function () {
+            let $btn = $(this);
+            let $dv = $btn.closest(".collapse-margin");
+            let $itm = $dv.data("crud");
+            let $upUrl = "/student/" + $itm.studentId._id + "/parent/" + $itm._id + "/remove"
+            let crudName = $itm.firstName + " " + $itm.middleName + " " + $itm.lastName;
+
+            $.confirm({
+                // icon: "fa fa-trash-o",
+                closeIcon: true,
+                backgroundDismiss: true,
+                columnClass: "col-md-6",
+                title: "<h4>Delete Confirmation</h4>",
+                content: `<p class="mb-2">Are you sure you want to permanently remove <b>${crudName}</b>?</p>`,
+                buttons: {
+                    confirm: {
+                        text: "Delete",
+                        btnClass: "btn btn-danger",
+                        keys: ["enter", "shift"],
+                        action: function () {
+                            window.location.href = $upUrl;
+                        },
+                    },
+                    cancel: {
+                        action: function () { },
+                    },
+                },
+            });
+        });
+    })(window, jQuery);
+</script>
+{{/contentFor}}

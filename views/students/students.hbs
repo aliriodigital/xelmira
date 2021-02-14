@@ -22,8 +22,9 @@
                                     <thead>
                                         <tr>
                                             <th>Name</th>
-                                            <th>Phone</th>
                                             <th>Birth Date</th>
+                                            <th>Phone</th>
+                                            <th>Profile</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -31,8 +32,11 @@
                                         {{#each students}}
                                         <tr data-crud="{{json this}}">
                                             <td>{{firstName}} {{middleName}} {{lastName}}</td>
-                                            <td>{{phone}}</td>
                                             <td>{{formatDate birthdate "LL"}}</td>
+                                            <td>{{phone}}</td>
+                                            <td>
+                                                <a href="/student/profile/{{_id}}">View</a>
+                                            </td>
                                             <td>
                                                 <div class="dropdown dropdown-dt">
                                                     <button class="btn btn-outline-primary dropdown-toggle"
@@ -41,8 +45,6 @@
                                                         Select
                                                     </button>
                                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                        <a class="dropdown-item"
-                                                            href="/student/profile/{{_id}}">Profile</a>
                                                         <a class="btn-edit dropdown-item"
                                                             href="/student/edit/{{_id}}">Edit</a>
                                                         <a class="btn-delete dropdown-item" href="#">Delete</a>

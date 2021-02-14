@@ -257,7 +257,10 @@ controllers.remove = async (req, res) => {
 controllers.profile = async (req, res) => {
   const { id } = req.params;
   const student = await Student.findById(id).populate("userId").lean();
-  const parents = await Parent.find({ studentId: id }).populate("studentId");
+  const parents = await Parent.find({ studentId: id })
+    .populate("studentId")
+    .populate("userId");
+
   if (student.userId.school.toString() !== req.user.school.toString()) {
     req.flash("error", "You can not access that route");
     res.redirect("/user/profile");
@@ -276,7 +279,7 @@ controllers.parentCreateView = async (req, res) => {
   const student = await Student.findById(id).lean();
   const representativeExists = await Parent.findOne({
     studentId: id,
-    representative: { $in: ["true"] },
+    representative: { $in: [true] },
   });
   res.render("parents/parent-new", {
     pageTitle: "New Parent",
@@ -289,7 +292,7 @@ controllers.parentCreateView = async (req, res) => {
 
 controllers.parentCreate = async (req, res) => {
   const { id } = req.params;
-  let {
+  const {
     firstName,
     middleName,
     lastName,
@@ -307,9 +310,6 @@ controllers.parentCreate = async (req, res) => {
     notes,
     representative,
   } = req.body;
-  req.body.representative === "true"
-    ? (req.body.representative = "true")
-    : (req.body.representative = "false");
   const student = await Student.findById(id).lean();
   const usernameInUse = await User.findOne({ username: username });
   let error = "";
@@ -361,18 +361,7 @@ controllers.parentCreate = async (req, res) => {
     newParent.school = req.user.school;
     newParent.creatorUser = req.user._id;
     newParent.studentId = student._id;
-
-    const representativeExists = await Parent.findOne({
-      studentId: id,
-      representative: { $in: ["true"] },
-    });
-
-    if (representativeExists) {
-      newParent.representative = "false";
-    } else {
-      newParent.representative = "true";
-    }
-
+    newParent.representative = representative;
     await newParent.save();
 
     newUser.school = req.user.school;
@@ -381,13 +370,144 @@ controllers.parentCreate = async (req, res) => {
     newUser.name = `${firstName} ${middleName} ${lastName}`;
     newUser.password = await newUser.encryptPassword(password);
     await newUser.save();
-    // else {
-    //   await Parent.updateMany(
-    //     { studentId: id },
-    //     { _id: {$ne: newParent._id} },
-    //     { $set: { representative: "false" } }
-    //   );
-    // }
+    res.redirect("/student/profile/" + id);
+  }
+};
+
+controllers.parentEditView = async (req, res) => {
+  const { id, parentId } = req.params;
+  const parent = await Parent.findById(parentId)
+    .populate("studentId")
+    .populate("userId");
+  const student = await Student.findById(id).lean();
+  res.render("parents/parent-edit", {
+    pageTitle: "Edit Parent",
+    featureTitle: "Edit Parent",
+    studentLink: true,
+    parent: parent,
+    student: student,
+  });
+};
+
+controllers.parentEdit = async (req, res) => {
+  const { id, parentId } = req.params;
+  const {
+    firstName,
+    middleName,
+    lastName,
+    kinship,
+    idType,
+    idNumber,
+    gender,
+    email,
+    birthDate,
+    phone,
+    mobile,
+    username,
+    password,
+    address,
+    notes,
+    representative,
+  } = req.body;
+
+  const parent = await Parent.findById(parentId)
+    .populate("userId")
+    .populate("studentId");
+  // const notCurrentParents = await Parent.find({
+  //   studentId: id,
+  //   _id: { $ne: parentId },
+  // });
+  const student = await Student.findById(id).lean();
+  const user = await User.findById(parent.userId._id);
+  const usernameInUse = await User.findOne({
+    username: username,
+    _id: { $ne: parent.userId._id },
+  });
+  let error = "";
+  if (firstName === "") error = "Enter First Name";
+  if (lastName === "") error = "Enter Lastname";
+  if (kinship === "") error = "Enter Kinship";
+  if (idType === "Select An ID type") error = "Select an ID Type";
+  if (idNumber === "" || /[A-z]/.test(idNumber))
+    error = "Enter a valid ID number";
+  if (gender === "Select A Gender") error = "Enter a gender";
+  if (email.length < 4) error = "Email must be longer than 4 characters";
+  if (birthDate === "") error = "Enter a birthdate";
+  if (phone === "" || /[A-z]/.test(phone)) error = "Enter a valid phone";
+  if (mobile === "" || /[A-z]/.test(phone)) error = "Enter a valid mobile";
+  if (usernameInUse)
+    error = `${username} already taken. Try a different username`;
+  if (username.length < 4) error = "Username must be longer than 4 characters";
+  if (address === "") error = "Enter an address";
+  if (error.length > 0) {
+    req.flash("error", error);
+    res.redirect("/student/" + id + "/parent/" + parentId + "/edit");
+  } else {
+    parent.firstName = firstName;
+    parent.middleName = middleName;
+    parent.lastName = lastName;
+    parent.kinship = kinship;
+    parent.idType = idType;
+    parent.idNumber = idNumber;
+    parent.gender = gender;
+    parent.email = email;
+    parent.birthDate = birthDate;
+    parent.phone = phone;
+    parent.mobile = mobile;
+    parent.username = username;
+    parent.password = password;
+    parent.address = address;
+    parent.notes = notes;
+    parent.representative = representative;
+    await parent.save();
+
+    const emergencyParent = await Parent.find({
+      studentId: id,
+      representative: true,
+    });
+
+    if (emergencyParent.length < 1) {
+      parent.representative = true;
+      await parent.save();
+    } else {
+      parent.representative = representative;
+      await parent.save();
+    }
+
+    const notCurrentParents = await Parent.find({
+      studentId: id,
+      _id: { $ne: parentId },
+    });
+
+    if (parent.representative) {
+      notCurrentParents.forEach((parent) => {
+        parent.representative = null;
+        parent.save();
+      });
+    }
+
+    user.name = `${firstName} ${middleName} ${lastName}`;
+    user.email = email;
+    user.username = username;
+    user.password = await user.encryptPassword(password);
+    await user.save();
+    res.redirect("/student/profile/" + id);
+  }
+};
+
+controllers.parentRemove = async (req, res) => {
+  const { id, parentId } = req.params;
+  const parent = await Parent.findById(parentId).populate("userId").populate("studentId");
+  const user = await User.findById({ _id: parent.userId._id });
+  if (!parent || parent.school.toString() !== req.user.school.toString()) {
+    req.flas("error", "You can not access that route");
+    res.redirect("/student/profile" + id);
+  } else if (parent.representative) {
+      req.flash("error", "Emergency parent can not be removed");
+      res.redirect("/student/profile/" + id);
+  } else {
+    await parent.remove();
+    await user.remove();
     res.redirect("/student/profile/" + id);
   }
 };

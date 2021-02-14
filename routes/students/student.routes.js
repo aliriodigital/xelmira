@@ -13,6 +13,9 @@ const {
   profile,
   parentCreateView,
   parentCreate,
+  parentEditView,
+  parentEdit,
+  parentRemove,
 } = require("../../controllers/students/student.controllers");
 
 router.get("/students", isAuthenticated, isAdmin, read);
@@ -24,5 +27,8 @@ router.get("/student/remove/:id", isAuthenticated, isAdmin, remove);
 router.get("/student/profile/:id", isAuthenticated, isAdmin, profile);
 router.get("/student/:id/parent/new", isAuthenticated, isAdmin, parentCreateView);
 router.post("/student/:id/parent/new", isAuthenticated, isAdmin, parentCreate);
+router.get("/student/:id/parent/:parentId/edit", isAuthenticated, isAdmin, parentEditView);
+router.post("/student/:id/parent/:parentId/edit", isAuthenticated, isAdmin, parentEdit);
+router.get("/student/:id/parent/:parentId/remove", isAuthenticated, isAdmin, parentRemove);
 
 module.exports = router;

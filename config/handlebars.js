@@ -22,6 +22,10 @@ const hbs = expressHandlebars.create({
       return value === "true" ? "checked" : "";
     },
 
+    check2: (value) => {
+      return value === true ? "checked" : "";
+    },
+
     selected: (property1, property2) => {
       let compare = property1 === property2 ? "selected" : "";
       return compare;
@@ -57,7 +61,7 @@ const hbs = expressHandlebars.create({
     },
     numberedSort: function (value) {
       return parseInt(value) + 1;
-    }
+    },
   },
 });
 
