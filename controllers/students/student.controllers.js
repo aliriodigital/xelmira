@@ -497,19 +497,22 @@ controllers.parentEdit = async (req, res) => {
 
 controllers.parentRemove = async (req, res) => {
   const { id, parentId } = req.params;
-  const parent = await Parent.findById(parentId).populate("userId").populate("studentId");
+  const parent = await Parent.findById(parentId)
+    .populate("userId")
+    .populate("studentId");
   const user = await User.findById({ _id: parent.userId._id });
   if (!parent || parent.school.toString() !== req.user.school.toString()) {
     req.flas("error", "You can not access that route");
     res.redirect("/student/profile" + id);
   } else if (parent.representative) {
-      req.flash("error", "Emergency parent can not be removed");
-      res.redirect("/student/profile/" + id);
+    req.flash("error", "Emergency parent can not be removed");
+    res.redirect("/student/profile/" + id);
   } else {
     await parent.remove();
     await user.remove();
     res.redirect("/student/profile/" + id);
   }
 };
+
 
 module.exports = controllers;

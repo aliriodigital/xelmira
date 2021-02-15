@@ -33,14 +33,6 @@
                         </a>
                     </li>
                 </ul>
-                {{!-- <ul class="menu-content">
-                    <li class="#">
-                        <a href="/batches">
-                            <i class="fa fa-circle-thin"></i>
-                            <span class="menu-item" data-i18n="second-level">Reports</span>
-                        </a>
-                    </li>
-                </ul> --}}
                 <ul class="menu-content">
                     <li class="{{#if subjectPresetLink}}active{{/if}}">
                         <a href="/subject/presets">
@@ -75,16 +67,23 @@
             <li class="nav-item">
                 <a href="/students">
                     <i class="fa fa-user-o"></i>
-                    <span class="menu-title {{#if studentLink}}active{{/if}} data-i18n="menu-levels">Students</span>
+                    <span class="menu-title {{#if studentLink}}active{{/if}}" data-i18n="menu-levels">Students</span>
                 </a>
             </li>
 
             <li class="nav-item">
+                <a href="/examination">
+                    <i class="fa fa-user-o"></i>
+                    <span class="menu-title {{#if examinationLink}}active{{/if}}" data-i18n="menu-levels">Examination</span>
+                </a>
+            </li>
+
+            {{!-- <li class="nav-item">
                 <a href="#">
                     <i class="fa fa-id-card-o"></i>
                     <span class="menu-title" data-i18n="menu-levels">Employees</span>
                 </a>
-            </li>
+            </li> --}}
         </ul>
     </div>
 </div>

@@ -32,17 +32,16 @@ const hbs = expressHandlebars.create({
     },
 
     field: (obj, fieldname) => {
-      //Serves properties of global objects
       return obj && typeof obj[fieldname] !== 'undefined' ? obj[fieldname] : '';
     },
 
-    block: function (name) { //Run grabbed code. See contentFor helper.
+    block: function (name) {
       let blocks = this._blocks;
       let content = blocks && blocks[name];
       return content ? content.join("\n") : null;
     },
 
-    contentFor: function (name, options) { //Grab below code on hbs page
+    contentFor: function (name, options) {
       let blocks = this._blocks || (this._blocks = {});
       let block = blocks[name] || (blocks[name] = []);
       block.push(options.fn(this));

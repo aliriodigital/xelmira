@@ -33,7 +33,7 @@ helpers.isAdmin = (role) => {
   return ["admin"].indexOf(role) !== -1 ? true : false
 };
 
-helpers.isPES = (role) => { // is Parent, Employee or Student
+helpers.isPES = (role) => { 
   return ["parent", "employee", "student"].indexOf(role) !== -1 ? true : false;
 }
 
