@@ -18,6 +18,10 @@ const courseSchema = new Schema(
       type: String,
       required: true,
     },
+    educationType: {
+      type: String,
+      required: true,
+    }
   },
   { timestamps: true }
 );

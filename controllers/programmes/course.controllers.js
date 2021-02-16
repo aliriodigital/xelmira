@@ -21,26 +21,27 @@ controllers.createView = (req, res) => {
 };
 
 controllers.create = async (req, res) => {
-  const { name, description } = req.body;
+  const { name, educationType, description } = req.body;
+  // console.log(educationType);
   const courseInUse = await Course.findOne({
     school: req.user.school,
     name: name,
   });
-  if (name.length < 1) {
-    errorMsg = "Please enter a name and try again";
-    res.render("programmes/course-new", {
-      error: errorMsg,
-    });
-  } else if (courseInUse) {
-    const error = `${name} is already taken. Please try a different name`;
+  let error = "";
+  if (name.length < 1) error = "Enter a name";
+  if (courseInUse) error = `${name} already taken. Try a different name`;
+  if (educationType === "Select Education Type")
+    error = "Select An Education Type";
+  if (error.length > 0) {
     res.render("programmes/course-new", {
       pageTitle: "Create course",
       featureTitle: "Create Course",
       courseLink: true,
       error: error,
       name: name,
+      educationType: educationType,
       description: description,
-    })
+    });
   } else {
     const course = new Course(req.body);
     course.creatorUser = req.user.id;
@@ -69,31 +70,31 @@ controllers.editView = async (req, res) => {
 
 controllers.edit = async (req, res) => {
   const { id } = req.params;
-  const { name, description } = req.body;
+  const { name, educationType, description } = req.body;
   const course = await Course.findById(id);
   const courseInUse = await Course.findOne({
     school: req.user.school,
     name: name,
-    _id: { $ne: id }
+    _id: { $ne: id },
   });
-  if (name.length < 1) {
-    req.session.name = name;
-    req.flash("error", "Please enter a name and try again");
-    res.redirect("/course/edit/form/" + id);
-  } else if (courseInUse) {
-    req.flash("error", `${name} is already taken. Please try a different name`);
-    res.redirect("/course/edit/form/" + id);
+  let error = "";
+  if (!course || course.school.toString() !== req.user.school.toString()) {
+    error = "You can not access that route";
+  }
+  if (name.length < 1) error = "Enter a name";
+  if (courseInUse) error = `${name} already taken. Try a different name`;
+  if (educationType === "Select Education Type")
+    error = "Select an education type";
+  if (error > 0) {
+    req.flash("error", error);
+    res.redirect("/courses");
   } else {
-    if (!course || course.school.toString() !== req.user.school.toString()) {
-      req.flash("error", "You are not authorized to view this page");
-      res.redirect("/courses");
-    } else {
-      course.name = name;
-      course.description = description;
-      await course.save();
-      req.flash("success", "Course updated successfully");
-      res.redirect("/courses");
-    }
+    course.name = name;
+    course.educationType = educationType;
+    course.description = description;
+    await course.save();
+    req.flash("success", "Course updated successfully");
+    res.redirect("/courses");
   }
 };
 
@@ -102,17 +103,22 @@ controllers.remove = async (req, res) => {
   const course = await Course.findById(id);
   const countBatches = await Batch.countDocuments({ course: id });
   if (!course || course.school.toString() !== req.user.school.toString()) {
-    req.flash("error", "You can not remove this course. Please try a different one!");
+    req.flash(
+      "error",
+      "You can not remove this course. Please try a different one!"
+    );
     res.redirect("/courses");
   } else if (countBatches > 0) {
-    req.flash("error", `Impossible to remove because there are batches associated`);
+    req.flash(
+      "error",
+      `Impossible to remove because there are batches associated`
+    );
     res.redirect("/courses");
   } else {
     await course.remove();
     req.flash("success", "Course removed successfully");
     res.redirect("/courses");
   }
-
 };
 
 module.exports = controllers;

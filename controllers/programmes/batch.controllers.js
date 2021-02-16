@@ -10,7 +10,7 @@ controllers.read = async (req, res) => {
   const batch = await Batch.find({
     school: req.user.school,
     course: courseId,
-  }).lean();
+  }).populate("course").lean();
   res.render("programmes/batches", {
     pageTitle: "Batches",
     featureTitle: "Manage Batches",

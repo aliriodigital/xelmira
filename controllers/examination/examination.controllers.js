@@ -13,12 +13,12 @@ controllers.read = async (req, res) => {
     school: req.user.school,
     role: "student",
   }).lean();
-  res.render("students/students", {
-    pageTitle: "Manage Students",
-    featureTitle: "Manage Students",
-    studentLink: true,
-    students: students,
-    users: users,
+  res.render("examination/examination", {
+    pageTitle: "Examination",
+    featureTitle: "Examination",
+    examinationLink: true,
+    // students: students,
+    // users: users,
   });
 };
 

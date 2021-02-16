@@ -28,6 +28,24 @@
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="form-group">
+                                                <label for="name">Education Type</label>
+                                                <select class="form-control" name="educationType" id="educationtype">
+                                                    <option value="Select Education Type" selected>Select Education Type
+                                                    </option>
+                                                    <option value="preschool" {{selected educationType "preschool"}}>
+                                                        Preschool</option>
+                                                    <option value="elementary" {{selected educationType "elementary"}}>
+                                                        Elementary</option>
+                                                    <option value="highschool" {{selected educationType "highschool"}}>
+                                                        High School</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
                                                 <label for="description">Description</label>
                                                 <textarea id="description" class="form-control"
                                                     name="description">{{description}}</textarea>

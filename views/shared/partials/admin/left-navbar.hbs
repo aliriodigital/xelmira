@@ -41,7 +41,7 @@
                         </a>
                     </li>
                 </ul>
-                
+
             </li>
             <li class="nav-item" style="{{#if menuLinkDisplay}}display:none{{/if}}">
                 <a href="#">
@@ -65,16 +65,31 @@
             </li>
 
             <li class="nav-item">
-                <a href="/students">
+                <a href="#">
                     <i class="fa fa-user-o"></i>
-                    <span class="menu-title {{#if studentLink}}active{{/if}}" data-i18n="menu-levels">Students</span>
+                    <span class="menu-title" data-i18n="menu-levels">Students</span>
                 </a>
+                <ul class="menu-content">
+                    <li class="{{#if studentLink}}active{{/if}}">
+                        <a href="/students">
+                            <i class="fa fa-circle-thin"></i>
+                            <span class="menu-item" data-i18n="second-level">Admission</span>
+                        </a>
+                    </li>
+                    <li class="{{#if setStudentLink}}active{{/if}}">
+                        <a href="/student/settings">
+                            <i class="fa fa-circle-thin"></i>
+                            <span class="menu-item" data-i18n="second-level">Settings</span>
+                        </a>
+                    </li>
+                </ul>
             </li>
 
             <li class="nav-item">
                 <a href="/examination">
-                    <i class="fa fa-user-o"></i>
-                    <span class="menu-title {{#if examinationLink}}active{{/if}}" data-i18n="menu-levels">Examination</span>
+                    <i class="fa fa-th-list"></i>
+                    <span class="menu-title {{#if examinationLink}}active{{/if}}"
+                        data-i18n="menu-levels">Examination</span>
                 </a>
             </li>
 

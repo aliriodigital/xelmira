@@ -10,7 +10,8 @@ const batchSchema = new Schema({
         type: String,
     },
     course: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "course",
         required: true,
     },
     school: {
