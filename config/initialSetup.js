@@ -1,7 +1,9 @@
 const Role = require("../models/Role");
 const Grade = require("../models/Grade");
 
-const initialRoles = async () => {
+const initials = {};
+
+initials.roles = async () => {
     try {
         const countRoles = await Role.estimatedDocumentCount();
         if (countRoles > 0) return;
@@ -39,7 +41,7 @@ const initialRoles = async () => {
     }
 };
 
-const initialGrades = async() => {
+initials.grades = async() => {
     try{
         const countGrades = await Grade.estimatedDocumentCount();
         if(countGrades > 0) return;
@@ -67,4 +69,4 @@ const initialGrades = async() => {
 };
 
 
-module.exports = { initialRoles, initialGrades };
+module.exports = initials;
