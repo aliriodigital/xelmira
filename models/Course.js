@@ -18,7 +18,7 @@ const courseSchema = new Schema(
       type: String,
       required: true,
     },
-    educationType: {
+    gradingSystem: {
       type: String,
       required: true,
     }

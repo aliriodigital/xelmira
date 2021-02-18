@@ -1,4 +1,5 @@
 const Role = require("../models/Role");
+const Grade = require("../models/Grade");
 
 const initialRoles = async () => {
     try {
@@ -33,11 +34,37 @@ const initialRoles = async () => {
             }).save(),
         ]);
 
-        console.log(roles);
-
     } catch (error) {
         console.error(error);
     }
-}
+};
 
-module.exports = { initialRoles };
+const initialGrades = async() => {
+    try{
+        const countGrades = await Grade.estimatedDocumentCount();
+        if(countGrades > 0) return;
+        const grades = await Promise.all([
+            new Grade({
+                name: "Descriptive",
+                description: "Skills are assesed and achieved",
+                creatorUser: "initial_grade",
+            }).save(),
+            new Grade({
+                name: "Formal score",
+                description: "Assessment scale and ranking levels are used",
+                creatorUser: "initial_grade",
+            }).save(),
+            new Grade({
+                name: "Grade Point Average",
+                description: "Score is averaged.",
+                creatorUser: "initial_grade",
+            }).save(),
+        ])
+    } catch(error) {
+        console.error(error);
+
+    }
+};
+
+
+module.exports = { initialRoles, initialGrades };

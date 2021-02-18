@@ -211,12 +211,10 @@ label {
   margin-bottom: 0 !important;
 }
 
-/* @media (max-width: 1000px) {
-  .profile-avatar {
-    margin-bottom: 25px !important;
-  }
+.dataTables_wrapper th {
+  font-size: 14px !important;
 }
 
-.student-details {
-  margin-top: 10px;
-} */
+.btn {
+  border-radius: 3px !important;
+}

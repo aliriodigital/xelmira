@@ -16,7 +16,7 @@
                                 <div class="form-body">
 
                                     <div class="row">
-                                        <div class="col-md-4">
+                                        <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="name">Name</label>
                                                 <input type="text" id="name" class="form-control" name="name"
@@ -26,25 +26,22 @@
                                     </div>
 
                                     <div class="row">
-                                        <div class="col-md-4">
+                                        <div class="col-md-12">
                                             <div class="form-group">
-                                                <label for="name">Education Type</label>
-                                                <select class="form-control" name="educationType" id="educationtype">
-                                                    <option value="Select Education Type" selected>Select Education Type
+                                                <label for="name">Grading System</label>
+                                                <select class="form-control" name="gradingSystem" id="gradingSystem">
+                                                    <option value="Select Grading System" selected>Select Grading System
                                                     </option>
-                                                    <option value="preschool" {{selected course.educationType "preschool"}}>
-                                                        Preschool</option>
-                                                    <option value="elementary" {{selected course.educationType "elementary"}}>
-                                                        Elementary</option>
-                                                    <option value="highschool" {{selected course.educationType "highschool"}}>
-                                                        High School</option>
+                                                    {{#each grades}}
+                                                    <option value="{{name}}" {{selected gradingSystem name}}>{{name}}</option>
+                                                    {{/each}}
                                                 </select>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="row">
-                                        <div class="col-md-4">
+                                        <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="description">Description</label>
                                                 <textarea id="description" class="form-control"

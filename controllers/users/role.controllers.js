@@ -50,13 +50,13 @@ controllers.create = async (req, res) => {
 controllers.editView = async (req, res) => {
   const { id } = req.params;
   const role = await Role.findById(id).lean();
-  console.log(role);
   if(!role || role.school.toString() !== req.user.school.toString()) {
     req.flash("error", "You can not access that route");
     res.redirect("/roles");
   } else {
     res.render("users/role-edit", {
       pageTitle: "Edit Role",
+      roleLink: true,
       role: role,
     });
   }

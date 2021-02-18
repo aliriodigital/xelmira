@@ -99,8 +99,8 @@ a {
 }
 
 .btn-outline-primary {
-  border: 1px solid $blue;
-  color: $blue;
+  border: 1px solid $gray;
+  color: $gray;
 }
 .btn-outline-primary:hover {
   color: $blue;
@@ -119,7 +119,7 @@ a {
 .btn-flat-primary
   ~ .dropdown-menu
   .dropdown-item:not(.active):not(:active):hover {
-  color: $blue;
+  color: $gray;
 }
 
 .dropdown.dropdown-icon-wrapper
@@ -182,7 +182,7 @@ a {
   ~ .dropdown-menu
   .dropdown-item:hover
   i {
-  color: $blue;
+  color: $gray;
 }
 
 .bullet.bullet-primary {
@@ -252,13 +252,13 @@ input:focus ~ .bg-primary {
 
 /* BUTTON OUTLINE PRIMARY */
 .btn-outline-primary {
-  color: $blue;
-  border-color: $blue;
+  color: $gray;
+  border-color: $light-gray;
 }
 .btn-outline-primary:hover {
-  background-color: $blue;
-  border-color: $blue;
-  color: white;
+  // background-color: $blue;
+  border-color: $light-gray;
+  color: $gray;
 }
 .btn-outline-primary:focus,
 .btn-outline-primary.focus {
@@ -272,9 +272,9 @@ input:focus ~ .bg-primary {
 .btn-outline-primary:not(:disabled):not(.disabled):active,
 .btn-outline-primary:not(:disabled):not(.disabled).active,
 .show > .btn-outline-primary.dropdown-toggle {
-  color: #fff;
-  background-color: $blue;
-  border-color: $blue;
+  color: $gray;
+  background-color: $white;
+  border-color: $light-gray;
 }
 .btn-outline-primary:not(:disabled):not(.disabled):active:focus,
 .btn-outline-primary:not(:disabled):not(.disabled).active:focus,
@@ -363,6 +363,14 @@ a:hover:not(.btn) {
 
 .border-bottom-lg {
   border-bottom: 1px solid $light-gray;
+}
+
+th {
+  color: $blue !important;
+}
+
+.btn-secondary {
+  background-color: $gray !important;
 }
 
 

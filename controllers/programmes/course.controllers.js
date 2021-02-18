@@ -1,6 +1,7 @@
 const { session } = require("passport");
 const Course = require("../../models/Course");
 const Batch = require("../../models/Batch");
+const Grade = require("../../models/Grade");
 const controllers = {};
 
 controllers.read = async (req, res) => {
@@ -13,16 +14,19 @@ controllers.read = async (req, res) => {
   });
 };
 
-controllers.createView = (req, res) => {
+controllers.createView = async(req, res) => {
+  const grades = await Grade.find().lean();
   res.render("programmes/course-new", {
     pageTitle: "Create course",
     featureTitle: "Create Course",
+    courseLink: true,
+    grades: grades,
   });
 };
 
 controllers.create = async (req, res) => {
-  const { name, educationType, description } = req.body;
-  // console.log(educationType);
+  const { name, gradingSystem, description } = req.body;
+  console.log(req.body);
   const courseInUse = await Course.findOne({
     school: req.user.school,
     name: name,
@@ -30,8 +34,8 @@ controllers.create = async (req, res) => {
   let error = "";
   if (name.length < 1) error = "Enter a name";
   if (courseInUse) error = `${name} already taken. Try a different name`;
-  if (educationType === "Select Education Type")
-    error = "Select An Education Type";
+  if (gradingSystem === "Select Grading System")
+    error = "Select a grading system";
   if (error.length > 0) {
     res.render("programmes/course-new", {
       pageTitle: "Create course",
@@ -39,7 +43,7 @@ controllers.create = async (req, res) => {
       courseLink: true,
       error: error,
       name: name,
-      educationType: educationType,
+      gradingSystem: gradingSystem,
       description: description,
     });
   } else {
@@ -55,6 +59,7 @@ controllers.create = async (req, res) => {
 controllers.editView = async (req, res) => {
   const { id } = req.params;
   const course = await Course.findById(id).lean();
+  const grades = await Grade.find().lean();
   if (!course || course.school.toString() !== req.user.school.toString()) {
     req.flash("error", "You can not edit this course. Please try another one!");
     res.redirect("/courses");
@@ -64,13 +69,14 @@ controllers.editView = async (req, res) => {
       featureTitle: "Edit Course",
       courseLink: true,
       course: course,
+      grades: grades,
     });
   }
 };
 
 controllers.edit = async (req, res) => {
   const { id } = req.params;
-  const { name, educationType, description } = req.body;
+  const { name, gradingSystem, description } = req.body;
   const course = await Course.findById(id);
   const courseInUse = await Course.findOne({
     school: req.user.school,
@@ -83,14 +89,14 @@ controllers.edit = async (req, res) => {
   }
   if (name.length < 1) error = "Enter a name";
   if (courseInUse) error = `${name} already taken. Try a different name`;
-  if (educationType === "Select Education Type")
-    error = "Select an education type";
+  if (gradingSystem === "Select Grading System")
+    error = "Select a grading system";
   if (error > 0) {
     req.flash("error", error);
     res.redirect("/courses");
   } else {
     course.name = name;
-    course.educationType = educationType;
+    course.gradingSystem = gradingSystem;
     course.description = description;
     await course.save();
     req.flash("success", "Course updated successfully");

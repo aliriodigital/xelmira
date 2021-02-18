@@ -5,13 +5,14 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
 const flash = require("connect-flash");
 const passport = require("passport");
-const { initialRoles } = require("./config/initialSetup");
+const { initialRoles, initialGrades } = require("./config/initialSetup");
 
 /* INITIALIZATIONS */
 const app = express();
 require("./config/database.js");
 require("./config/passport-local");
 initialRoles();
+initialGrades();
 
 
 /* SETTINGS */
