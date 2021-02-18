@@ -52,7 +52,7 @@ initials.grades = async() => {
                 creatorUser: "initial_grade",
             }).save(),
             new Grade({
-                name: "Formal score",
+                name: "Colombia System",
                 description: "Assessment scale and ranking levels are used",
                 creatorUser: "initial_grade",
             }).save(),
