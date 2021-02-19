@@ -15,6 +15,7 @@ initial.roles();
 initial.grades();
 
 
+
 /* SETTINGS */
 const { hbs } = require("./config/handlebars");
 app.engine("hbs", hbs.engine);
