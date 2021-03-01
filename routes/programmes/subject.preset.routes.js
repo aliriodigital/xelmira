@@ -18,5 +18,4 @@ router.post("/subject/preset/new", isAuthenticated, isAdmin, create);
 router.get("/subject/preset/edit/:subjectPresetId", isAuthenticated, isAdmin, editView);
 router.post("/subject/preset/edit/:subjectPresetId", isAuthenticated, isAdmin, edit);
 router.get("/subject/preset/delete/:subjectPresetId", isAuthenticated, isAdmin, remove);
-
 module.exports = router;
