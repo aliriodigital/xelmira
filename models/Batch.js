@@ -21,7 +21,7 @@ const batchSchema = new Schema({
     creatorUser: {
         type: String,
         required: true,
-    },
+    }
 },
     { timestamps: true }
 );

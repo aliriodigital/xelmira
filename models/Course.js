@@ -23,6 +23,7 @@ const courseSchema = new Schema(
       ref: "grade",
       required: true,
     }
+
   },
   { timestamps: true }
 );

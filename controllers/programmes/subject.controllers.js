@@ -206,4 +206,33 @@ controllers.bringIn = async (req, res) => {
   buildSaveBatches();
 };
 
+
+controllers.getSubjectByBatch = async (req, res) => {
+    const { batchId } = req.query;
+
+    let data = {
+      'lstSubject': []
+
+    };
+
+    const batch = await Batch.findOne({ _id: batchId })
+    .populate({
+      path : "course", 
+      populate : {
+        path : "gradingSystem"
+      }
+    }).lean();
+
+    console.log(batch.course.gradingSystem.electiveSubject);
+
+    if(!batch.course.gradingSystem.electiveSubject) 
+      return res.json(data);
+
+    data.lstSubject = await Subject.find({
+      batch: batchId,
+    });
+    res.json(data);
+};
+
+
 module.exports = controllers;

@@ -12,6 +12,7 @@ const {
   remove,
   bringInView,
   bringIn,
+  getSubjectByBatch
 } = require("../../controllers/programmes/subject.controllers");
 
 router.get("/subjects/batch/:batchId/course/:courseId", isAuthenticated, isAdmin, read);
@@ -22,5 +23,5 @@ router.post("/subject/:subjectId/edit/batch/:batchId/course/:courseId", isAuthen
 router.get("/subject/delete/:subjectId/batch/:batchId/course/:courseId", isAuthenticated, isAdmin, remove);
 router.get("/subject/import/batch/:batchId/course/:courseId", isAuthenticated, isAdmin, bringInView);
 router.post("/subject/import/batch/:batchId/course/:courseId", isAuthenticated, isAdmin, bringIn);
-
+router.get("/subject/getSubjectByBatch", isAuthenticated, isAdmin, getSubjectByBatch);
 module.exports = router;

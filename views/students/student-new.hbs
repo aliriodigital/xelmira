@@ -41,10 +41,15 @@
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="batch" id="demo">Batch</label>
+<<<<<<< HEAD
                                                 <select class="form-control" id="batch" name="batch" {{!-- onchange="getOption(this)" --}}>
                                                     <option selected>Select A Batch</option>
+=======
+                                                <select class="form-control" id="batch" name="batch" >
+                                                    <option selected value="">Select A Batch</option>
+>>>>>>> 4915fbc3a2bf6375841db7e5e612ef7eb5558b9b
                                                     {{#each batches}}
-                                                    <option value="{{name}}" {{selected ../batch name}}>{{name}}
+                                                    <option value="{{_id}}" {{selected ../batch name}}>{{name}}
                                                     </option>
                                                     {{/each}}
                                                 </select>
@@ -196,7 +201,9 @@
 
 
 <script type="text/javascript" src="/plugins/multiple-select/docs/js/jquery-2.1.3.min.js"></script>
+
 {{#contentFor "pageScripts"}}
+<script type="text/javascript" src="/assets/js/students.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
         $('#subjects').multiselect({
