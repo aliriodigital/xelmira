@@ -41,7 +41,7 @@
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="batch" id="demo">Batch</label>
-                                                <select class="form-control" id="batch" name="batch" onchange="getOption(this)">
+                                                <select class="form-control" id="batch" name="batch" {{!-- onchange="getOption(this)" --}}>
                                                     <option selected>Select A Batch</option>
                                                     {{#each batches}}
                                                     <option value="{{name}}" {{selected ../batch name}}>{{name}}
@@ -55,9 +55,9 @@
                                             <div class="form-group subjects-on-admission">
                                                 <label for="subjects">Subjects</label><br>
                                                 <select class="form-control" id="subjects" multiple="multiple">
-                                                    {{#filterCollection subjects "batch" "603b0c8ec923d1209b4bb136"}}
+                                                    {{!-- {{#filterCollection subjects "batch" "603b0c8ec923d1209b4bb136"}} --}}
                                                     <option value="{{name}}">{{name}}</option>
-                                                    {{/filterCollection}}
+                                                    {{!-- {{/filterCollection}} --}}
                                                 </select>
                                             </div>
                                         </div>                                        

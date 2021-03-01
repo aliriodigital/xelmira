@@ -30,6 +30,7 @@ controllers.create = async (req, res) => {
     school: req.user.school,
     name: name,
   });
+  const grades = await Grade.find().lean();
   let error = "";
   if (name.length < 1) error = "Enter a name";
   if (courseInUse) error = `${name} already taken. Try a different name`;
@@ -41,6 +42,7 @@ controllers.create = async (req, res) => {
       featureTitle: "Create Course",
       courseLink: true,
       error: error,
+      grades: grades,
       name: name,
       gradingSystem: gradingSystem,
       description: description,
