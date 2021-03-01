@@ -1,4 +1,3 @@
-
 const expressHandlebars = require("express-handlebars");
 const { MongooseDocument } = require("mongoose");
 const path = require("path");
@@ -8,7 +7,7 @@ const hbs = expressHandlebars.create({
   extname: "hbs",
   runtimeOptions: {
     allowProtoPropertiesByDefault: true,
-    allowProtoMethodsByDefault: true
+    allowProtoMethodsByDefault: true,
   },
   layoutsDir: path.join(__dirname, "../views/shared/layouts"),
   partialsDir: path.join(__dirname, "../views/shared/partials"),
@@ -32,7 +31,7 @@ const hbs = expressHandlebars.create({
     },
 
     field: (obj, fieldname) => {
-      return obj && typeof obj[fieldname] !== 'undefined' ? obj[fieldname] : '';
+      return obj && typeof obj[fieldname] !== "undefined" ? obj[fieldname] : "";
     },
 
     block: function (name) {
@@ -60,6 +59,12 @@ const hbs = expressHandlebars.create({
     },
     numberedSort: function (value) {
       return parseInt(value) + 1;
+    },
+    filterCollection: function (list, k, v, opts) {
+      var i, result = "";
+      for (i = 0; i < list.length; ++i)
+        if (list[i][k] == v) result = result + opts.fn(list[i]);
+      return result;
     },
   },
 });

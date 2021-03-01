@@ -26,7 +26,6 @@ controllers.createView = async(req, res) => {
 
 controllers.create = async (req, res) => {
   const { name, gradingSystem, description } = req.body;
-  console.log(req.body);
   const courseInUse = await Course.findOne({
     school: req.user.school,
     name: name,
@@ -47,9 +46,11 @@ controllers.create = async (req, res) => {
       description: description,
     });
   } else {
+    const grade = await Grade.findOne({name: gradingSystem});
     const course = new Course(req.body);
     course.creatorUser = req.user.id;
     course.school = req.user.school;
+    course.gradingSystem = grade._id;
     await course.save();
     req.flash("success", "Course created successfully");
     res.redirect("/courses");

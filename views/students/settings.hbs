@@ -1,0 +1,43 @@
+<div class="d-flex justify-content-between feature-header">
+    <div>
+        <h3 class="content-head d-inline">{{featureTitle}}</h3> 
+    </div>
+</div>
+
+<div class="content-body">
+    <section id="basic-horizontal-layouts">
+        <div class="row match-height">
+            <div class="col-12 mx-auto">
+                <div class="card">
+                    <div class="card-content py-2">
+                        <div class="card-body">
+                            <form action="{{action}}" method="POST" class="form form-horizontal">
+                                <div class="form-body">
+                                    
+                                    <div class="row">
+                                        <div class="col-md-4 col-12">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" id="checkbox" name="representative"
+                                                    value="true" class="custom-control-input"
+                                                    {{check2 parent.representative}}>
+                                                <label class="custom-control-label" for="checkbox">Admission based on subjects?</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex flex-row mt-5">
+                                        <div>
+                                            <button type="submit" class="btn btn-primary mr-1 mb-1"
+                                                href="#">Save</button>
+                                            <a class="btn btn-secondary mr-1 mb-1"
+                                                href="/student/settings">Cancel</a>
+                                        </div>
+                                    </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

@@ -19,7 +19,8 @@ WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BET
   font-size: 19px;
 }
 
-#new-crud-btn, #import-crud-btn {
+#new-crud-btn,
+#import-crud-btn {
   padding-left: 15px;
   padding-right: 15px;
 }
@@ -77,8 +78,6 @@ table.dataTable thead tr {
   font-size: 25px;
 }
 
-
-
 /* CONTENT PADDING IN MOBILES */
 @media (max-width: 575.98px) {
   html body .content .content-wrapper {
@@ -103,13 +102,12 @@ html body.navbar-sticky .app-content .content-wrapper {
   padding: 1.2rem 2.2rem 1.2rem 2.2rem;
 }
 
-
 /* MODALS */
 @media (max-width: 575.98px) {
   .modal-dialog-scrollable .modal-body {
     padding-left: 1.5rem !important;
     padding-right: 1.4rem !important;
-  }  
+  }
 }
 
 /* ALERTS */
@@ -119,8 +117,8 @@ html body.navbar-sticky .app-content .content-wrapper {
   border-radius: 0;
 }
 .alert button.close {
-  margin-top: -4px; 
-  margin-right: 6px; 
+  margin-top: -4px;
+  margin-right: 6px;
 }
 
 @media (max-width: 575.98px) {
@@ -136,7 +134,7 @@ html body.navbar-sticky .app-content .content-wrapper {
 
 .jconfirm-icon-c {
   margin-top: -12px;
-  color: #EA5455;
+  color: #ea5455;
 }
 
 .jconfirm .jconfirm-box {
@@ -147,11 +145,10 @@ html body.navbar-sticky .app-content .content-wrapper {
   color: #565656;
 }
 
-
 @media (max-width: 575.98px) {
   #import-crud-btn {
     margin-bottom: 15px;
-  }  
+  }
 }
 
 .radiobtn label {
@@ -178,17 +175,20 @@ label {
   color: #979797;
 }
 
-
-::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+::-webkit-input-placeholder {
+  /* Chrome/Opera/Safari */
   color: #626262 !important;
 }
-::-moz-placeholder { /* Firefox 19+ */
+::-moz-placeholder {
+  /* Firefox 19+ */
   color: #626262 !important;
 }
-:-ms-input-placeholder { /* IE 10+ */
+:-ms-input-placeholder {
+  /* IE 10+ */
   color: #626262 !important;
 }
-:-moz-placeholder { /* Firefox 18- */
+:-moz-placeholder {
+  /* Firefox 18- */
   color: #626262 !important;
 }
 
@@ -217,4 +217,21 @@ label {
 
 .btn {
   border-radius: 3px !important;
+}
+
+.subjects-on-admission .btn-group,
+.multiselect-container {
+  width: 100% !important;
+}
+
+.btn-group .multiselect {
+  text-align: left;
+}
+
+.multiselect-container .multiselect-option.active:not(.multiselect-active-item-fallback) {
+  background-color:white !important;
+}
+
+.multiselect-container .multiselect-all.active:not(.multiselect-active-item-fallback) {
+  background-color: white !important;
 }

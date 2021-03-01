@@ -19,7 +19,8 @@ const courseSchema = new Schema(
       required: true,
     },
     gradingSystem: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "grade",
       required: true,
     }
   },

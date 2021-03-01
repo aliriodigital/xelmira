@@ -28,14 +28,9 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label for="name">Grading System</label>
-                                                <select class="form-control" name="gradingSystem" id="gradingSystem">
-                                                    <option value="Select Grading System" selected>Select Grading System
-                                                    </option>
-                                                    {{#each grades}}
-                                                    <option value="{{name}}" {{selected gradingSystem name}}>{{name}}</option>
-                                                    {{/each}}
-                                                </select>
+                                                <label for="description">Description</label>
+                                                <textarea id="description" class="form-control"
+                                                    name="description">{{course.description}}</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -43,9 +38,14 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label for="description">Description</label>
-                                                <textarea id="description" class="form-control"
-                                                    name="description">{{course.description}}</textarea>
+                                                <label for="name">Grading System</label>
+                                                <select class="form-control" name="gradingSystem" id="gradingSystem">
+                                                    <option value="Select Grading System" selected>Select Grading System
+                                                    </option>
+                                                    {{#each grades}}
+                                                    <option value="{{name}}" {{selected ../course.gradingSystem name}}>{{name}}</option>
+                                                    {{/each}}
+                                                </select>
                                             </div>
                                         </div>
                                     </div>

@@ -11,38 +11,38 @@ initials.roles = async () => {
       new Role({
         name: "hyperadmin",
         description: "Manages system",
-        school: "xelmira#School",
-        creatorUser: "xelmira#User",
+        school: "_appRole",
+        creatorUser: "_appRole",
       }).save(),
       new Role({
         name: "superadmin",
         description: "Manages school admins",
-        school: "xelmira#School",
-        creatorUser: "xelmira#User",
+        school: "_appRole",
+        creatorUser: "_appRole",
       }).save(),
       new Role({
         name: "admin",
         description: "Manages one school",
-        school: "xelmira#School",
-        creatorUser: "xelmira#User",
+        school: "_appRole",
+        creatorUser: "_appRole",
       }).save(),
       new Role({
         name: "student",
         description: "Attend classes",
-        school: "xelmira#School",
-        creatorUser: "xelmira#User",
+        school: "_appRole",
+        creatorUser: "_appRole",
       }).save(),
       new Role({
         name: "employee",
         description: "Provide classes",
-        school: "xelmira#School",
-        creatorUser: "xelmira#User",
+        school: "_appRole",
+        creatorUser: "_appRole",
       }).save(),
       new Role({
         name: "parent",
         description: "Student representative",
-        school: "xelmira#School",
-        creatorUser: "xelmira#User",
+        school: "_appRole",
+        creatorUser: "_appRole",
       }).save(),
     ]);
   } catch (error) {
@@ -57,21 +57,24 @@ initials.grades = async () => {
     await Promise.all([
       new Grade({
         name: "Descriptive",
-        description: "Skills are assesed and achieved",
-        creatorUser: "initial_grade",
-        school: "_tenant",
+        description: "Skills are assessed and achieved",
+        electiveSubject: null,
+        creatorUser: "_appGradeSystem",
+        school: "_appGradeSystem",
       }).save(),
       new Grade({
-        name: "Colombia System",
+        name: "Colombian System",
         description: "Assessment scale and ranking levels are used",
-        creatorUser: "initial_grade",
-        school: "_tenant",
+        electiveSubject: true,
+        creatorUser: "_appGradeSystem",
+        school: "_appGradeSystem",
       }).save(),
       new Grade({
         name: "Grade Point Average",
         description: "Score is averaged.",
-        creatorUser: "initial_grade",
-        school: "_tenant",
+        electiveSubject: true,
+        creatorUser: "_appGradeSystem",
+        school: "_appGradeSystem",
       }).save(),
     ]);
   } catch (error) {

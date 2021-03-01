@@ -9,10 +9,17 @@ const gradeSchema = new Schema(
         description: {
             type: String,
         },
+        electiveSubject: {
+            type: Boolean,
+        },
         creatorUser: {
             type: String,
             required: true,
             default: "_tenant",
+        }, 
+        school: {
+            type: String,
+            required: true,
         }
     },
     { timestamps: true }, { versionKey: false }

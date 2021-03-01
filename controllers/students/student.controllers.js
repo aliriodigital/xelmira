@@ -1,9 +1,9 @@
 const Student = require("../../models/Student");
 const User = require("../../models/User");
 const Parent = require("../../models/Parent");
-const Course = require("../../models/Course");
 const Batch = require("../../models/Batch");
-const Role = require("../../models/Role");
+const Grade = require("../../models/Grade");
+const Subject = require("../../models/Subject");
 
 const controllers = {};
 
@@ -23,7 +23,20 @@ controllers.read = async (req, res) => {
 };
 
 controllers.createView = async (req, res) => {
-  const batches = await Batch.find({ school: req.user.school }).lean();
+  const batches = await Batch.find({ school: req.user.school })
+  .populate({
+    path : "course", 
+    populate : {
+      path : "gradingSystem"
+    }
+  }).lean();
+  // const util = require("util"); 
+  // console.log(util.inspect(batches, {depth: null}));
+  const grades = await Grade.find().lean();
+  const subjects = await Subject.find({
+    school: req.user.school,
+    preset: false,
+  }).lean();
   const countBatches = await Batch.countDocuments();
   if (countBatches < 1) {
     req.flash(
@@ -38,6 +51,8 @@ controllers.createView = async (req, res) => {
     action: "/student/new",
     studentLink: true,
     batches: batches,
+    grades: grades,
+    subjects: subjects,
   });
 };
 
@@ -277,16 +292,12 @@ controllers.profile = async (req, res) => {
 controllers.parentCreateView = async (req, res) => {
   const { id } = req.params;
   const student = await Student.findById(id).lean();
-  const representativeExists = await Parent.findOne({
-    studentId: id,
-    representative: { $in: [true] },
-  });
-  res.render("parents/parent-new", {
+  res.render("students/parent-new", {
     pageTitle: "New Parent",
     featureTitle: "Create Parent",
     studentLink: true,
     student: student,
-    representativeExists,
+    action: "/student/" + id + "/parent/new",
   });
 };
 
@@ -330,7 +341,7 @@ controllers.parentCreate = async (req, res) => {
   if (password.length < 4) error = "Password must be longer than 4 characters";
   if (address === "") error = "Enter an address";
   if (error.length > 0) {
-    res.render("parents/parent-new", {
+    res.render("students/parent-new", {
       pageTitle: "New Parent",
       featureTitle: "Create Parent",
       studentLink: true,
@@ -355,13 +366,18 @@ controllers.parentCreate = async (req, res) => {
     });
   } else {
     const student = await Student.findById(id);
+    const parents = await Parent.find({ studentId: id });
     const newParent = await new Parent(req.body);
     const newUser = await new User(req.body);
     newParent.userId = newUser._id;
     newParent.school = req.user.school;
     newParent.creatorUser = req.user._id;
     newParent.studentId = student._id;
-    newParent.representative = representative;
+    if (!parents) {
+      newParent.representative = true;
+    } else {
+      newParent.representative = null;
+    }
     await newParent.save();
 
     newUser.school = req.user.school;
@@ -380,10 +396,11 @@ controllers.parentEditView = async (req, res) => {
     .populate("studentId")
     .populate("userId");
   const student = await Student.findById(id).lean();
-  res.render("parents/parent-edit", {
+  res.render("students/parent-edit", {
     pageTitle: "Edit Parent",
     featureTitle: "Edit Parent",
     studentLink: true,
+    action: "/student/" + id + "/parent/" + parentId + "/edit",
     parent: parent,
     student: student,
   });
@@ -413,10 +430,6 @@ controllers.parentEdit = async (req, res) => {
   const parent = await Parent.findById(parentId)
     .populate("userId")
     .populate("studentId");
-  // const notCurrentParents = await Parent.find({
-  //   studentId: id,
-  //   _id: { $ne: parentId },
-  // });
   const student = await Student.findById(id).lean();
   const user = await User.findById(parent.userId._id);
   const usernameInUse = await User.findOne({
@@ -513,6 +526,5 @@ controllers.parentRemove = async (req, res) => {
     res.redirect("/student/profile/" + id);
   }
 };
-
 
 module.exports = controllers;
