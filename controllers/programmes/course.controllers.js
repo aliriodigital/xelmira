@@ -61,7 +61,7 @@ controllers.create = async (req, res) => {
 
 controllers.editView = async (req, res) => {
   const { id } = req.params;
-  const course = await Course.findById(id).lean();
+  const course = await Course.findById(id).populate("gradingSystem").lean();
   const grades = await Grade.find().lean();
   if (!course || course.school.toString() !== req.user.school.toString()) {
     req.flash("error", "You can not edit this course. Please try another one!");
@@ -80,7 +80,7 @@ controllers.editView = async (req, res) => {
 controllers.edit = async (req, res) => {
   const { id } = req.params;
   const { name, gradingSystem, description } = req.body;
-  const course = await Course.findById(id);
+  const course = await Course.findById(id).populate("gradingSystem");
   const courseInUse = await Course.findOne({
     school: req.user.school,
     name: name,
@@ -98,8 +98,9 @@ controllers.edit = async (req, res) => {
     req.flash("error", error);
     res.redirect("/courses");
   } else {
+    const grade = await Grade.findOne({name: gradingSystem});
     course.name = name;
-    course.gradingSystem = gradingSystem;
+    course.gradingSystem = grade._id;
     course.description = description;
     await course.save();
     req.flash("success", "Course updated successfully");
